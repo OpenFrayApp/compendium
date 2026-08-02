@@ -35,7 +35,7 @@ export const strongWatersSpells: Spell[] = [
     classes: ['Druid', 'Wizard'],
     text:
       'The caster touches one fire, lamp, stove, or still no larger than a 5-foot Cube and sets its heat, anywhere from barely warm to a hard boil. For the duration the target holds exactly that heat — it consumes no fuel, needs no attention, and is not moved by wind, rain, or neglect. While within 30 feet of it, the caster can change the set heat as a Bonus Action.\n\n' +
-      'The spell holds a fire; it does not create one, and what it holds neither spreads nor sets anything alight beyond what it was given. A vessel over it boils as evenly as the fire burns, which is the whole of what the spell was written for.',
+      'The spell holds a fire; it does not create one, and what it holds neither spreads nor sets anything alight beyond what it was given.',
   },
   {
     id: 'openfray-strong-waters:stay-the-turning',
@@ -52,7 +52,7 @@ export const strongWatersSpells: Spell[] = [
     ritual: true,
     classes: ['Druid', 'Ranger', 'Wizard'],
     text:
-      'The caster touches up to 1 gallon of prepared food, drink, or preparation — a stoppered decoction, a jar of unguent, a basket of gathered leaf — and stops its changing. For the duration nothing in it spoils, separates, weakens, or grows, and it is exactly as good, and exactly as dangerous, as the moment it was touched.\n\n' +
+      'The caster touches up to 1 gallon of prepared food, drink, or preparation — a stoppered decoction, a jar of unguent, a basket of gathered leaf — and stops its changing. For the duration nothing in it spoils, separates, weakens, or grows.\n\n' +
       'What had already turned is not restored, and nothing is made safe that was not safe. A preparation still becoming — a tincture in its steeping month, a mash still working — stops with everything else, and takes its work up where it left off when the spell ends.',
   },
   {
@@ -71,7 +71,7 @@ export const strongWatersSpells: Spell[] = [
     classes: ['Druid', 'Ranger'],
     text:
       'The caster touches one seed or seedling of a nonmagical plant, in ground that could grow it. Over the next 4 hours it grows to a usable harvest: one mature plant, bearing what a single plant of its kind bears in its season. The plant is alive and ordinary in every way but two — it sets no seed of its own, and no magic hastens it a second time.\n\n' +
-      'The spell grows one plant, however it is cast, and enriches nothing around it. A caster who wants a field brought on, or a countryside enriched for a year, wants Plant Growth; a caster who wants a single flower opened this instant wants Druidcraft, and pays nothing.',
+      'The spell grows one plant, however it is cast, and enriches nothing around it.',
   },
 
   // ── The treatment ────────────────────────────────────────────────────────────
@@ -109,7 +109,7 @@ export const strongWatersSpells: Spell[] = [
     classes: ['Cleric', 'Druid', 'Paladin'],
     text:
       'The caster touches a creature with a substance at work in it and holds the substance still. For the duration, everything the dose is doing is suspended: its effects neither advance nor end, saving throws it would call for are not made, its clock does not run, and a creature whose breathing it has stopped neither improves nor worsens, making no death saving throws on the substance’s account.\n\n' +
-      'Everything owed resumes exactly where it stopped when the spell ends. Hold the Dose cures nothing and removes nothing; what it buys is the hour, which in an overdose is frequently the whole of what was missing.',
+      'Everything owed resumes exactly where it stopped when the spell ends. Hold the Dose cures nothing and removes nothing.',
   },
   {
     id: 'openfray-strong-waters:still-the-wanting',
@@ -132,7 +132,7 @@ export const strongWatersSpells: Spell[] = [
     classes: ['Bard', 'Cleric', 'Druid', 'Paladin'],
     text:
       'The caster touches one creature and quiets, for the duration, what its body has learned to ask for. The creature ignores the Disadvantage its addiction’s degrees impose, ignores the effects of the Exhaustion level its addiction lays down, and its hands are steady. A measure merely within reach calls no saving throw from it while the spell lasts; one pressed on it directly is refused or taken as normal, though the creature makes that saving throw with Advantage.\n\n' +
-      'The wanting is quieted, not answered and not fed. The day counts as gone without, the count falls as it falls, and the saving throw made at the day’s end to be free of the addiction is made exactly as the creature’s degree requires, with no help from this spell.',
+      'The day counts as gone without, the count falls as it falls, and the saving throw made at the day’s end to be free of the addiction is made exactly as the creature’s degree requires, with no help from this spell.',
   },
   {
     id: 'openfray-strong-waters:soften-the-fall',
@@ -168,7 +168,7 @@ export const strongWatersSpells: Spell[] = [
     classes: ['Cleric', 'Druid', 'Paladin'],
     text:
       'The caster touches a creature and draws one substance out of it through the skin, gathering it as a single drop on the glass. Everything the substance was doing ends at once: its effects, its overdose and any saving throw still owed to it, and a breath it had stopped resumes on its own. What the dose already collected is not returned — damage stands, Exhaustion stands, and a measure taken remains taken on every count that is kept of it.\n\n' +
-      'The drop is one true measure of the substance, recovered whole. Drink is beyond the spell: what a body has spread through the whole of itself has no one thing left to draw, and the morning is not a dose.',
+      'The drop is one true measure of the substance, recovered whole. The spell can’t draw drink, and it does nothing for Intoxication.',
   },
 
   // ── The mimicry ──────────────────────────────────────────────────────────────
@@ -188,7 +188,7 @@ export const strongWatersSpells: Spell[] = [
     classes: ['Cleric', 'Druid', 'Ranger', 'Wizard'],
     text:
       'The caster touches one willing creature. For the duration the creature does not sleep and does not need to: it stays alert through the whole of a watch, saving throws it makes to stay awake succeed automatically, and while the spell lasts it gains no Exhaustion level for the sleep it is missing.\n\n' +
-      'The night is borrowed, not forgiven. The missed rest is still missed, and the Exhaustion it would have cost arrives at the next dusk unless the creature has finished a Long Rest by then. A creature can benefit from Keep the Watch once between Long Rests.',
+      'The missed rest is still missed, and the Exhaustion it would have cost arrives at the next dusk unless the creature has finished a Long Rest by then. A creature can benefit from Keep the Watch once between Long Rests.',
   },
   {
     id: 'openfray-strong-waters:keep-the-dreams',
@@ -206,7 +206,7 @@ export const strongWatersSpells: Spell[] = [
     classes: ['Bard', 'Druid', 'Wizard'],
     text:
       'The caster touches one willing creature as it settles to sleep. The creature sleeps its ordinary sleep and completes its rest as it otherwise would, and it dreams in order — and on waking it keeps the whole of the night, entire and in sequence, as firmly as anything it saw awake.\n\n' +
-      'The dreams are the creature’s own. The spell records; it does not send, summon, interpret, or answer, and a creature that dreamed an answer had the answer.',
+      'The dreams are the creature’s own, and the spell only keeps them: it does not send, summon, interpret, or answer.',
   },
   {
     id: 'openfray-strong-waters:lay-the-pain-by',
@@ -224,6 +224,6 @@ export const strongWatersSpells: Spell[] = [
     classes: ['Bard', 'Cleric', 'Druid', 'Paladin'],
     text:
       'The caster touches one creature and sets its pain out of reach. For the duration the creature can’t be forced to make a check or saving throw to withstand pain, ignores the Disadvantage its injuries impose, and can act through what should stop it.\n\n' +
-      'Nothing is healed and nothing is protected — what a body can’t feel it can’t protect, and damage taken under the spell is taken in full. When the duration ends the pain returns, all of it, at once.',
+      'Nothing is healed and nothing is protected, and damage taken under the spell is taken in full. When the duration ends the pain returns, all of it, at once.',
   },
 ]
