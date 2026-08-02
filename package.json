@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Compendium data-generation tooling for OpenFray — ingests SRD and third-party sources into OpenFray's Creature schema, validates the output, and emits the JSON the app ships.",
+  "description": "Compendium data-generation tooling for OpenFray \u2014 ingests SRD and third-party sources into OpenFray's Creature schema, validates the output, and emits the JSON the app ships.",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "ingest:srd-2014": "node scripts/ingest-srd-2014.ts",
@@ -11,6 +11,7 @@
     "ingest:srd52-spells": "node scripts/ingest-srd52-spells.ts",
     "ingest:brood-and-bloom": "node scripts/ingest-brood-and-bloom.ts",
     "ingest:brood-and-bloom-spells": "node scripts/ingest-brood-and-bloom-spells.ts",
+    "ingest:strong-waters-spells": "node scripts/ingest-strong-waters-spells.ts",
     "ingest:waking-garden": "node scripts/ingest-waking-garden.ts",
     "validate": "node scripts/validate-compendium.ts",
     "estimate:cr": "node scripts/estimate-cr.ts",
