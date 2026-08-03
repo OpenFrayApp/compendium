@@ -19,7 +19,8 @@ parser) out of the app keeps the app lean and the data reproducible here.
 | `tob2.py` → `ingest-tob2.ts` | **Tome of Beasts 2 (Kobold Press)** via the book's PDF | OGL 1.0a, 389 OGC creatures; edition 5.0 |
 | `tob3.py` → `ingest-tob3.ts` | **Tome of Beasts 3 (Kobold Press)** via the book's PDF | OGL 1.0a, 395 OGC creatures; edition 5.0 |
 | `npm run ingest:brood-and-bloom` | **Brood & Bloom** — original OpenFray creatures | authored in `src/compendium/brood-and-bloom.ts`; no PDF, no parser; edition 5.5 |
-| `npm run ingest:brood-and-bloom-spells` | **Brood & Bloom** — original OpenFray spells | authored in `src/compendium/brood-and-bloom-spells.ts`; the only first-party spell set |
+| `npm run ingest:brood-and-bloom-spells` | **Brood & Bloom** — original OpenFray spells | authored in `src/compendium/brood-and-bloom-spells.ts` |
+| `npm run ingest:strong-waters-spells` | **On Strong Waters and Potent Simples** — original OpenFray spells | authored in `src/compendium/strong-waters-spells.ts`; spells and presets only, no creatures |
 
 > **Per-book extractors, not shared.** `tob1.py` / `tob2.py` / `tob3.py` all use **pymupdf
 > (`import fitz`)**, but each book's fonts differ, so a filter tuned to one breaks the others
@@ -80,11 +81,14 @@ where a bad field is caught. The ingest sorts them, runs the same invariant vali
 PDF pipelines use, and writes the JSON only if it's clean. Edit the creatures in the `.ts`,
 never the JSON — the JSON is a build artifact.
 
-Brood & Bloom is also the only library that ships spells of its own. They are authored the
-same way, in `src/compendium/brood-and-bloom-spells.ts`, and gated by a spell-side validator
+Brood & Bloom and On Strong Waters and Potent Simples also ship spells of their own. They
+are authored the same way, in `src/compendium/brood-and-bloom-spells.ts` and
+`src/compendium/strong-waters-spells.ts`, and gated by a spell-side validator
 (`validateSpellDataset`) that checks what a spell can be silently wrong about: a
 Concentration duration that repeats the word the card already prints, a ritual flag that
-disagrees with the casting time, scaling steps at or below the spell's own level.
+disagrees with the casting time, scaling steps at or below the spell's own level. The
+spells speak to the caster directly — "You touch", never "The caster touches" — the same
+voice the SRD's own spells use.
 
 ```bash
 npm run ingest:brood-and-bloom                       # → output/brood-and-bloom-creatures.json
