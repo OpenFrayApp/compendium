@@ -31,7 +31,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Cleric', 'Druid', 'Wizard'],
     text:
-      'The caster reads a willing creature or a corpse and learns whether it carries a graft, a Spore Load, or anything of the Necrophore laid in it, and which line is responsible. The caster doesn’t learn the stage, the Depth, or the size of the Load.\n\n' +
+      'You read a willing creature or a corpse and learn whether it carries a graft, a Spore Load, or anything of the Necrophore laid in it, and which line is responsible. You don’t learn the stage, the Depth, or the size of the Load.\n\n' +
       'A body under a suppression of any kind reads as clean, and the spell gives no sign that anything is being suppressed.',
   },
   {
@@ -49,7 +49,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Druid', 'Sorcerer', 'Warlock', 'Wizard'],
     text:
-      'The caster extinguishes every nonmagical flame in a 20-foot Cube centered on a point within range, and puts out any wakelight in the area. A creature in the area that produces wakelight of its own emits none until the end of its next turn.',
+      'You extinguish every nonmagical flame in a 20-foot Cube centered on a point within range, and put out any wakelight in the area. A creature in the area that produces wakelight of its own emits none until the end of its next turn.',
   },
   {
     id: 'openfray-brood-and-bloom:fair-copy',
@@ -66,8 +66,8 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Sorcerer', 'Warlock', 'Wizard'],
     text:
-      'For the duration, the caster shows no outward mark of any disease they carry. Skin, eyes, color, and gait read as ordinary to anyone watching, and a Wisdom (Medicine) check made by observation alone can’t identify what is wrong with them.\n\n' +
-      'Fair Copy suppresses nothing. Every penalty of the caster’s stage applies in full, and any examination that involves touching them, or any magic that reads a body rather than looks at one, sees through it at once.',
+      'For the duration, you show no outward mark of any disease you carry. Skin, eyes, color, and gait read as ordinary to anyone watching, and a Wisdom (Medicine) check made by observation alone can’t identify what is wrong with you.\n\n' +
+      'Fair Copy suppresses nothing. Every penalty of your stage applies in full, and any examination that involves touching you, or any magic that reads a body rather than looks at one, sees through it at once.',
   },
   {
     id: 'openfray-brood-and-bloom:latchwork',
@@ -84,8 +84,8 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Sorcerer', 'Warlock', 'Wizard'],
     text:
-      'The caster makes a ranged spell attack against one creature within range. On a hit, the target takes 1d10 Piercing damage and has Disadvantage on the next attack roll it makes before the end of its next turn.\n\n' +
-      '**Cantrip Upgrade.** The damage increases by 1d10 when the caster reaches level 5 (2d10), level 11 (3d10), and level 17 (4d10).',
+      'You make a ranged spell attack against one creature within range. On a hit, the target takes 1d10 Piercing damage and has Disadvantage on the next attack roll it makes before the end of its next turn.\n\n' +
+      '**Cantrip Upgrade.** The damage increases by 1d10 when you reach level 5 (2d10), level 11 (3d10), and level 17 (4d10).',
     mechanics: {
       damage: [{ formula: '1d10', type: 'piercing' }],
       attackRoll: true,
@@ -111,7 +111,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Cleric', 'Warlock', 'Wizard'],
     text:
-      'The caster touches a corpse. For the duration, nothing of the Necrophore can lay in that body, and any attempt to do so fails without a roll.\n\n' +
+      'You touch a corpse. For the duration, nothing of the Necrophore can lay in that body, and any attempt to do so fails without a roll.\n\n' +
       'Unction affects one corpse and does nothing to a living creature.',
   },
   {
@@ -129,7 +129,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: true,
     classes: ['Cleric', 'Druid', 'Wizard'],
     text:
-      'The caster learns the number of corpses within 60 feet that have been laid in by the Necrophore, and the direction of each. The spell doesn’t distinguish one from another, doesn’t say how much is in any of them, and doesn’t detect a body that has been treated to prevent laying.',
+      'You learn the number of corpses within 60 feet that have been laid in by the Necrophore, and the direction of each. The spell doesn’t distinguish one from another, doesn’t say how much is in any of them, and doesn’t detect a body that has been treated to prevent laying.',
   },
   {
     id: 'openfray-brood-and-bloom:countenance',
@@ -146,7 +146,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Cleric', 'Druid', 'Paladin', 'Sorcerer', 'Warlock', 'Wizard'],
     text:
-      'The caster suppresses the effects of their current stage of an Inquiline disease. For the duration they suffer none of that stage’s penalties, don’t present its marks, and can’t be identified by a Wisdom (Medicine) check.\n\n' +
+      'You suppress the effects of your current stage of an Inquiline disease. For the duration you suffer none of that stage’s penalties, don’t present its marks, and can’t be identified by a Wisdom (Medicine) check.\n\n' +
       'Depth accrues as normal, the graft deepens as normal, and the disease advances on its usual schedule. The spell has no effect at stage 4, and it doesn’t hide the graft from a Detect Poison and Disease spell.\n\n' +
       'Countenance can’t be cast on another creature, and there is no version of it without a Somatic component.',
   },
@@ -165,7 +165,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Sorcerer', 'Warlock', 'Wizard'],
     text:
-      'The caster touches one creature, which makes a Constitution saving throw, taking 3d6 Necrotic damage on a failed save or half as much damage on a successful one.\n\n' +
+      'You touch one creature, which makes a Constitution saving throw, taking 3d6 Necrotic damage on a failed save or half as much damage on a successful one.\n\n' +
       'On a failed save, a target that carries a graft gains 1 Depth, and a target that carries a Spore Load gains 1 Spore Load. A target carrying neither takes the damage and nothing more.\n\n' +
       '**Using a Higher-Level Spell Slot.** The damage increases by 1d6 for each spell slot level above 1.',
     mechanics: {
@@ -198,7 +198,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Cleric', 'Druid', 'Paladin', 'Wizard'],
     text:
-      'The caster draws a line up to 30 feet long across a surface within range. For the duration, no Tiny creature of any of the three broods can cross it, and no contaminated area can spread past it.\n\n' +
+      'You draw a line up to 30 feet long across a surface within range. For the duration, no Tiny creature of any of the three broods can cross it, and no contaminated area can spread past it.\n\n' +
       'A creature of Small size or larger crosses the line without difficulty and without breaking it.',
   },
   {
@@ -216,8 +216,8 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Cleric', 'Paladin', 'Warlock'],
     text:
-      'The caster touches a willing creature and takes up to 1d4 of its Depth into themselves. The creature loses that Depth and the caster gains it, exactly as though the caster had been fed on.\n\n' +
-      'A caster who carries no graft receives one, in the target’s line, with the Depth transferred.\n\n' +
+      'You touch a willing creature and take up to 1d4 of its Depth into yourself. The creature loses that Depth and you gain it, exactly as though you had been fed on.\n\n' +
+      'If you carry no graft, you receive one, in the target’s line, with the Depth transferred.\n\n' +
       'Assumption of the Case can’t move Depth away from a creature at stage 4.',
   },
   {
@@ -235,7 +235,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Cleric', 'Druid', 'Paladin', 'Wizard'],
     text:
-      'The caster suppresses every contaminated area within a 15-foot-radius Sphere centered on a point within range. For the duration, creatures in the Sphere make no saving throws against contaminated ground and gain no Spore Load from it.\n\n' +
+      'You suppress every contaminated area within a 15-foot-radius Sphere centered on a point within range. For the duration, creatures in the Sphere make no saving throws against contaminated ground and gain no Spore Load from it.\n\n' +
       'Bloom Interdict doesn’t clear the ground, harm what is producing the contamination, or prevent the area resuming the instant the spell ends.',
   },
   {
@@ -253,7 +253,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Cleric', 'Druid', 'Paladin', 'Sorcerer', 'Wizard'],
     text:
-      'One corpse the caster can see within range burns for the duration and is consumed entirely, along with anything laid in it and anything growing on it. The fire doesn’t spread and doesn’t harm a creature that touches it.\n\n' +
+      'One corpse you can see within range burns for the duration and is consumed entirely, along with anything laid in it and anything growing on it. The fire doesn’t spread and doesn’t harm a creature that touches it.\n\n' +
       'A corpse consumed by Discharge can’t be raised by any means short of a True Resurrection spell.',
   },
   {
@@ -302,8 +302,8 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Sorcerer', 'Warlock', 'Wizard'],
     text:
-      'For the duration, whenever a creature other than the caster casts a spell while within 30 feet of the caster, the caster gains 5 Temporary Hit Points and can move up to 10 feet as a Reaction.\n\n' +
-      '**Optional cost.** A caster who carries a graft can extend the radius to 60 feet by taking 1 Depth as the spell is cast. The spell functions normally without this.',
+      'For the duration, whenever a creature other than you casts a spell while within 30 feet of you, you gain 5 Temporary Hit Points and can move up to 10 feet as a Reaction.\n\n' +
+      '**Optional cost.** If you carry a graft, you can extend the radius to 60 feet by taking 1 Depth as the spell is cast. The spell functions normally without this.',
   },
   {
     id: 'openfray-brood-and-bloom:false-wakelight',
@@ -325,7 +325,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Druid', 'Sorcerer', 'Warlock', 'Wizard'],
     text:
-      'The caster creates a cold, pale light at a point within range. For the duration, every Necrophore creature within 1 mile that can perceive the light moves toward it by the most direct route available, and won’t willingly move away from it while it can be seen.\n\n' +
+      'You create a cold, pale light at a point within range. For the duration, every Necrophore creature within 1 mile that can perceive the light moves toward it by the most direct route available, and won’t willingly move away from it while it can be seen.\n\n' +
       'The light is stationary and can’t be moved once placed.',
   },
   {
@@ -348,7 +348,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Druid', 'Sorcerer', 'Warlock', 'Wizard'],
     text:
-      'The caster contaminates the ground in a 20-foot-radius area centered on a point within range. For the duration the area counts as contaminated ground of a line the caster chooses, with a Difficulty Class equal to the caster’s spell save DC.\n\n' +
+      'You contaminate the ground in a 20-foot-radius area centered on a point within range. For the duration the area counts as contaminated ground of a line you choose, with a Difficulty Class equal to your spell save DC.\n\n' +
       'The ground returns to normal when the spell ends. Nothing grows there afterward.',
   },
   {
@@ -366,7 +366,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Cleric', 'Druid', 'Paladin'],
     text:
-      'The caster touches a willing creature. It loses 2d4 Depth and takes 4d6 Force damage, which can’t be reduced, prevented, or resisted by any means.\n\n' +
+      'You touch a willing creature. It loses 2d4 Depth and takes 4d6 Force damage, which can’t be reduced, prevented, or resisted by any means.\n\n' +
       'Prosector’s Purgation has no effect at stage 4, and the damage is dealt whether or not any Depth remains to remove.',
     mechanics: {
       damage: [{ formula: '4d6', type: 'force' }],
@@ -387,12 +387,12 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Sorcerer', 'Warlock'],
     text:
-      'The caster must carry a graft to cast this spell.\n\n' +
-      'The graft rises to just beneath the skin and stays there for the duration. The caster gains the following benefits:\n\n' +
+      'You must carry a graft to cast this spell.\n\n' +
+      'The graft rises to just beneath the skin and stays there for the duration. You gain the following benefits:\n\n' +
       '- 20 Temporary Hit Points.\n' +
-      '- A natural weapon. The caster can attack with it as an Action, and on a hit it deals 2d8 Piercing damage plus the caster’s spellcasting ability modifier.\n' +
+      '- A natural weapon. You can attack with it as an Action, and on a hit it deals 2d8 Piercing damage plus your spellcasting ability modifier.\n' +
       '- Advantage on saving throws against being Frightened or Charmed.\n\n' +
-      'When the spell ends, the caster gains 1 Depth.',
+      'When the spell ends, you gain 1 Depth.',
   },
   {
     id: 'openfray-brood-and-bloom:second-assignment',
@@ -409,8 +409,8 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Warlock', 'Wizard'],
     text:
-      'The caster must carry a graft to cast this spell.\n\n' +
-      'The caster touches two creatures, one of which carries a graft and one of which doesn’t. The graft leaves the first and takes in the second, at the same stage and with the same Depth. The first creature is free of it entirely, and the second gains it in full, including everything it had already become.\n\n' +
+      'You must carry a graft to cast this spell.\n\n' +
+      'You touch two creatures, one of which carries a graft and one of which doesn’t. The graft leaves the first and takes in the second, at the same stage and with the same Depth. The first creature is free of it entirely, and the second gains it in full, including everything it had already become.\n\n' +
       'A creature that doesn’t consent makes a Charisma saving throw, and the spell fails against it on a successful save.\n\n' +
       'Second Assignment has no effect at stage 4.',
     mechanics: {
@@ -432,7 +432,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Cleric', 'Druid', 'Paladin', 'Wizard'],
     text:
-      'The caster creates a 30-foot-radius Sphere of still air centered on a point within range. For the duration, no creature of any of the three broods can enter or leave the Sphere, no spore or wakelight passes its boundary in either direction, and no contaminated area inside it spreads outside it.\n\n' +
+      'You create a 30-foot-radius Sphere of still air centered on a point within range. For the duration, no creature of any of the three broods can enter or leave the Sphere, no spore or wakelight passes its boundary in either direction, and no contaminated area inside it spreads outside it.\n\n' +
       'Creatures that are not of the broods pass in and out freely, and carry nothing out with them that the spell would have stopped.',
   },
   {
@@ -450,7 +450,7 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Cleric', 'Druid', 'Wizard'],
     text:
-      'The caster touches a creature carrying a graft that hasn’t reached stage 4. The graft leaves the body at once and the creature is cured completely, with no Depth, no stage, and no lasting effect.\n\n' +
+      'You touch a creature carrying a graft that hasn’t reached stage 4. The graft leaves the body at once and the creature is cured completely, with no Depth, no stage, and no lasting effect.\n\n' +
       'The graft appears in an unoccupied space within 5 feet of the creature as the stage 4 form of its line, fully grown, hostile, and acting on its own Initiative from that moment. It has taken nothing from the body it left and is not weakened by the extraction.',
   },
   {
@@ -473,8 +473,8 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Warlock', 'Wizard'],
     text:
-      'The caster lays in a corpse. One hour later a Crypt Instar rises from it under the caster’s control and remains so for 24 hours. At the end of that time the caster’s control ends, and the creature behaves as any other of its kind.\n\n' +
-      'A caster can have only one creature raised by Laying-In at a time. Casting it again ends the caster’s control over the previous one immediately.',
+      'You lay in a corpse. One hour later a Crypt Instar rises from it under your control and remains so for 24 hours. At the end of that time your control ends, and the creature behaves as any other of its kind.\n\n' +
+      'You can have only one creature raised by Laying-In at a time. Casting it again ends your control over the previous one immediately.',
   },
   {
     id: 'openfray-brood-and-bloom:preferment',
@@ -491,13 +491,13 @@ export const broodAndBloomSpells: Spell[] = [
     ritual: false,
     classes: ['Sorcerer', 'Warlock'],
     text:
-      'The caster must carry a graft to cast this spell.\n\n' +
-      'The caster advances their own case by one full stage. This is permanent and isn’t reversed when the spell ends.\n\n' +
-      'For the duration, the caster gains the following benefits:\n\n' +
-      '- Their Speed increases by 20 feet.\n' +
-      '- They have Advantage on attack rolls and on Constitution saving throws.\n' +
-      '- At the start of each of their turns they gain 10 Temporary Hit Points.\n' +
-      '- They can’t be Frightened or Charmed, and can’t be put to sleep by magic.\n\n' +
-      'A caster at stage 3 who casts Preferment reaches stage 4, and everything that follows from stage 4 follows on schedule.',
+      'You must carry a graft to cast this spell.\n\n' +
+      'You advance your own case by one full stage. This is permanent and isn’t reversed when the spell ends.\n\n' +
+      'For the duration, you gain the following benefits:\n\n' +
+      '- Your Speed increases by 20 feet.\n' +
+      '- You have Advantage on attack rolls and on Constitution saving throws.\n' +
+      '- At the start of each of your turns you gain 10 Temporary Hit Points.\n' +
+      '- You can’t be Frightened or Charmed, and can’t be put to sleep by magic.\n\n' +
+      'If you cast Preferment at stage 3, you reach stage 4, and everything that follows from stage 4 follows on schedule.',
   },
 ]
