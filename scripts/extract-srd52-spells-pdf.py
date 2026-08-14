@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 OpenFray contributors
+# Copyright (C) 2026 Nicola Mustone
 #
 # Extract the SRD 5.2.1 spell descriptions from WotC's official CC-BY PDF into
 # structured per-spell blocks, the intermediate consumed by

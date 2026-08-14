@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// Copyright (C) 2026 OpenFray contributors
+// Copyright (C) 2026 Nicola Mustone
 
 /**
  * Map Creature Codex (Kobold Press) into our Creature schema, from the Open5e v2 API.

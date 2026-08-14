@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 OpenFray contributors
+# Copyright (C) 2026 Nicola Mustone
 #
 # Extract the Tome of Beasts 2 bestiary (Kobold Press, OGL 1.0a) into structured
 # per-creature blocks, the intermediate consumed by scripts/ingest-tob2.ts.

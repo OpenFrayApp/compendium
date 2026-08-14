@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// Copyright (C) 2026 OpenFray contributors
+// Copyright (C) 2026 Nicola Mustone
 
 /**
  * Ingest SRD 5.1 (D&D 2014) from the 5e-bits API (dnd5eapi.co) once, transform into

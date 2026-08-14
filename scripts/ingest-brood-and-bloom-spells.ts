@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// Copyright (C) 2026 OpenFray contributors
+// Copyright (C) 2026 Nicola Mustone
 
 /**
  * Emit "Brood & Bloom"'s spells — original OpenFray content — into the Spell schema JSON

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// Copyright (C) 2026 OpenFray contributors
+// Copyright (C) 2026 Nicola Mustone
 
 /**
  * Map the Tome of Beasts 3 blocks (from scripts/tob3.py) into our Creature schema.

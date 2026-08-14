@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 OpenFray contributors
+# Copyright (C) 2026 Nicola Mustone
 #
 # Extract the Tome of Beasts (1st volume, Kobold Press, © 2016 Open Design, OGL 1.0a)
 # bestiary into structured per-creature blocks, the intermediate consumed by
