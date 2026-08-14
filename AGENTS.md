@@ -5,7 +5,7 @@ first. This file adds the rules for changing things.
 ## The rules live with the app
 
 This repo follows the main repo's
-[AGENTS.md](https://github.com/SirDarcanos/openfray/blob/main/AGENTS.md) — one code
+[AGENTS.md](https://github.com/OpenFrayApp/openfray.app/blob/main/AGENTS.md) — one code
 style, one committing convention, shared licensing policy. In brief, the parts that
 apply here verbatim:
 
