@@ -2,8 +2,9 @@ Guidance for AI agents (and humans) working on the OpenFray compendium tooling. 
 cross-repo agreements (code style, writing style, committing, content licensing)
 live in the
 [openfray repo's AGENTS.md](https://github.com/OpenFrayApp/openfray/blob/main/AGENTS.md).
-**Read it before working here.** The [README](./README.md) documents every pipeline
-and command; this file carries the rules.
+**Read it before working here.** The authored text follows this repo's
+[STYLE.md](./STYLE.md) (the data voice). The [README](./README.md) documents every
+pipeline and command; this file carries the rules.
 
 ## What this repo is
 
