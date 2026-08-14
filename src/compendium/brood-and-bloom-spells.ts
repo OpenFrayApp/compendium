@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// Copyright (C) 2026 OpenFray contributors
+// Copyright (C) 2026 Nicola Mustone
 //
 // License by layer — this file mixes code and open game data:
 //   • Code (this module, its types and structure): AGPL-3.0-or-later, per the SPDX line

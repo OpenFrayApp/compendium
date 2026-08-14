@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// Copyright (C) 2026 OpenFray contributors
+// Copyright (C) 2026 Nicola Mustone
 
 // Map SRD 5.2.1 spell blocks (from scripts/extract-srd52-spells-pdf.py) into the
 // Spell schema. Display fields come verbatim from the official PDF; the rollable
