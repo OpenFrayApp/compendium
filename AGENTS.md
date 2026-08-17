@@ -1,49 +1,44 @@
-Guidance for AI agents (and humans) working in openfray-compendium. The
-[README](./README.md) explains what each pipeline does and how to run it — read it
-first. This file adds the rules for changing things.
+Guidance for AI agents (and humans) working on the OpenFray compendium tooling. The
+cross-repo agreements (code style, writing style, committing, content licensing)
+live in the
+[openfray repo's AGENTS.md](https://github.com/OpenFrayApp/openfray/blob/main/AGENTS.md).
+**Read it before working here.** The authored text follows this repo's
+[STYLE.md](./STYLE.md) (the data voice). The [README](./README.md) documents every
+pipeline and command; this file carries the rules.
 
-## The rules live with the app
+## What this repo is
 
-This repo follows the main repo's
-[AGENTS.md](https://github.com/OpenFrayApp/openfray/blob/main/AGENTS.md) — one code
-style, one committing convention, shared licensing policy. In brief, the parts that
-apply here verbatim:
+Build-time ingest tooling: it parses SRD and third-party sources into OpenFray's
+`Creature`/`Spell` schema, validates the result, and emits the JSON the
+[console](https://github.com/OpenFrayApp/console) ships in its `public/compendium/`.
+The app never runs this code; it only consumes the JSON.
 
-- **Code style:** self-explaining code; every named function opens with a one-line
-  header comment saying what it does; no other comments unless the code can't say it
-  (a why, a gotcha, a source-data quirk); one definition per concept; new source
-  files start with the short AGPL header.
-- **Committing:** one concern per commit, `Area: what changed` subjects (the areas
-  here: a pipeline name, `The Waking Garden`, `Brood & Bloom`, `crestimate`,
-  `validate`, `Docs`, `Tests`), DCO sign-off via `git commit -s`, authorship is
-  human — never add AI co-author trailers — and don't push without the maintainer's
-  go-ahead.
-- **Content licensing:** each source under its own license, CC-BY > ORC > OGL, never
-  assumed; never ingest SRD-excluded WotC IP. The obligations and the record of
-  compliance live in the app repo (`CREDITS.md`).
-- **Tests:** everything testable ships with tests, in `tests/` mirroring `src/`;
-  `npm test` and `npm run typecheck` stay green.
+```bash
+npm install
+npm test           # mapper/harness unit tests
+npm run typecheck
+```
 
-## Rules specific to this repo
+## The rules
 
-1. **This repo is build-time only.** The app never runs it; it ships JSON into the
-   app's `public/compendium/`. Nothing here may become a runtime dependency.
-2. **`src/schema/` is a vendored copy** of the app's `Creature`/`Spell` types. The
-   source of truth is the app repo — change the schema there first, then mirror it
-   here in the same working session. Never let the two drift.
-3. **Per-book extractors stay separate.** `tob1.py`/`tob2.py`/`tob3.py` deliberately
-   don't share extraction code — each book's fonts break the others' filters (the
-   README has the details). New Kobold book = a faithful copy of `tob3.py`, tuned.
-   They share only the TS mapper. Don't "unify" them.
-4. **`output/` is a build artifact** and the PDFs are inputs supplied at ingest
-   time; neither is ever committed.
-5. **First-party creatures are authored in TypeScript** (`brood.ts`,
-   `waking-garden.ts`) — edit the `.ts`, never the generated JSON. `tsc` is the
-   field-level check; the invariant validator gates the ingest.
-6. **Every ingest ends with the validator** (`npm run validate -- <file>` plus a
-   diff against the app's current JSON when replacing a published set), and a CR
-   change to a first-party creature gets an `estimate:cr` pass. A validator or
-   estimator flag is a prompt to look, not a build style to silence.
-7. **Prose is display-only.** Mechanics live in structured fields; ingest-time
-   parsing of source prose is fine (that's what this repo is for), but never emit
-   data the app would have to re-parse out of prose.
+- **Consistent tooling.** The PDF extractors use **pymupdf (`import fitz`)**, one
+  extractor per book, because each book's fonts differ and a filter tuned to one
+  breaks the others. Ingesting a new Kobold book starts as a faithful copy of
+  `tob3.py`. Never swap PDF libraries or reimplement extraction inline.
+- **Edit the `.ts`, never the JSON.** Original content (the Waking Garden,
+  Brood & Bloom, Strong Waters) is authored as typed `Creature[]`/`Spell[]` sources
+  in `src/compendium/`; the JSON in `output/` is a build artifact.
+- **Stat-block text is mechanics only.** Trait and action text carries rules;
+  lore lives in the creature's `description`, and GM advice nowhere.
+- **Never bake conditional advantage into data.** A trait that grants advantage
+  under a condition stays prose; the GM applies it at the table.
+- **Schema is vendored.** `src/schema/` is a copy of the console's types; the
+  source of truth is the console repo. Sync it, never fork it.
+- **Licensing gates every source**: CC-BY > ORC > OGL, OGC-only under OGL, and
+  never SRD-excluded WotC IP. The full policy is in the parent repo's AGENTS.md;
+  the public record of compliance is the console repo's
+  [CREDITS.md](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md).
+
+Every ingest ends with the validator (`npm run validate`), and a new or rebalanced
+original creature gets an `estimate:cr` pass. Commit subjects use the `Build:` and
+`Tests:` areas.

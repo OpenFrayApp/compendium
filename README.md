@@ -2,7 +2,9 @@
 
 Data-generation tooling for [OpenFray](https://openfray.app). It ingests SRD and
 third-party monster/spell sources into OpenFray's `Creature`/`Spell` schema,
-validates the result, and emits the JSON the app ships in `public/compendium/`.
+validates the result, and emits the JSON the
+[console](https://github.com/OpenFrayApp/console) ships in its
+`public/compendium/`.
 
 This repo is **build-time only** — the OpenFray app never runs it; it just consumes
 the JSON. Keeping the generators (and their toolchains, including a Python PDF
@@ -37,7 +39,8 @@ parser) out of the app keeps the app lean and the data reproducible here.
 Each source is honored under its own license, preferring **CC-BY > ORC > OGL**. WotC
 SRD is **CC-BY-4.0** (never OGL); third-party content (e.g. Kobold Press / Tome of
 Beasts) is used under its actual license — ORC or OGL 1.0a, OGC-only — never assumed
-CC-BY. See OpenFray's `docs/content-licensing.md` and `CREDITS.md`.
+CC-BY. The public record of compliance is the console repo's
+[CREDITS.md](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md).
 
 > **Open5e is no longer used.** SRD 5.2.1 creatures, spells, and conditions are all
 > parsed from WotC's official PDF; the only remaining external feed is dnd5eapi.co for
@@ -95,7 +98,7 @@ npm run ingest:brood-and-bloom                       # → output/brood-and-bloo
 npm run ingest:brood-and-bloom-spells                # → output/brood-and-bloom-spells.json
 npm run ingest:waking-garden                         # → output/waking-garden-creatures.json
 npm run validate -- output/brood-and-bloom-creatures.json   # invariants (also run inside ingest)
-cp output/brood-and-bloom-*.json ../openfray/public/compendium/
+cp output/brood-and-bloom-*.json ../console/public/compendium/
 ```
 
 ## Estimating challenge ratings
@@ -122,7 +125,7 @@ plus a field-level diff against a reference dataset:
 
 ```bash
 npm run validate -- output/srd-creatures.json                              # invariants only
-npm run validate -- output/srd-creatures.json ../openfray/public/compendium/srd-creatures.json  # + diff
+npm run validate -- output/srd-creatures.json ../console/public/compendium/srd-creatures.json  # + diff
 ```
 
 It exits non-zero on invariant errors, so it can gate an ingest.
@@ -132,13 +135,13 @@ It exits non-zero on invariant errors, so it can gate an ingest.
 Generated JSON lands in `output/` (gitignored). Copy the vetted files into the app:
 
 ```bash
-cp output/srd-creatures.json output/srd-spells.json ../openfray/public/compendium/
+cp output/srd-creatures.json output/srd-spells.json ../console/public/compendium/
 ```
 
 ## Layout
 
 - `src/schema/` — a vendored copy of OpenFray's `Creature`/`Spell` types (kept in
-  sync with the app; the source of truth lives in the app repo).
+  sync with the console; the source of truth lives in the console repo).
 - `src/compendium/` — the mappers (`srd52`, `srd52spells`, `dnd5eapi`), the
   `brood-and-bloom` and `waking-garden` original-content sources, the `spelllinker` text utility, and the
   `validate` harness.
