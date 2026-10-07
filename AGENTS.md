@@ -35,7 +35,8 @@ npm run typecheck
 - **Schema is vendored.** `src/schema/` is a copy of the console's types; the
   source of truth is the console repo. Sync it, never fork it.
 - **Licensing gates every source**: CC-BY > ORC > OGL, OGC-only under OGL, and
-  never SRD-excluded WotC IP. The full policy is in the parent repo's AGENTS.md;
+  never SRD-excluded WotC IP. The checklist is in the parent's
+  [Content licensing](https://github.com/OpenFrayApp/openfray/blob/main/docs/development/content-licensing.md);
   the public record of compliance is the console repo's
   [CREDITS.md](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md).
 
