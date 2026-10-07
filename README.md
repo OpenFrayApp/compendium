@@ -141,7 +141,7 @@ cp output/srd-creatures.json output/srd-spells.json ../console/public/compendium
 ## Before contributing
 
 Read [AGENTS.md](./AGENTS.md) and the shared
-[Contributor workflow](https://github.com/OpenFrayApp/openfray/blob/main/docs/development/contributor-workflow.md).
+[Contributing](https://github.com/OpenFrayApp/openfray/blob/main/CONTRIBUTING.md).
 Use [Verification commands](https://github.com/OpenFrayApp/openfray/blob/main/docs/development/verification.md)
 for this repository's check scope, and
 [Repository file policy](https://github.com/OpenFrayApp/openfray/blob/main/docs/development/repository-files.md)
