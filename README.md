@@ -117,7 +117,7 @@ python scripts/toh.py /path/to/Tome-of-Heroes.pdf output/tome-of-heroes-review/o
 python -m unittest discover -s tests/scripts -p 'test_toh.py'
 ```
 
-The ignored review snapshot pins the supplied PDF’s SHA-256. `--pages` selects physical page numbers and preserves the total PDF page count. A snapshot with no extracted text fails explicitly. Check OCR against the page images before using it to correct spell data. Use the evidence to verify the declaration, complete license chain, spell metadata, and prose before approving a corrected spell snapshot. Keep the PDF and extracted source pages outside Git. The [publication inventory](docs/open5e-5e-spell-publication.md) records unresolved exclusions and source-field checks.
+The ignored review snapshot pins the supplied PDF’s SHA-256. `--pages` selects physical page numbers and preserves the total PDF page count. A snapshot with no extracted text fails explicitly. Add `--render-dir output/tome-of-heroes-review/images` to save selected page images for visual checks. Check OCR against those images before using it to correct spell data. Use the evidence to verify the declaration, complete license chain, spell metadata, and prose before approving a corrected spell snapshot. Keep the PDF and extracted source pages outside Git. The [publication inventory](docs/open5e-5e-spell-publication.md) records unresolved exclusions and source-field checks.
 
 ## Spells That Don’t Suck from GM Binder
 

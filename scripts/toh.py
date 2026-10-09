@@ -57,6 +57,15 @@ def snapshot(pdf, selected=None, ocr=False, tessdata=None):
     }
 
 
+def render_pages(pdf, selected, directory):
+    """Save selected page images locally for visual checks of OCR evidence."""
+    directory = Path(directory)
+    directory.mkdir(parents=True, exist_ok=True)
+    with fitz.open(pdf) as doc:
+        for number in selected:
+            doc[number - 1].get_pixmap(dpi=150).save(directory / f"page-{number}.png")
+
+
 def main():
     """Write a local Tome of Heroes PDF review snapshot without emitting spell cards."""
     parser = argparse.ArgumentParser(description="Inspect Tome of Heroes source pages and fonts.")
@@ -65,11 +74,14 @@ def main():
     parser.add_argument("--pages", type=int, nargs="+", help="Selected physical page numbers")
     parser.add_argument("--ocr", action="store_true", help="OCR an image-only PDF through PyMuPDF")
     parser.add_argument("--tessdata", help="Directory containing eng.traineddata for OCR")
+    parser.add_argument("--render-dir", help="Save selected page images for visual review")
     args = parser.parse_args()
     result = snapshot(args.pdf, args.pages, args.ocr, args.tessdata)
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+    if args.render_dir:
+        render_pages(args.pdf, [page["physicalPage"] for page in result["pages"]], args.render_dir)
     print(f"{len(result['pages'])}/{result['pageCount']} source pages → {out}; publication remains blocked")
 
 

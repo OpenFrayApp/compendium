@@ -6,6 +6,7 @@ import importlib.util
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import fitz
 
@@ -59,6 +60,34 @@ class TomeOfHeroesReviewTests(unittest.TestCase):
             for selected in [[], [0], [3]]:
                 with self.assertRaisesRegex(ValueError, "outside this PDF"):
                     toh.snapshot(pdf, selected=selected)
+
+    def test_ocr_is_marked_as_synthetic_evidence(self):
+        """Mark OCR fonts explicitly so they cannot masquerade as publisher typography."""
+        with tempfile.TemporaryDirectory() as directory:
+            pdf = Path(directory) / "fixture.pdf"
+            with fitz.open() as doc:
+                doc.new_page()
+                doc.save(pdf)
+            with patch.object(toh, "page_lines", return_value=[{"t": "OCR evidence"}]) as lines:
+                result = toh.snapshot(pdf, ocr=True, tessdata="fixture-tessdata")
+                self.assertTrue(lines.call_args.args[1])
+                self.assertEqual(lines.call_args.args[2], "fixture-tessdata")
+        self.assertEqual(result["extraction"], "ocr")
+        self.assertEqual(result["fontEvidence"], "synthetic-ocr-fonts")
+        self.assertFalse(result["publishable"])
+
+    def test_rendered_evidence_uses_physical_page_number(self):
+        """Write selected page images beside ignored OCR evidence for visual checks."""
+        with tempfile.TemporaryDirectory() as directory:
+            pdf = Path(directory) / "fixture.pdf"
+            images = Path(directory) / "images"
+            with fitz.open() as doc:
+                doc.new_page()
+                doc.new_page().insert_text((40, 40), "Reviewed page")
+                doc.save(pdf)
+            toh.render_pages(pdf, [2], images)
+            self.assertEqual([path.name for path in images.iterdir()], ["page-2.png"])
+            self.assertTrue((images / "page-2.png").read_bytes().startswith(bytes([137, 80, 78, 71])))
 
     def test_snapshot_is_complete_hashed_and_not_publishable(self):
         """Keep every physical page and pin the exact PDF bytes without approval."""
