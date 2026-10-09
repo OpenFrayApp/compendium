@@ -33,6 +33,16 @@ Replay with `npm run prepare:open5e-spells -- all output/open5e-spell-preparatio
 - [Publisher Deep Magic license page](https://koboldpress.com/open-game-license-version-1-0a_deepmagic/): identifies the 2014 Pathfinder book. It does not establish the 2020 5e compilation’s declaration or copyright chain.
 - [Open5e repository license](https://github.com/open5e/open5e-api/blob/1253adb7e58dde6cae556c6bd3515dcb521b723e/LICENSE.md): expressly makes no licensing claims for included third-party SRD/OGL content. Its software license is not a grant for those spell books.
 
+### Supplied Tome of Heroes declaration
+
+A supplied copyright-page screenshot identifies ©2022 Open Design LLC and ISBNs `978-1-950789-30-6` and `978-1-950789-32-0`. Its SHA-256 is `532c4434927b0e76abe9c692d6b7eb8323c364471b941b0c28eeb5e1ac641ed7`.
+
+The declaration includes spells as Open Game Content, excluding place names and specific character references, such as gods and NPCs. It also excludes text related to Draconic Rune Casting, Hedge Magic, and the listed black-powder subclasses, rules, items, and weapons. This supports the grant already visible in the authorized preview. The screenshot does not contain the complete OGL or Section 15 chain.
+
+A keyword screen of the 91 prepared candidates flags **Deadly Salvo**. Its prose invokes the gunpowder weapon property and refers to the Adventuring Gear chapter. Review the publisher spell page and declaration before approving it. Do not copy the excluded weapon rules or remove the dependency from its mechanics. The remaining cards still require an exclusions review; a keyword screen does not establish clearance.
+
+Obtain the complete final Open Game License page, including all Section 15 entries, and the relevant spell pages before publication approval.
+
 ## Recovered import provenance
 
 [Open5e import PR #178](https://github.com/open5e/open5e-api/pull/178) identifies Extended, Compilation, and Warlock as a Foundry-module import. Its discussion records uncertainty about the underlying publications. Contributors subsequently added class and school metadata using a community wiki.
