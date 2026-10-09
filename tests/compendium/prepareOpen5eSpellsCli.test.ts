@@ -33,8 +33,11 @@ it("replays offline, keeps source IDs distinct, protects SRD datasets, and fails
       "srd-2014",
       "spells-that-dont-suck",
       "open5e",
+      "a5e-ag",
+      "bfrd",
+      "vom",
     ];
-    for (const key of ["spells-that-dont-suck", "open5e"]) {
+    for (const key of ["spells-that-dont-suck", "a5e-ag"]) {
       const old = join(dir, "output/open5e-spell-preparation", key);
       mkdirSync(old, { recursive: true });
       writeFileSync(join(old, "candidate-spells.json"), "[]");
@@ -48,26 +51,31 @@ it("replays offline, keeps source IDs distinct, protects SRD datasets, and fails
           name: key,
           type: "SOURCE",
           publisher: { key: "publisher", name: "Publisher" },
-          gamesystem: { key: "5e-2014", name: "5th Edition 2014" },
+          gamesystem:
+            key === "a5e-ag"
+              ? { key: "a5e", name: "A5E" }
+              : { key: "5e-2014", name: "5th Edition 2014" },
           licenses: [{ key: "cc-by-40", name: "CC-BY" }],
         })),
-        records: keys.map((key) => ({
-          key: `${key === "srd-2014" ? "srd" : key}_test`,
-          document: { key },
-          name: "Same Spell",
-          level: 1,
-          school: { name: "Evocation" },
-          casting_time: "action",
-          range_text: "Self",
-          duration: "Instantaneous",
-          concentration: false,
-          ritual: false,
-          verbal: true,
-          somatic: true,
-          material: false,
-          classes: [],
-          desc: "You create a spark.",
-        })),
+        records: keys
+          .filter((key) => !["bfrd", "vom"].includes(key))
+          .map((key) => ({
+            key: `${key === "srd-2014" ? "srd" : key}_test`,
+            document: { key },
+            name: "Same Spell",
+            level: 1,
+            school: { name: "Evocation" },
+            casting_time: "action",
+            range_text: "Self",
+            duration: "Instantaneous",
+            concentration: false,
+            ritual: false,
+            verbal: true,
+            somatic: true,
+            material: false,
+            classes: [],
+            desc: "You create a spark.",
+          })),
       }),
     );
     const prepared = spawnSync(process.execPath, [script, "all", cache], {
@@ -79,26 +87,34 @@ it("replays offline, keeps source IDs distinct, protects SRD datasets, and fails
     const index = JSON.parse(readFileSync(join(root, "index.json"), "utf8"));
     expect(
       index.sources.map((source: { document: string }) => source.document),
-    ).toEqual(["second", "test"]);
+    ).toEqual(["open5e", "second", "test"]);
+    expect(index.emptySources).toEqual(["bfrd", "vom"]);
+    expect(index.inventory).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ document: "bfrd", rawCount: 0 }),
+        expect.objectContaining({ document: "vom", rawCount: 0 }),
+        expect.objectContaining({ document: "open5e", rawCount: 1 }),
+      ]),
+    );
     expect(index.skipped).toEqual([
-      "open5e",
+      "a5e-ag",
       "spells-that-dont-suck",
       "srd-2014",
       "srd-2024",
     ]);
-    for (const key of ["spells-that-dont-suck", "open5e"])
+    for (const key of ["spells-that-dont-suck", "a5e-ag"])
       expect(existsSync(join(root, key))).toBe(false);
     const discovery = JSON.parse(
       readFileSync(join(root, "discovery.json"), "utf8"),
     );
     expect(
       discovery.documents.map((entry: { key: string }) => entry.key),
-    ).toEqual(["test", "second"]);
+    ).toEqual(["test", "second", "open5e", "bfrd", "vom"]);
     expect(
       discovery.records.map(
         (entry: { document: { key: string } }) => entry.document.key,
       ),
-    ).toEqual(["test", "second"]);
+    ).toEqual(["test", "second", "open5e"]);
     const first = JSON.parse(
       readFileSync(join(root, "test/candidate-spells.json"), "utf8"),
     );
@@ -125,6 +141,51 @@ it("replays offline, keeps source IDs distinct, protects SRD datasets, and fails
       { cwd: dir, encoding: "utf8" },
     );
     expect(strict.status, strict.stderr).toBe(1);
+    const legacyDir = join(dir, "legacy");
+    mkdirSync(legacyDir);
+    writeFileSync(
+      join(legacyDir, "test.json"),
+      JSON.stringify({
+        count: 1,
+        next: null,
+        results: [
+          {
+            slug: "test",
+            name: "Same Spell",
+            desc: "You create a spark.",
+            dnd_class: "Wizard, Ranger",
+            document__slug: "test",
+          },
+        ],
+      }),
+    );
+    const recovered = spawnSync(
+      process.execPath,
+      [script, "all", cache, legacyDir],
+      {
+        cwd: dir,
+        encoding: "utf8",
+      },
+    );
+    expect(recovered.status, recovered.stderr).toBe(0);
+    const recoveredSpell = JSON.parse(
+      readFileSync(join(root, "test/candidate-spells.json"), "utf8"),
+    )[0];
+    expect(recoveredSpell.classes).toEqual(["Wizard", "Ranger"]);
+    expect(recoveredSpell.mechanics).toBeUndefined();
+    const recoveredReport = JSON.parse(
+      readFileSync(join(root, "test/report.json"), "utf8"),
+    );
+    expect(recoveredReport.legacyClassSnapshot.sha256).toMatch(
+      /^[a-f0-9]{64}$/,
+    );
+    expect(readFileSync(join(root, "test/raw-v1.json"), "utf8")).toBe(
+      readFileSync(join(legacyDir, "test.json"), "utf8"),
+    );
+    expect(
+      JSON.parse(readFileSync(join(root, "test/raw.json"), "utf8")).records[0]
+        .classes,
+    ).toEqual([]);
     const protectedSource = spawnSync(
       process.execPath,
       [script, "srd-2024", cache],

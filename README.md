@@ -58,14 +58,17 @@ npm run prepare:open5e-spells -- all
 npm run prepare:open5e-spells -- deepm
 # Replay the complete discovery cache without network access:
 npm run prepare:open5e-spells -- all output/open5e-spell-preparation/discovery.json
+# Recover missing classes from complete, same-source v1 snapshots:
+npm run prepare:open5e-spells -- all output/open5e-spell-preparation/discovery.json output/open5e-legacy-spell-review
 # Replay one source and enforce the publishing gate:
 npm run prepare:open5e-spells -- deepm output/open5e-spell-preparation/deepm/raw.json --strict
 npm run validate -- --spells output/open5e-spell-preparation/deepm/candidate-spells.json
 ```
 
 `all` fetches third-party source documents using the API’s document filter.
-It excludes `srd-2024`, `srd-2014`, `spells-that-dont-suck`, and `open5e` before making spell requests.
-Spells That Don’t Suck has a separate source route; Open5e Originals is outside this import.
+It selects 2014 and 2024 D&D 5e documents, including Open5e Originals and Black Flag.
+It excludes core `srd-2024`, core `srd-2014`, A5E, and unsupported rulesets before making spell requests.
+Spells That Don’t Suck uses its existing direct-publisher source route and is excluded from this preparation.
 Offline replay removes these records from legacy caches before writing artifacts.
 Preparation also removes their stale directories within `output/open5e-spell-preparation/`.
 It checks pagination counts, duplicate keys, document identity, and source metadata.
@@ -74,8 +77,15 @@ Each source directory under `output/open5e-spell-preparation/` contains:
 - `raw.json`: source metadata, retrieval time, and unchanged API records.
 - `candidate-spells.json`: provisional display fields and spell prose.
 - `report.json`: validation, exclusions, withheld fields, fidelity findings, and publishing blockers.
+- `raw-v1.json`: unchanged legacy evidence when a legacy cache directory is supplied.
+
+Legacy class recovery requires matching document aliases, stable spell IDs, titles, and identical prose except whitespace.
+It fills only absent class lists, preserves supplied class labels, and leaves existing v2 assignments and raw records unchanged.
+Reports list recovered assignments and pin the legacy snapshot hash.
 
 The root also contains `discovery.json` for replay and `index.json` summarizing the latest run.
+The index inventories every selected source, its ruleset and licenses, and its record count.
+Sources with no API spells, including Vault of Magic and Black Flag, remain listed in `emptySources`.
 Candidates preserve descriptions and higher-level prose.
 Casting times retain reaction conditions and ritual availability.
 Concentration durations use the schema’s separate flag.
@@ -85,13 +95,14 @@ Potential reserved Wizards of the Coast names are conservatively excluded pendin
 Candidates currently omit rollable mechanics.
 Damage, saves, attacks, casting options, and scaling require source-specific review before mapping.
 Raw snapshots preserve those API fields; the reports flag their review status.
-A5E edition metadata remains unset because the vendored schema has no A5E edition.
+A5E is outside the D&D 5e spell scope and cannot be selected for preparation.
 
 Preparation saves validation findings and exits successfully when artifacts are generated.
 `npm run validate -- --spells` checks spell invariants and exits nonzero on errors.
 `--strict` fails while publishing remains blocked, even when spell validation passes.
 API license metadata does not establish licensed coverage or satisfy attribution requirements.
 Publishing needs publisher evidence, exclusions review, and the exact attribution or OGL Section 15 chain.
+The [5e spell publication inventory](docs/open5e-5e-spell-publication.md) records current source evidence and blockers.
 Console registration, shipped JSON, and credits remain a separate change.
 
 ## Spells That Don’t Suck from GM Binder

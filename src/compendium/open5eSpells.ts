@@ -4,6 +4,10 @@
 import type { Spell } from "../schema/spell.ts";
 import { validateSpellDataset } from "./validate.ts";
 import { reservedWotcName } from "./sourcePolicy.ts";
+import {
+  recoverLegacySpellClasses,
+  type LegacySpellClassSnapshot,
+} from "./open5eSpellClasses.ts";
 
 export interface Open5eSpellDocument {
   key: string;
@@ -50,7 +54,6 @@ export const EXCLUDED_OPEN5E_SPELL_SOURCES = new Set([
   "srd-2024",
   "srd-2014",
   "spells-that-dont-suck",
-  "open5e",
 ]);
 
 /** Read complete API pages while rejecting count drift, foreign URLs, and pagination cycles. */
@@ -154,7 +157,7 @@ export function assertSpellSnapshot(snapshot: Open5eSpellSnapshot): void {
   }
 }
 
-/** Select source documents while excluding existing SRD pipelines and declined Open5e feeds. */
+/** Select third-party D&D 5e documents outside the existing core and direct-publisher pipelines. */
 export function thirdPartySpellDocuments(
   snapshot: Open5eSpellSnapshot,
 ): Open5eSpellDocument[] {
@@ -178,7 +181,7 @@ export function spellDocument(
   );
   if (!document) {
     throw new Error(
-      `Unsupported spell source: ${key}; SRD and declined Open5e feeds are excluded`,
+      `Unsupported spell source: ${key}; select a third-party D&D 5e document outside existing pipelines`,
     );
   }
   return document;
@@ -321,12 +324,14 @@ export function mapOpen5eSpell(
 export function prepareOpen5eSpells(
   snapshot: Open5eSpellSnapshot,
   key: string,
+  legacy?: LegacySpellClassSnapshot,
 ) {
   assertSpellSnapshot(snapshot);
   const document = spellDocument(snapshot, key);
   const records = snapshot.records.filter(
     (record) => record.document.key === key,
   );
+  const classRecovery = recoverLegacySpellClasses(records, key, legacy);
   const excluded: { key: string; name: string; reason: string }[] = [];
   const withheld: { key: string; name: string; reason: string }[] = [];
   const fidelity: { key: string; name: string; message: string }[] = [];
@@ -350,14 +355,25 @@ export function prepareOpen5eSpells(
       });
       continue;
     }
-    spells.push(mapOpen5eSpell(record, document));
+    const recovered = classRecovery.get(record.key);
+    spells.push(
+      mapOpen5eSpell(
+        recovered
+          ? {
+              ...record,
+              classes: recovered.map((name) => ({ name })),
+            }
+          : record,
+        document,
+      ),
+    );
     fidelity.push({
       key: record.key,
       name: record.name,
       message:
         "Display-only candidate: damage, saves, attacks, casting options, and scaling require mechanics review.",
     });
-    if (!record.classes.length)
+    if (!record.classes.length && !recovered)
       fidelity.push({
         key: record.key,
         name: record.name,
@@ -395,6 +411,10 @@ export function prepareOpen5eSpells(
       excluded,
       withheld,
       fidelity,
+      classRecovery: [...classRecovery].map(([key, classes]) => ({
+        key,
+        classes,
+      })),
       transformations: [
         "Append reaction conditions and ritual availability to casting time.",
         "Normalize concentration duration for the separate schema flag.",

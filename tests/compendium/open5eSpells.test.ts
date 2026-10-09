@@ -189,8 +189,50 @@ describe("Open5e spell mapping", () => {
 });
 
 describe("Open5e spell snapshots", () => {
+  it("recovers legacy classes without changing the raw snapshot or adding mechanics", () => {
+    const original = snapshot([record({ classes: [] })]);
+    const before = JSON.stringify(original);
+    const result = prepareOpen5eSpells(original, "test", {
+      count: 1,
+      next: null,
+      results: [
+        {
+          slug: "fire",
+          name: original.records[0].name,
+          desc: original.records[0].desc,
+          dnd_class: "Wizard, Sorcerer",
+          document__slug: "test",
+        },
+      ],
+    });
+    expect(result.spells[0].classes).toEqual(["Wizard", "Sorcerer"]);
+    expect(result.spells[0].mechanics).toBeUndefined();
+    expect(JSON.stringify(original)).toBe(before);
+    expect(result.report.classRecovery).toEqual([
+      {
+        key: "test_fire",
+        classes: ["Wizard", "Sorcerer"],
+      },
+    ]);
+    expect(
+      result.report.fidelity.some(
+        (entry) =>
+          entry.message === "No class assignments supplied by the API.",
+      ),
+    ).toBe(false);
+  });
+
   it("selects all third-party 5e books, including Black Flag, but excludes A5E and core SRDs", () => {
-    const keys = ["deepm", "deepmx", "vom", "wz", "bfrd", "toh", "kp"];
+    const keys = [
+      "deepm",
+      "deepmx",
+      "vom",
+      "wz",
+      "bfrd",
+      "toh",
+      "kp",
+      "open5e",
+    ];
     const documents = [
       ...keys.map((key) => document(key)),
       document("srd-2014"),
@@ -236,7 +278,6 @@ describe("Open5e spell snapshots", () => {
       "srd-2024",
       "srd-2014",
       "spells-that-dont-suck",
-      "open5e",
     ]) {
       expect(() =>
         spellDocument({ ...snapshot(), documents: [document(key)] }, key),
@@ -277,7 +318,7 @@ describe("Open5e spell snapshots", () => {
             document("srd-2014"),
             document("srd-2024"),
             document("spells-that-dont-suck"),
-            document("open5e"),
+            { ...document("a5e-ag"), gamesystem: { key: "a5e", name: "A5E" } },
             { ...document("core"), type: "MISC" },
           ],
         };
@@ -301,7 +342,7 @@ describe("Open5e spell snapshots", () => {
     expect(fetchJson).toHaveBeenCalledTimes(3);
   });
 
-  it.each(["srd-2014", "srd-2024", "spells-that-dont-suck", "open5e"])(
+  it.each(["srd-2014", "srd-2024", "spells-that-dont-suck"])(
     "refuses %s before making any spell request",
     async (key) => {
       const fetchJson = vi
