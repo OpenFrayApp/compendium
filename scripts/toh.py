@@ -9,14 +9,14 @@ from pathlib import Path
 import fitz
 
 
-def page_lines(page, ocr=False, tessdata=None, spell_columns=False):
+def page_lines(page, ocr=False, tessdata=None, spell_columns=False, single_column=False):
     """Read Tome of Heroes lines in the column order used by the ToB 3 extractor."""
     if spell_columns:
         rows = []
         for clip in spell_column_clips(page.rect, page.number + 1):
             pixmap = page.get_pixmap(dpi=300, clip=clip)
             with fitz.open("pdf", pixmap.pdfocr_tobytes(language="eng", tessdata=tessdata)) as column:
-                for row in page_lines(column[0]):
+                for row in page_lines(column[0], single_column=True):
                     row["x"] = round(row["x"] + clip.x0, 2)
                     row["top"] = round(row["top"] + clip.y0, 2)
                     rows.append(row)
@@ -39,6 +39,8 @@ def page_lines(page, ocr=False, tessdata=None, spell_columns=False):
                 "fonts": sorted({s["font"] for s in spans}),
                 "sizes": sorted({round(s["size"], 2) for s in spans}),
             })
+    if single_column:
+        return sorted(rows, key=lambda r: (r["top"], r["x"]))
     left = sorted([r for r in rows if r["x"] < mid], key=lambda r: r["top"])
     right = sorted([r for r in rows if r["x"] >= mid], key=lambda r: r["top"])
     return left + right
@@ -75,6 +77,28 @@ def snapshot(pdf, selected=None, ocr=False, tessdata=None, spell_columns=False):
     }
 
 
+def reorder_spell_columns(pdf, cache):
+    """Replay cached OCR coordinates in physical column order against the pinned PDF."""
+    with Path(pdf).open("rb") as source:
+        sha256 = hashlib.file_digest(source, "sha256").hexdigest()
+    if cache.get("sourceSha256") != sha256 or cache.get("extraction") != "ocr-spell-columns":
+        raise ValueError("Cached column evidence does not match the supplied PDF")
+    with fitz.open(pdf) as doc:
+        if cache.get("pageCount") != doc.page_count:
+            raise ValueError("Cached page count does not match the supplied PDF")
+        for page in cache["pages"]:
+            number = page["physicalPage"]
+            if not isinstance(number, int) or number < 1 or number > doc.page_count:
+                raise ValueError("Cached physical page is outside this PDF")
+            clips = spell_column_clips(doc[number - 1].rect, number)
+            split = (clips[0].x1 + clips[1].x0) / 2
+            page["lines"] = sorted(page["lines"], key=lambda row: (
+                row["x"] >= split, row["top"], row["x"]
+            ))
+    cache["publishable"] = False
+    return cache
+
+
 def render_pages(pdf, selected, directory):
     """Save selected page images locally for visual checks of OCR evidence."""
     directory = Path(directory)
@@ -94,10 +118,11 @@ def main():
     parser.add_argument("--tessdata", help="Directory containing eng.traineddata for OCR")
     parser.add_argument("--render-dir", help="Save selected page images for visual review")
     parser.add_argument("--spell-columns", action="store_true", help="OCR each spell-chapter column separately")
+    parser.add_argument("--cache", help="Replay cached column OCR coordinates without repeating OCR")
     args = parser.parse_args()
     if args.spell_columns and not args.ocr:
         parser.error("--spell-columns requires --ocr")
-    result = snapshot(args.pdf, args.pages, args.ocr, args.tessdata, args.spell_columns)
+    result = reorder_spell_columns(args.pdf, json.loads(Path(args.cache).read_text(encoding="utf-8"))) if args.cache else snapshot(args.pdf, args.pages, args.ocr, args.tessdata, args.spell_columns)
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")

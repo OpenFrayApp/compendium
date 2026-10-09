@@ -49,13 +49,27 @@ A second supplied screenshot contains OGL 1.0a sections 1 through 15 and the com
 
 A prose review of all 91 prepared candidates found no additional obvious references to the named exclusions or setting-specific characters and places. This review does not verify their missing metadata against the publisher spell pages. No publication approval has been added.
 
-The dataset retains 36 missing-material-description warnings, including Deadly Salvo. All candidates have class lists, but the recovered labels include `Sorceror`. Source review must also resolve these prose ambiguities:
+The raw candidates have 36 missing-material-description warnings, including Deadly Salvo. The source-specific generator restores the other 35 descriptions and withholds Deadly Salvo. Class lists are checked against physical pages 270–272. The book spells the class name `Sorcerer` and assigns **Immolating Gibbet** to that class; the API omits that assignment.
+
+The following printed ambiguities remain unchanged:
 
 - **Immolating Gibbet:** “pulled up to 60 into the air” omits a distance unit.
 - **Less Fool, I:** “advantage on spells” leaves the affected roll unclear.
-- **Secret Blind:** names a “disintegration” spell. Verify the source wording before changing it.
+- **Secret Blind:** names a “disintegration” spell. Physical page 302 confirms that wording.
 
-The PDF page images confirm the missing distance unit in **Immolating Gibbet** (page 288) and the unclear advantage wording in **Less Fool, I** (page 292). Preserve those printed ambiguities unless publisher errata resolves them. The metadata review must cover every header, not only material warnings: **Jagged Forcelance** (page 291) is Evocation with Concentration up to 1 minute, while the API says Transmutation, Instantaneous, and no Concentration. Its material component is “a strand of gold wire.”
+The PDF page images confirm the missing distance unit in **Immolating Gibbet** (page 288) and the unclear advantage wording in **Less Fool, I** (page 292). Preserve those printed ambiguities unless publisher errata resolves them.
+
+The source-specific generator corrects these header discrepancies:
+
+| Spell             | Source correction                                                          |
+| ----------------- | -------------------------------------------------------------------------- |
+| Babble            | Duration up to 1 hour                                                      |
+| Fuse Armor        | Abjuration                                                                 |
+| Gale              | Concentration, up to 1 hour                                                |
+| High Ground       | Duration up to 10 minutes                                                  |
+| Immolating Gibbet | Evocation                                                                  |
+| Iron Gut          | Concentration                                                              |
+| Jagged Forcelance | Evocation; Concentration, up to 1 minute; material “a strand of gold wire” |
 
 The publisher’s [errata page](https://koboldpress.com/errata/#tome-of-heroes), dated May 29, 2025, includes five spell corrections:
 
@@ -117,13 +131,13 @@ Keep supplied PDFs outside Git. A local folder path is sufficient; contributors 
 
 ## Publication gates
 
-Deep Magic requires its edition-specific OGC/PI declaration and complete Section 15. Tome of Heroes has its declaration and complete chain; its remaining gates are source-field review, the Deadly Salvo decision, and console attribution and publication integration.
+Deep Magic requires its edition-specific OGC/PI declaration and complete Section 15. Tome of Heroes has its declaration and complete chain. Its source-specific preparation withholds Deadly Salvo and applies book metadata and publisher errata. Reference approval, console attribution, and publication integration remain separate gates.
 
 Deep Magic Extended, Warlock, and the Kobold compilation require their underlying book or issue identities, declarations, and chains. Their Community Use Policy descriptions do not establish an independent OGL grant.
 
 Open5e Originals requires its own content grant and required notices. Black Flag’s v1 ORC label and v2 CC-BY label require publisher verification if spell records become available.
 
-Preparation has no duration errors. Moon Trap, Iron Gut, Stone Aegis, and Mind Maze explicitly have conditional durations without Concentration in both API versions. The validator accepts those durations without changing the source flags.
+Raw API preparation has no duration errors. Moon Trap, Iron Gut, Stone Aegis, and Mind Maze have conditional durations without Concentration in both API versions. The validator accepts those durations without changing the source flags. The Tome of Heroes book confirms Concentration for Iron Gut; its source-specific preparation corrects that API omission.
 
 Complete v1 snapshots recover 533 absent class lists when source aliases, stable IDs, names, and prose match. Existing v2 assignments remain unchanged. Each report records recovered classes and the legacy snapshot hash.
 

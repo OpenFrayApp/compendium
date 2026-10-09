@@ -103,6 +103,35 @@ class TomeOfHeroesReviewTests(unittest.TestCase):
             self.assertEqual([path.name for path in images.iterdir()], ["page-2.png"])
             self.assertTrue((images / "page-2.png").read_bytes().startswith(bytes([137, 80, 78, 71])))
 
+    def test_cached_ocr_replay_restores_column_order_and_checks_the_source(self):
+        """Replay position evidence without repeating OCR or accepting a different PDF."""
+        with tempfile.TemporaryDirectory() as directory:
+            pdf = Path(directory) / "fixture.pdf"
+            with fitz.open() as doc:
+                doc.new_page(width=612, height=792)
+                doc.save(pdf)
+            cache = {
+                "sourceSha256": hashlib.sha256(pdf.read_bytes()).hexdigest(),
+                "pageCount": 1,
+                "extraction": "ocr-spell-columns",
+                "publishable": True,
+                "pages": [{"physicalPage": 1, "lines": [
+                    {"t": "Right first", "x": 310, "top": 80},
+                    {"t": "Left last", "x": 250, "top": 700},
+                    {"t": "Left first", "x": 54, "top": 80},
+                ]}],
+            }
+            result = toh.reorder_spell_columns(pdf, cache)
+            self.assertEqual([row["t"] for row in result["pages"][0]["lines"]],
+                             ["Left first", "Left last", "Right first"])
+            self.assertFalse(result["publishable"])
+            with self.assertRaisesRegex(ValueError, "does not match"):
+                toh.reorder_spell_columns(pdf, {**cache, "sourceSha256": "changed"})
+            with self.assertRaisesRegex(ValueError, "page count"):
+                toh.reorder_spell_columns(pdf, {**cache, "pageCount": 2})
+            with self.assertRaisesRegex(ValueError, "outside this PDF"):
+                toh.reorder_spell_columns(pdf, {**cache, "pages": [{"physicalPage": 0}]})
+
     def test_snapshot_is_complete_hashed_and_not_publishable(self):
         """Keep every physical page and pin the exact PDF bytes without approval."""
         with tempfile.TemporaryDirectory() as directory:

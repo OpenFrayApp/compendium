@@ -39,14 +39,14 @@ function approvalFor(content: string): ReferenceSpellApproval {
 }
 
 describe("reference-only publication approvals", () => {
-  it("limits publication to three explicitly reviewed snapshots", () => {
+  it("limits publication to four explicitly reviewed snapshots", () => {
     expect(REFERENCE_SPELL_APPROVALS.map((approval) => approval.count)).toEqual(
-      [295, 181, 179],
+      [295, 181, 179, 90],
     );
     expect(
       new Set(REFERENCE_SPELL_APPROVALS.map((approval) => approval.source))
         .size,
-    ).toBe(3);
+    ).toBe(4);
     expect(
       REFERENCE_SPELL_APPROVALS.flatMap(
         (approval) => approval.acceptedWarningIds,

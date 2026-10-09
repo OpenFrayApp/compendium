@@ -14,6 +14,7 @@
     "ingest:strong-waters-spells": "node scripts/ingest-strong-waters-spells.ts",
     "ingest:waking-garden": "node scripts/ingest-waking-garden.ts",
     "prepare:open5e-spells": "node scripts/prepare-open5e-spells.ts",
+    "prepare:tome-of-heroes-spells": "node scripts/prepare-tome-of-heroes-spells.ts",
     "prepare:stds-spells": "node scripts/prepare-spells-that-dont-suck.ts",
     "prepare:so-many-spells": "node scripts/prepare-so-many-spells.ts",
     "prepare:kibbles-v23-spells": "node scripts/prepare-kibbles-v23-spells.ts",
