@@ -2,7 +2,9 @@
 
 ## Evidence and scope
 
-Transcribed from the supplied _Tome of Heroes_ Open Game License page. The screenshot’s SHA-256 is `8da2cf2da30a4e90adc93a2d13769a53d2ac1766a413d4334f4e58c769a2df98`.
+Transcribed from the supplied _Tome of Heroes_ Open Game License page and checked against the supplied PDF’s physical page 320. The screenshot’s SHA-256 is `8da2cf2da30a4e90adc93a2d13769a53d2ac1766a413d4334f4e58c769a2df98`. The PDF’s SHA-256 is `de2d8b5bbe6f92cb2ee31df68192c042883bfe965aa52ab6d91be374d882c38c`.
+
+Preserve the printed spellings, including “Southland’s Player’s Guide” and “Zobeck Gazeteer,” when reproducing this chain.
 
 The page contains OGL 1.0a sections 1 through 15 and ends with the _Tome of Heroes_ copyright notice. Preserve every entry below when publishing content from this source. These entries do not approve independent publication of the other listed books.
 
@@ -24,7 +26,7 @@ Midgard Heroes Handbook ©2018 Open Design LLC; Authors: Wolfgang Baur, Scott Ca
 
 Midgard Worldbook for 5th Edition ©2021 Open Design LLC; Authors: Wolfgang Baur, Dan Dillon, Richard Green, Jeff Grubb, Chris Harris, Jon Sawatsky, and Brian Suskind
 
-Southlands Player’s Guide ©2021 Open Design LLC; Authors: Richard Green, Greg Marks, Ben McFarland, Shawn Merwin, Kelly Pawlik, and Brian Suskind
+Southland’s Player’s Guide ©2021 Open Design LLC; Authors: Richard Green, Greg Marks, Ben McFarland, Shawn Merwin, Kelly Pawlik, and Brian Suskind
 
 Underworld Player’s Guide ©2020 Open Design LLC; Authors: Wolfgang Baur, Dan Dillon, Jeff Lee, Christopher Lockey, Shawn Merwin, and Kelly Pawlik
 
@@ -48,10 +50,10 @@ Warlock 26: Dragons ©2021 Open Design LLC; Authors: Celeste Conowitch, Gabriel 
 
 Warlock Guide to Liminal Magic ©2020 Open Design LLC; Author: Sarah Madsen
 
-Warlock Grimoire ©2019 Open Design LLC; Authors: Wolfgang Baur, Peter von Bleichert, Lyssa Chen, Dan Dillon, Richard Green, Jeff Grubb, James J. Haeck, Chris Harris, Jeremy Hochhalter, Brandon Hodge, Sarah Madsen, Ben McFarland, Shawn Merwin, Kelly Pawlik, Richard Pett, Hannah Rose, Jon Sawatsky, Brian Suskind, Troy E. Taylor, and Steve Winter
+Warlock Grimoire ©2019 Open Design LLC; Authors: Wolfgang Baur, Peter von Bleichert, Lysa Chen, Dan Dillon, Richard Green, Jeff Grubb, James J. Haeck, Chris Harris, Jeremy Hochhalter, Brandon Hodge, Sarah Madsen, Ben McFarland, Shawn Merwin, Kelly Pawlik, Richard Pett, Hannah Rose, Jon Sawatsky, Brian Suskind, Troy E. Taylor, and Steve Winter
 
 Warlock Grimoire 2 ©2020 Open Design LLC; Authors: Wolfgang Baur, Celeste Conowitch, David “Zeb” Cook, Dan Dillon, Robert Fairbanks, Scott Gable, Richard Green, Victoria Jaczko, TK Johnson, Christopher Lockey, Sarah Madsen, Greg Marks, Ben McFarland, Kelly Pawlik, Lysa Penrose, Richard Pett, Marc Radle, Hannah Rose, Jon Sawatsky, Robert Schwalb, Brian Suskind, Ashley Warren, and Mike Welham
 
-Zobeck Gazetteer for 5th Edition ©2018 Open Design LLC; Authors: James Haeck
+Zobeck Gazeteer for 5th Edition ©2018 Open Design LLC; Authors: James Haeck
 
 Tome of Heroes ©2022 Open Design LLC; Authors: Celeste Conowitch, Jeff Lee, Sarah Madsen, Ben McFarland, Kelly Pawlik, Brian Suskind

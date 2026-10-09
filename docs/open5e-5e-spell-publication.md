@@ -35,6 +35,8 @@ Replay with `npm run prepare:open5e-spells -- all output/open5e-spell-preparatio
 
 ### Supplied Tome of Heroes declaration
 
+The supplied 321-page PDF has SHA-256 `de2d8b5bbe6f92cb2ee31df68192c042883bfe965aa52ab6d91be374d882c38c`. It is image-only. The book-specific PyMuPDF review script retains OCR provenance and local page images; neither is a publishable dataset. Physical page 3 confirms the declaration below. Physical page 320 confirms the complete license chain. The contents place spell lists and descriptions on physical pages 270–308.
+
 A supplied copyright-page screenshot identifies ©2022 Open Design LLC and ISBNs `978-1-950789-30-6` and `978-1-950789-32-0`. Its SHA-256 is `532c4434927b0e76abe9c692d6b7eb8323c364471b941b0c28eeb5e1ac641ed7`.
 
 The declaration includes spells as Open Game Content, excluding place names and specific character references, such as gods and NPCs. It also excludes text related to Draconic Rune Casting, Hedge Magic, and the listed black-powder subclasses, rules, items, and weapons. This supports the grant already visible in the authorized preview. The screenshot does not contain the complete OGL or Section 15 chain.
