@@ -134,6 +134,15 @@ describe('validateSpell', () => {
     expect(fields(spell({ concentration: true, duration: 'up to 1 minute' }))).not.toContain('duration')
   })
 
+  it.each([
+    ['Moon Trap', 'up to 8 hours'],
+    ['Iron Gut', 'up to 1 hour'],
+    ['Stone Aegis', 'up to 1 minute'],
+    ['Mind Maze', 'up to 1 minute'],
+  ])('accepts %s with a conditional duration without inventing Concentration', (name, duration) => {
+    expect(validateSpell(spell({ name, duration, concentration: false }))).toEqual([])
+  })
+
   it('rejects a duration that repeats the word the card already prints', () => {
     expect(fields(spell({ concentration: true, duration: 'up to 1 minute, Concentration' }))).toContain('duration')
   })
