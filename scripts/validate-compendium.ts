@@ -20,6 +20,7 @@ import {
   validateSpellDataset,
   type Issue,
 } from "../src/compendium/validate.ts";
+import { OPEN5E_VALIDATION_EXCEPTIONS } from "../src/compendium/open5eExceptions.ts";
 
 /** Read and parse a candidate or reference JSON file. */
 const load = <T>(p: string): T[] => JSON.parse(readFileSync(p, "utf8"));
@@ -39,12 +40,20 @@ if (!candidatePath || extra.length || (spellMode && referencePath)) {
 const candidate = load<Creature | Spell>(candidatePath);
 const report = spellMode
   ? validateSpellDataset(candidate as Spell[])
-  : validateDataset(candidate as Creature[]);
+  : validateDataset(candidate as Creature[], OPEN5E_VALIDATION_EXCEPTIONS);
 
 console.log(
   `\n=== invariants: ${candidatePath} (${report.count} ${spellMode ? "spells" : "creatures"}) ===`,
 );
 console.log(`errors: ${report.errors}   warnings: ${report.warns}`);
+
+const reviewed = report.issues.filter((issue) => issue.review);
+console.log(`reviewed published exceptions: ${reviewed.length}`);
+for (const issue of reviewed) {
+  console.log(`  ${issue.name} · ${issue.field}: ${issue.message}`);
+  console.log(`    ${issue.review!.reason}`);
+  console.log(`    Source: ${issue.review!.evidence}`);
+}
 
 if (report.errors) {
   console.log("\nerrors by field:");

@@ -13,6 +13,8 @@
     "ingest:brood-and-bloom-spells": "node scripts/ingest-brood-and-bloom-spells.ts",
     "ingest:strong-waters-spells": "node scripts/ingest-strong-waters-spells.ts",
     "ingest:waking-garden": "node scripts/ingest-waking-garden.ts",
+    "ingest:khyberia": "node scripts/ingest-khyberia.ts",
+    "prepare:open5e": "node scripts/prepare-open5e.ts",
     "prepare:open5e-spells": "node scripts/prepare-open5e-spells.ts",
     "prepare:tome-of-heroes-spells": "node scripts/prepare-tome-of-heroes-spells.ts",
     "prepare:stds-spells": "node scripts/prepare-spells-that-dont-suck.ts",
