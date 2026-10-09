@@ -3,6 +3,7 @@
 
 import { createHash } from "node:crypto";
 import type { Spell } from "../schema/spell.ts";
+import type { Edition } from "../schema/primitives.ts";
 import { validateSpellDataset } from "./validate.ts";
 
 export interface ReferenceSpellApproval {
@@ -10,6 +11,7 @@ export interface ReferenceSpellApproval {
   preparation: string;
   file: string;
   count: number;
+  edition: Edition;
   sha256: string;
   acceptedWarningIds: string[];
 }
@@ -20,6 +22,7 @@ export const REFERENCE_SPELL_APPROVALS: ReferenceSpellApproval[] = [
     preparation: "kibbles-casting-v23-preparation",
     file: "kibbles-casting-v23-spells.json",
     count: 295,
+    edition: "5.0",
     sha256: "337409cc7078f3a425bc8ddaf25af2cf0f3f325d2ed13f55c9dabf673d93ea3a",
     acceptedWarningIds: ["kibblestasty-casting-compendium-v2.3:bile-beam"],
   },
@@ -28,6 +31,7 @@ export const REFERENCE_SPELL_APPROVALS: ReferenceSpellApproval[] = [
     preparation: "spells-that-dont-suck-preparation",
     file: "spells-that-dont-suck-spells.json",
     count: 181,
+    edition: "5.0",
     sha256: "2ca2be2cd64557ef02bdc0fc7137b87553a0bcd4f35c8db465530a7ef5f290ec",
     acceptedWarningIds: [],
   },
@@ -36,6 +40,7 @@ export const REFERENCE_SPELL_APPROVALS: ReferenceSpellApproval[] = [
     preparation: "so-many-spells-preparation",
     file: "so-many-spells-spells.json",
     count: 179,
+    edition: "5.0",
     sha256: "69cbebe97a86cf16e001d2367ed71f2ab5664904e823c23cec5efa94c6e8e2cd",
     acceptedWarningIds: [],
   },
@@ -74,5 +79,5 @@ export function approveReferenceSpells(
   ) {
     throw new Error(`Unaccepted validation finding for ${approval.source}`);
   }
-  return spells;
+  return spells.map((spell) => ({ ...spell, edition: approval.edition }));
 }

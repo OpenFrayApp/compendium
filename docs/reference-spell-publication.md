@@ -43,7 +43,11 @@ Vargouille, which is outside the SRD reuse scope.
 All three publishers explicitly license the reused spell text under CC-BY-4.0.
 The console’s `CREDITS.md` carries source links, license links, creators, contributor
 credits, and adaptation notices. The site renders that same file at `/credits/`.
-Edition metadata remains unset. Missing class lists remain unset.
+The publication approval records edition 5.0, displayed as 5e.
+Kibbles’ PDF declares D&D 5e compatibility and credits SRD 5.1.
+Both GM Binder introductions describe 5e collections, and both reference SRD 5.1.
+Those declarations establish their 5e baseline; they do not claim 2024 compatibility.
+Export adds this reviewed edition to the pinned candidates. Missing class lists remain unset.
 Specialization labels remain in source snapshots; cards show the base spell school.
 Same-name spells remain independent across sources.
 
@@ -61,7 +65,7 @@ Validate and test both repositories before publishing an updated snapshot.
 
 Preparation reports retain conservative blockers for unreviewed future snapshots
 and automated mechanics. This approval applies only to the pinned reference cards.
-The export command rejects unaccepted findings, inferred editions, and mechanics.
+The export command rejects unaccepted findings, unreviewed candidate editions, and mechanics.
 Open5e candidates, unfinished creature candidates, and Elemental-Touched are outside
 this approval. Generic Elemental Spells v2.0 adds no spells beyond Kibbles v2.3 and
 is not shipped as a separate library.
