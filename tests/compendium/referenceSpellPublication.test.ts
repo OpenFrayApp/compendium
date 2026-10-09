@@ -32,6 +32,7 @@ function approvalFor(content: string): ReferenceSpellApproval {
     preparation: "test",
     file: "test.json",
     count: 1,
+    edition: "5.0",
     sha256: createHash("sha256").update(content).digest("hex"),
     acceptedWarningIds: [],
   };
@@ -56,7 +57,12 @@ describe("reference-only publication approvals", () => {
   it("accepts validated reference cards and rejects changes after approval", () => {
     const content = JSON.stringify([SPELL]);
     const approval = approvalFor(content);
-    expect(approveReferenceSpells(content, approval)).toEqual([SPELL]);
+    expect(approveReferenceSpells(content, approval)).toEqual([
+      { ...SPELL, edition: "5.0" },
+    ]);
+    expect(
+      REFERENCE_SPELL_APPROVALS.every((entry) => entry.edition === "5.0"),
+    ).toBe(true);
     expect(() => approveReferenceSpells(content + " ", approval)).toThrow(
       "Snapshot changed",
     );

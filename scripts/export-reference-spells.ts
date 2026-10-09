@@ -19,8 +19,8 @@ const approved = REFERENCE_SPELL_APPROVALS.map((approval) => {
     join("output", approval.preparation, "candidate-spells.json"),
     "utf8",
   );
-  approveReferenceSpells(content, approval);
-  return { approval, content };
+  const spells = approveReferenceSpells(content, approval);
+  return { approval, content: JSON.stringify(spells) };
 });
 mkdirSync(destination, { recursive: true });
 for (const { approval, content } of approved) {
