@@ -8,6 +8,7 @@ import {
   mapOpen5eSpell,
   prepareOpen5eSpells,
   spellDocument,
+  thirdPartySpellDocuments,
   type Open5eSpellDocument,
   type Open5eSpellRecord,
   type Open5eSpellSnapshot,
@@ -128,12 +129,15 @@ describe("Open5e spell mapping", () => {
     expect(spell.components.materials).toBeUndefined();
     expect(spell.classes).toBeUndefined();
     expect(spell.edition).toBeUndefined();
-    const result = prepareOpen5eSpells(
-      { ...snapshot([original]), documents: [metadata] },
-      "test",
-    );
+    expect(() =>
+      prepareOpen5eSpells(
+        { ...snapshot([original]), documents: [metadata] },
+        "test",
+      ),
+    ).toThrow("Unsupported");
+    const result = prepareOpen5eSpells(snapshot([original]), "test");
     expect(result.report.validation.warns).toBe(1);
-    expect(result.report.fidelity).toHaveLength(3);
+    expect(result.report.fidelity).toHaveLength(2);
   });
 
   it("withholds missing fields, excludes reserved names, and keeps publishing blocked", () => {
@@ -185,6 +189,25 @@ describe("Open5e spell mapping", () => {
 });
 
 describe("Open5e spell snapshots", () => {
+  it("selects all third-party 5e books, including Black Flag, but excludes A5E and core SRDs", () => {
+    const keys = ["deepm", "deepmx", "vom", "wz", "bfrd", "toh", "kp"];
+    const documents = [
+      ...keys.map((key) => document(key)),
+      document("srd-2014"),
+      {
+        ...document("srd-2024"),
+        gamesystem: { key: "5e-2024", name: "5e 2024" },
+      },
+      { ...document("a5e-ag"), gamesystem: { key: "a5e", name: "A5E" } },
+      { ...document("other"), gamesystem: { key: "other", name: "Other" } },
+    ];
+    const selected = thirdPartySpellDocuments({ ...snapshot([]), documents });
+    expect(selected.map((entry) => entry.key)).toEqual(keys);
+    expect(() =>
+      spellDocument({ ...snapshot([]), documents }, "a5e-ag"),
+    ).toThrow("Unsupported");
+  });
+
   it("rejects duplicate keys and source metadata, unmatched records, and unsafe document names", () => {
     expect(() => assertSpellSnapshot(snapshot([record(), record()]))).toThrow(
       "duplicate",
