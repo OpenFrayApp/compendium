@@ -61,7 +61,13 @@ const skipped = [
 ].sort();
 const root = "output/open5e-spell-preparation";
 mkdirSync(root, { recursive: true });
-for (const excluded of EXCLUDED_OPEN5E_SPELL_SOURCES)
+const excludedSources = new Set([
+  ...EXCLUDED_OPEN5E_SPELL_SOURCES,
+  ...loaded.documents
+    .filter((document) => !supported.has(document.key))
+    .map((document) => document.key),
+]);
+for (const excluded of excludedSources)
   rmSync(`${root}/${excluded}`, { recursive: true, force: true });
 writeFileSync(`${root}/discovery.json`, JSON.stringify(snapshot, null, 2));
 const observed = [
@@ -115,7 +121,28 @@ for (const document of selected) {
 }
 writeFileSync(
   `${root}/index.json`,
-  JSON.stringify({ publishable: false, sources: index, skipped }, null, 2),
+  JSON.stringify(
+    {
+      publishable: false,
+      inventory: documents.map((document) => ({
+        document: document.key,
+        name: document.name,
+        gamesystem: document.gamesystem,
+        licenses: document.licenses,
+        rawCount: snapshot.records.filter(
+          (record) => record.document.key === document.key,
+        ).length,
+      })),
+      emptySources: documents
+        .filter((document) => !observed.includes(document.key))
+        .map((document) => document.key)
+        .sort(),
+      sources: index,
+      skipped,
+    },
+    null,
+    2,
+  ),
 );
 console.log(
   "Publishing blocked: see source reports. Existing SRD pipelines and console files are unchanged.",

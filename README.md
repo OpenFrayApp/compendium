@@ -64,8 +64,9 @@ npm run validate -- --spells output/open5e-spell-preparation/deepm/candidate-spe
 ```
 
 `all` fetches third-party source documents using the API’s document filter.
-It excludes `srd-2024`, `srd-2014`, `spells-that-dont-suck`, and `open5e` before making spell requests.
-Spells That Don’t Suck has a separate source route; Open5e Originals is outside this import.
+It selects 2014 and 2024 D&D 5e documents, including Open5e Originals and Black Flag.
+It excludes core `srd-2024`, core `srd-2014`, A5E, and unsupported rulesets before making spell requests.
+Spells That Don’t Suck uses its existing direct-publisher source route and is excluded from this preparation.
 Offline replay removes these records from legacy caches before writing artifacts.
 Preparation also removes their stale directories within `output/open5e-spell-preparation/`.
 It checks pagination counts, duplicate keys, document identity, and source metadata.
@@ -76,6 +77,8 @@ Each source directory under `output/open5e-spell-preparation/` contains:
 - `report.json`: validation, exclusions, withheld fields, fidelity findings, and publishing blockers.
 
 The root also contains `discovery.json` for replay and `index.json` summarizing the latest run.
+The index inventories every selected source, its ruleset and licenses, and its record count.
+Sources with no API spells, including Vault of Magic and Black Flag, remain listed in `emptySources`.
 Candidates preserve descriptions and higher-level prose.
 Casting times retain reaction conditions and ritual availability.
 Concentration durations use the schema’s separate flag.
@@ -85,7 +88,7 @@ Potential reserved Wizards of the Coast names are conservatively excluded pendin
 Candidates currently omit rollable mechanics.
 Damage, saves, attacks, casting options, and scaling require source-specific review before mapping.
 Raw snapshots preserve those API fields; the reports flag their review status.
-A5E edition metadata remains unset because the vendored schema has no A5E edition.
+A5E is outside the D&D 5e spell scope and cannot be selected for preparation.
 
 Preparation saves validation findings and exits successfully when artifacts are generated.
 `npm run validate -- --spells` checks spell invariants and exits nonzero on errors.

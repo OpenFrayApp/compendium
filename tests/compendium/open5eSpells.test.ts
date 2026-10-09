@@ -190,7 +190,16 @@ describe("Open5e spell mapping", () => {
 
 describe("Open5e spell snapshots", () => {
   it("selects all third-party 5e books, including Black Flag, but excludes A5E and core SRDs", () => {
-    const keys = ["deepm", "deepmx", "vom", "wz", "bfrd", "toh", "kp"];
+    const keys = [
+      "deepm",
+      "deepmx",
+      "vom",
+      "wz",
+      "bfrd",
+      "toh",
+      "kp",
+      "open5e",
+    ];
     const documents = [
       ...keys.map((key) => document(key)),
       document("srd-2014"),
@@ -236,7 +245,6 @@ describe("Open5e spell snapshots", () => {
       "srd-2024",
       "srd-2014",
       "spells-that-dont-suck",
-      "open5e",
     ]) {
       expect(() =>
         spellDocument({ ...snapshot(), documents: [document(key)] }, key),
@@ -277,7 +285,7 @@ describe("Open5e spell snapshots", () => {
             document("srd-2014"),
             document("srd-2024"),
             document("spells-that-dont-suck"),
-            document("open5e"),
+            { ...document("a5e-ag"), gamesystem: { key: "a5e", name: "A5E" } },
             { ...document("core"), type: "MISC" },
           ],
         };
@@ -301,7 +309,7 @@ describe("Open5e spell snapshots", () => {
     expect(fetchJson).toHaveBeenCalledTimes(3);
   });
 
-  it.each(["srd-2014", "srd-2024", "spells-that-dont-suck", "open5e"])(
+  it.each(["srd-2014", "srd-2024", "spells-that-dont-suck"])(
     "refuses %s before making any spell request",
     async (key) => {
       const fetchJson = vi

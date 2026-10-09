@@ -50,7 +50,6 @@ export const EXCLUDED_OPEN5E_SPELL_SOURCES = new Set([
   "srd-2024",
   "srd-2014",
   "spells-that-dont-suck",
-  "open5e",
 ]);
 
 /** Read complete API pages while rejecting count drift, foreign URLs, and pagination cycles. */
@@ -154,7 +153,7 @@ export function assertSpellSnapshot(snapshot: Open5eSpellSnapshot): void {
   }
 }
 
-/** Select source documents while excluding existing SRD pipelines and declined Open5e feeds. */
+/** Select third-party D&D 5e documents outside the existing core and direct-publisher pipelines. */
 export function thirdPartySpellDocuments(
   snapshot: Open5eSpellSnapshot,
 ): Open5eSpellDocument[] {
@@ -178,7 +177,7 @@ export function spellDocument(
   );
   if (!document) {
     throw new Error(
-      `Unsupported spell source: ${key}; SRD and declined Open5e feeds are excluded`,
+      `Unsupported spell source: ${key}; select a third-party D&D 5e document outside existing pipelines`,
     );
   }
   return document;
