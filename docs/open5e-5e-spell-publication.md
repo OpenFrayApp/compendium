@@ -33,15 +33,111 @@ Replay with `npm run prepare:open5e-spells -- all output/open5e-spell-preparatio
 - [Publisher Deep Magic license page](https://koboldpress.com/open-game-license-version-1-0a_deepmagic/): identifies the 2014 Pathfinder book. It does not establish the 2020 5e compilation’s declaration or copyright chain.
 - [Open5e repository license](https://github.com/open5e/open5e-api/blob/1253adb7e58dde6cae556c6bd3515dcb521b723e/LICENSE.md): expressly makes no licensing claims for included third-party SRD/OGL content. Its software license is not a grant for those spell books.
 
+### Supplied Tome of Heroes declaration
+
+The supplied 321-page PDF has SHA-256 `de2d8b5bbe6f92cb2ee31df68192c042883bfe965aa52ab6d91be374d882c38c`. It is image-only. The book-specific PyMuPDF review script retains OCR provenance and local page images; neither is a publishable dataset. Physical page 3 confirms the declaration below. Physical page 320 confirms the complete license chain. The contents place spell lists and descriptions on physical pages 270–308.
+
+A supplied copyright-page screenshot identifies ©2022 Open Design LLC and ISBNs `978-1-950789-30-6` and `978-1-950789-32-0`. Its SHA-256 is `532c4434927b0e76abe9c692d6b7eb8323c364471b941b0c28eeb5e1ac641ed7`.
+
+The declaration includes spells as Open Game Content, excluding place names and specific character references, such as gods and NPCs. It also excludes text related to Draconic Rune Casting, Hedge Magic, and the listed black-powder subclasses, rules, items, and weapons. This supports the grant already visible in the authorized preview. The screenshot does not contain the complete OGL or Section 15 chain.
+
+A keyword screen of the 91 prepared candidates flags **Deadly Salvo**. Its prose invokes the gunpowder weapon property and refers to the Adventuring Gear chapter. Do not copy the excluded weapon rules or remove the dependency from its mechanics.
+
+A supplied spell transcription identifies Deadly Salvo as 5th-level **Evocation**, with a casting time of 1 action, range of 120 feet, V/S/M components, and an Instantaneous duration. Its material component is “five firearm paper cartridges.” The prepared candidate instead says **Transmutation** and omits the material description. Its other listed header fields agree with the supplied transcription. The transcription retains the gunpowder burst dependency, so resolving those metadata differences does not clear the exclusions hold. Verify the transcription against the publisher page before renewing the generated snapshot.
+
+A second supplied screenshot contains OGL 1.0a sections 1 through 15 and the complete chain ending in _Tome of Heroes_. Its SHA-256 is `8da2cf2da30a4e90adc93a2d13769a53d2ac1766a413d4334f4e58c769a2df98`. The [Section 15 transcript](./tome-of-heroes-section-15.md) preserves its 23 notices. The license-page evidence requirement is satisfied for this source.
+
+A prose review of all 91 prepared candidates found no additional obvious references to the named exclusions or setting-specific characters and places. This review does not verify their missing metadata against the publisher spell pages. No publication approval has been added.
+
+The raw candidates have 36 missing-material-description warnings, including Deadly Salvo. The source-specific generator restores the other 35 descriptions and withholds Deadly Salvo. Class lists are checked against physical pages 270–272. The book spells the class name `Sorcerer` and assigns **Immolating Gibbet** to that class; the API omits that assignment.
+
+The following printed ambiguities remain unchanged:
+
+- **Immolating Gibbet:** “pulled up to 60 into the air” omits a distance unit.
+- **Less Fool, I:** “advantage on spells” leaves the affected roll unclear.
+- **Secret Blind:** names a “disintegration” spell. Physical page 302 confirms that wording.
+
+The PDF page images confirm the missing distance unit in **Immolating Gibbet** (page 288) and the unclear advantage wording in **Less Fool, I** (page 292). Preserve those printed ambiguities unless publisher errata resolves them.
+
+The source-specific generator corrects these header discrepancies:
+
+| Spell             | Source correction                                                          |
+| ----------------- | -------------------------------------------------------------------------- |
+| Babble            | Duration up to 1 hour                                                      |
+| Fuse Armor        | Abjuration                                                                 |
+| Gale              | Concentration, up to 1 hour                                                |
+| High Ground       | Duration up to 10 minutes                                                  |
+| Immolating Gibbet | Evocation                                                                  |
+| Iron Gut          | Concentration                                                              |
+| Jagged Forcelance | Evocation; Concentration, up to 1 minute; material “a strand of gold wire” |
+
+The publisher’s [errata page](https://koboldpress.com/errata/#tome-of-heroes), dated May 29, 2025, includes five spell corrections:
+
+| Spell                   | Page | Correction                                                                                            | API status      |
+| ----------------------- | ---: | ----------------------------------------------------------------------------------------------------- | --------------- |
+| Conjure Construct       |  278 | Higher-level challenge rating increases above a 6th-level slot                                        | Already present |
+| Glare                   |  284 | Duration is 1 round                                                                                   | Absent          |
+| Instant Armored Vehicle |  289 | Vehicle has a carrying capacity of 1,000 pounds                                                       | Absent          |
+| Outmaneuver             |  297 | Movement remains 0 until the end of the target’s next turn; clarify the triggering opportunity attack | Absent          |
+| Silvershout             |  303 | Dust persists until removed; identify shapechangers by Change Shape or Shapechanger                   | Absent          |
+
+Apply the publisher’s exact corrected wording through the generator. Do not infer mechanics from familiar SRD effects or treat unreviewed OCR as authoritative.
+
+## Recovered import provenance
+
+[Open5e import PR #178](https://github.com/open5e/open5e-api/pull/178) identifies Extended, Compilation, and Warlock as a Foundry-module import. Its discussion records uncertainty about the underlying publications. Contributors subsequently added class and school metadata using a community wiki.
+
+The [original spell files](https://github.com/open5e/open5e-api/tree/34b88208ba629bb152508fd5ba9d27a510918889/data) retain per-spell `source` codes. Their titles match all current candidates in these three feeds: 64 Extended, 31 Compilation, and 43 Warlock records. Matching titles establish a provenance lead only. They do not establish identical rules text or publication permission.
+
+The original source-code counts are:
+
+| Feed        | Literal source code                                                                           | Records |
+| ----------- | --------------------------------------------------------------------------------------------- | ------: |
+| Extended    | `HH DM:Cw,ZG`                                                                                 |      25 |
+| Extended    | `HH DM:LL,MM:LL`                                                                              |      10 |
+| Extended    | `HH DM:Ru`                                                                                    |       6 |
+| Extended    | `HH DM:S`                                                                                     |       3 |
+| Extended    | `DM:B&D MWB`                                                                                  |       3 |
+| Extended    | `DM:Cw`, `HH DM:EH`, `DM:M`, `HH DM:Cw`                                                       |  2 each |
+| Extended    | `HH DM:Ri`, `DM:B&D`, `DM:T`, `HH DM:LL`, `HH DM:B`, `HH DM:H`, `HH DM:I`, `DM:CD`, `HH DM:E` |  1 each |
+| Compilation | `DC&SS`                                                                                       |      16 |
+| Compilation | `ToOM:PH`, `MWB`                                                                              |  6 each |
+| Compilation | `HH MWB`                                                                                      |       2 |
+| Compilation | `HH`                                                                                          |       1 |
+| Warlock     | `W:LM`                                                                                        |      13 |
+| Warlock     | `W22`, `W:SR`, `W12`                                                                          |  4 each |
+| Warlock     | `W23`, `WG W10`, `WG W8`, `WG W3`                                                             |  3 each |
+| Warlock     | `W21`                                                                                         |       2 |
+| Warlock     | `WG W6`, `WL24`, `W19`, `W14`                                                                 |  1 each |
+
+Keep these codes literal until publisher evidence establishes their meanings and editions. Extended and Compilation are mixed-source buckets, not verified standalone book titles.
+
+The [original Deep Magic import](https://github.com/open5e/open5e-api/blob/9ec5bb06a8550aca1b3dd9254591b974c83f7367/data/deep_magic/document.json) includes `ogl-lines`. Those lines describe a community wiki and contain a broad multi-book Section 15 list. The [Extended import](https://github.com/open5e/open5e-api/blob/34b88208ba629bb152508fd5ba9d27a510918889/data/deep_magic_extended/document.json) also retains that list. Neither establishes the exact publisher declaration or complete chain for each imported book.
+
+The publisher’s [Community Use Policy](https://koboldpress.com/kobold-press-community-use-policy/) grants specified non-commercial permissions. It covers listed assets, descriptions, blog material, and descriptive references. It does not supply a blanket grant to republish spell collections. Its notice cannot replace each source’s OGL requirements.
+
+## Publisher material needed
+
+Start with legally obtained publisher PDFs for the 2020 _Deep Magic for 5th Edition_ compilation and _Tome of Heroes_. For each, review:
+
+1. The title, edition, and copyright pages.
+2. The Open Game Content and Product Identity declarations.
+3. The complete OGL page and Section 15 chain.
+4. Spell pages needed to resolve exclusions, class gaps, and material-component warnings.
+
+For the other feeds, identify the literal source codes above against publisher books or Warlock issues before approving any subset. Copyright pages alone cannot resolve missing mechanics.
+
+Keep supplied PDFs outside Git. A local folder path is sufficient; contributors do not need to upload entire books to a public service.
+
 ## Publication gates
 
-Deep Magic requires its edition-specific OGC/PI declaration and complete Section 15. Tome of Heroes requires the complete chain and an exclusions review.
+Deep Magic requires its edition-specific OGC/PI declaration and complete Section 15. Tome of Heroes has its declaration and complete chain. Its source-specific preparation withholds Deadly Salvo and applies book metadata and publisher errata. Reference approval, console attribution, and publication integration remain separate gates.
 
 Deep Magic Extended, Warlock, and the Kobold compilation require their underlying book or issue identities, declarations, and chains. Their Community Use Policy descriptions do not establish an independent OGL grant.
 
 Open5e Originals requires its own content grant and required notices. Black Flag’s v1 ORC label and v2 CC-BY label require publisher verification if spell records become available.
 
-Preparation has no duration errors. Moon Trap, Iron Gut, Stone Aegis, and Mind Maze explicitly have conditional durations without Concentration in both API versions. The validator accepts those durations without changing the source flags.
+Raw API preparation has no duration errors. Moon Trap, Iron Gut, Stone Aegis, and Mind Maze have conditional durations without Concentration in both API versions. The validator accepts those durations without changing the source flags. The Tome of Heroes book confirms Concentration for Iron Gut; its source-specific preparation corrects that API omission.
 
 Complete v1 snapshots recover 533 absent class lists when source aliases, stable IDs, names, and prose match. Existing v2 assignments remain unchanged. Each report records recovered classes and the legacy snapshot hash.
 

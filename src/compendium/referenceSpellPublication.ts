@@ -44,6 +44,15 @@ export const REFERENCE_SPELL_APPROVALS: ReferenceSpellApproval[] = [
     sha256: "69cbebe97a86cf16e001d2367ed71f2ab5664904e823c23cec5efa94c6e8e2cd",
     acceptedWarningIds: [],
   },
+  {
+    source: "kobold-press-toh",
+    preparation: "tome-of-heroes-preparation",
+    file: "tome-of-heroes-spells.json",
+    count: 90,
+    edition: "5.0",
+    sha256: "193349583d5f5a6e28d4396a32a3e19784c56f0046d6f5a2ada7b4749ce1176f",
+    acceptedWarningIds: [],
+  },
 ];
 
 /** Enforce the reviewed snapshot, source boundaries, and reference-only publication verdict. */

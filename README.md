@@ -105,6 +105,46 @@ Publishing needs publisher evidence, exclusions review, and the exact attributio
 The [5e spell publication inventory](docs/open5e-5e-spell-publication.md) records current source evidence and blockers.
 Console registration, shipped JSON, and credits remain a separate change.
 
+## Review Tome of Heroes against the publisher PDF
+
+The book-specific `scripts/toh.py` uses PyMuPDF and the column-reading approach from `tob3.py`. It retains source lines with physical page, font, size, and position evidence. It does not filter Product Identity or emit publishable cards. OCR snapshots identify their fonts as synthetic, not publisher font evidence. `--spell-columns` clips the spell descriptions into separate text columns before OCR and excludes the illustrated outer border and footer.
+
+```bash
+python -m pip install pymupdf==1.26.7
+python scripts/toh.py /path/to/Tome-of-Heroes.pdf output/tome-of-heroes-review/pages.json
+# For an image-only PDF, supply Tesseract's English traineddata directory:
+python scripts/toh.py /path/to/Tome-of-Heroes.pdf output/tome-of-heroes-review/ocr-pages.json --ocr --tessdata /path/to/tessdata --pages 3 4 320
+# OCR the spell-description columns separately to avoid cross-column merges:
+python scripts/toh.py /path/to/Tome-of-Heroes.pdf output/tome-of-heroes-review/spell-columns.json --ocr --spell-columns --tessdata /path/to/tessdata --pages 273 274
+# Reorder an existing column snapshot without repeating OCR:
+python scripts/toh.py /path/to/Tome-of-Heroes.pdf output/tome-of-heroes-review/spell-columns-ordered.json --cache output/tome-of-heroes-review/spell-columns.json
+python -m unittest discover -s tests/scripts -p 'test_toh.py'
+```
+
+Cached replay checks the PDF hash, page count, extraction mode, and physical page numbers.
+It sorts lines within each column before joining the columns in reading order.
+The snapshot remains review evidence with `publishable: false`.
+
+The ignored review snapshot pins the supplied PDF’s SHA-256. `--pages` selects physical page numbers and preserves the total PDF page count. A snapshot with no extracted text fails explicitly. Add `--render-dir output/tome-of-heroes-review/images` to save selected page images for visual checks. Check OCR against those images before using it to correct spell data. Use the evidence to verify the declaration, complete license chain, spell metadata, and prose before approving a corrected spell snapshot. Keep the PDF and extracted source pages outside Git. The [publication inventory](docs/open5e-5e-spell-publication.md) records unresolved exclusions and source-field checks.
+
+### Prepare source-corrected reference candidates
+
+The source-specific review in `src/compendium/tomeOfHeroesReview.ts` pins the Open5e candidate hash and supplied PDF hash.
+It restores material descriptions, corrects reviewed headers, and applies the publisher’s May 29, 2025 spell errata.
+Deadly Salvo is withheld because it depends on excluded gunpowder rules.
+Printed ambiguities remain unchanged; conditional advantage stays prose.
+
+```bash
+npm run prepare:tome-of-heroes-spells -- output/open5e-spell-preparation/toh/candidate-spells.json
+npm run validate -- --spells output/tome-of-heroes-preparation/candidate-spells.json
+```
+
+Preparation writes 90 candidates and an evidence report to `output/tome-of-heroes-preparation/`.
+A changed input snapshot requires renewed source review.
+The cards omit edition and rollable mechanics until reference publication approval.
+The report retains `publishable: false` pending console registration, attribution, and publication checks.
+Existing reference approvals and their accepted warnings remain unchanged.
+
 ## Spells That Don’t Suck from GM Binder
 
 This separate pipeline uses the [creators’ GM Binder document](https://www.gmbinder.com/share/-NR0OWlW60yv2EfA3qQp).
@@ -199,8 +239,8 @@ Add `--strict` to the preparation command to enforce the publishing gate.
 
 ## Publish reviewed reference spells
 
-Three pinned direct-source snapshots are approved for opt-in reference cards:
-Kibbles v2.3 (295), Spells That Don’t Suck (181), and So Many Spells (179).
+Four pinned snapshots are approved for opt-in reference cards:
+Kibbles v2.3 (295), Spells That Don’t Suck (181), So Many Spells (179), and Tome of Heroes (90).
 Their [publication record](./docs/reference-spell-publication.md) documents the
 source hashes, source-specific decisions, attribution, and manual-only limits.
 Preparation reports keep their conservative gates for future snapshots.
@@ -212,7 +252,7 @@ npm run export:reference-spells -- ../console/public/compendium
 Export checks the pinned candidate hashes and standard validation before writing.
 The only accepted warning is Bile Beam’s missing material description.
 The console supplies independent manual verdicts and blocks same-name automation.
-Open5e and creature candidates remain outside this publication approval.
+Other Open5e and creature candidates remain outside this publication approval.
 
 ## SRD 5.2.1 from the official PDF
 
