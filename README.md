@@ -105,6 +105,20 @@ Publishing needs publisher evidence, exclusions review, and the exact attributio
 The [5e spell publication inventory](docs/open5e-5e-spell-publication.md) records current source evidence and blockers.
 Console registration, shipped JSON, and credits remain a separate change.
 
+## Review Tome of Heroes against the publisher PDF
+
+The book-specific `scripts/toh.py` uses PyMuPDF and the column-reading approach from `tob3.py`. It retains source lines with physical page, font, size, and position evidence. It does not filter Product Identity or emit publishable cards. OCR snapshots identify their fonts as synthetic, not publisher font evidence.
+
+```bash
+python -m pip install pymupdf==1.26.7
+python scripts/toh.py /path/to/Tome-of-Heroes.pdf output/tome-of-heroes-review/pages.json
+# For an image-only PDF, supply Tesseract's English traineddata directory:
+python scripts/toh.py /path/to/Tome-of-Heroes.pdf output/tome-of-heroes-review/ocr-pages.json --ocr --tessdata /path/to/tessdata --pages 3 4 320
+python -m unittest discover -s tests/scripts -p 'test_toh.py'
+```
+
+The ignored review snapshot pins the supplied PDF’s SHA-256. `--pages` selects physical page numbers and preserves the total PDF page count. A snapshot with no extracted text fails explicitly. Check OCR against the page images before using it to correct spell data. Use the evidence to verify the declaration, complete license chain, spell metadata, and prose before approving a corrected spell snapshot. Keep the PDF and extracted source pages outside Git. The [publication inventory](docs/open5e-5e-spell-publication.md) records unresolved exclusions and source-field checks.
+
 ## Spells That Don’t Suck from GM Binder
 
 This separate pipeline uses the [creators’ GM Binder document](https://www.gmbinder.com/share/-NR0OWlW60yv2EfA3qQp).
