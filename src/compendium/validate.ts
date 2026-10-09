@@ -190,8 +190,6 @@ export function validateSpell(s: Spell): Issue[] {
   // spell's own duration reads "up to 1 minute" and never repeats the word.
   if (s.concentration && !/^up to /.test(s.duration))
     add('duration', 'error', `concentration duration should read "up to …", got "${s.duration}"`)
-  if (!s.concentration && /^up to /.test(s.duration))
-    add('duration', 'error', '"up to …" duration on a spell that is not Concentration')
   if (s.concentration && /concentration/i.test(s.duration))
     add('duration', 'error', 'duration repeats "Concentration"')
   if (s.ritual !== /ritual/i.test(s.castingTime))
