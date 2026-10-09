@@ -39,7 +39,9 @@ A supplied copyright-page screenshot identifies ©2022 Open Design LLC and ISBNs
 
 The declaration includes spells as Open Game Content, excluding place names and specific character references, such as gods and NPCs. It also excludes text related to Draconic Rune Casting, Hedge Magic, and the listed black-powder subclasses, rules, items, and weapons. This supports the grant already visible in the authorized preview. The screenshot does not contain the complete OGL or Section 15 chain.
 
-A keyword screen of the 91 prepared candidates flags **Deadly Salvo**. Its prose invokes the gunpowder weapon property and refers to the Adventuring Gear chapter. Review the publisher spell page and declaration before approving it. Do not copy the excluded weapon rules or remove the dependency from its mechanics. The remaining cards still require an exclusions review; a keyword screen does not establish clearance.
+A keyword screen of the 91 prepared candidates flags **Deadly Salvo**. Its prose invokes the gunpowder weapon property and refers to the Adventuring Gear chapter. Do not copy the excluded weapon rules or remove the dependency from its mechanics.
+
+A supplied spell transcription identifies Deadly Salvo as 5th-level **Evocation**, with a casting time of 1 action, range of 120 feet, V/S/M components, and an Instantaneous duration. Its material component is “five firearm paper cartridges.” The prepared candidate instead says **Transmutation** and omits the material description. Its other listed header fields agree with the supplied transcription. The transcription retains the gunpowder burst dependency, so resolving those metadata differences does not clear the exclusions hold. Verify the transcription against the publisher page before renewing the generated snapshot.
 
 A second supplied screenshot contains OGL 1.0a sections 1 through 15 and the complete chain ending in _Tome of Heroes_. Its SHA-256 is `8da2cf2da30a4e90adc93a2d13769a53d2ac1766a413d4334f4e58c769a2df98`. The [Section 15 transcript](./tome-of-heroes-section-15.md) preserves its 23 notices. The license-page evidence requirement is satisfied for this source.
 
