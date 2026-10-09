@@ -162,6 +162,8 @@ export function thirdPartySpellDocuments(
     (document) =>
       KEY.test(document.key) &&
       document.type === "SOURCE" &&
+      (document.gamesystem.key === "5e-2014" ||
+        document.gamesystem.key === "5e-2024") &&
       !EXCLUDED_OPEN5E_SPELL_SOURCES.has(document.key),
   );
 }
@@ -403,7 +405,7 @@ export function prepareOpen5eSpells(
         "For OGL sources, obtain the source’s OGC/PI declaration and complete verbatim Section 15 chain.",
         "Review exclusions, withheld records, display fields, and missing class assignments against authorized sources.",
         "Review structured mechanics and casting options before adding rollable fields; candidates currently contain display fields and prose only.",
-        "Black Flag and A5E source-specific rules require review; do not assume ordinary SRD semantics.",
+        "Black Flag source-specific rules require review; do not assume ordinary SRD semantics.",
         "Resolve validation errors and review warnings; passing validation does not grant publishing approval.",
         "Console registration, shipped JSON, and credits require a separately authorized publishing change.",
       ],
