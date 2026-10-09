@@ -1,6 +1,6 @@
 # Reference spell publication
 
-The console ships four opt-in reference libraries. Their spell cards have no
+The console ships three opt-in reference libraries. Their spell cards have no
 structured attacks, damage, saves, or scaling. The console also blocks same-name
 spell automation for these source IDs. Each spell has a source-specific manual
 verdict in the console’s coverage tests.
@@ -12,14 +12,13 @@ It pins each generated candidate file’s SHA-256 and expected spell count.
 A changed snapshot requires another source review and a renewed approval.
 Export validates every library before writing any file.
 
-| Source                             | Cards | Source snapshot SHA-256                                            |
-| ---------------------------------- | ----: | ------------------------------------------------------------------ |
-| A5E SRD: Adventurer’s Guide spells |   369 | `b843573777a0a2e04ad1db9bab8fdc8f4598883c511460409eac1c59325a0189` |
-| Kibbles’ Casting Compendium v2.3   |   295 | `a1957d6a1357595f76186691da7a5e58e539ab8c91e0de184a1dce6b9b151e85` |
-| Spells That Don’t Suck             |   181 | `2a1c931f390242e747ba79bf973f77ea1e0b9ae141318b6638a86f95a9161fd4` |
-| So Many Spells                     |   179 | `dc5cb8c55911856ba10b4e2f2d07b447be67342615ba13ae6f62e077315e3543` |
+| Source                           | Cards | Source snapshot SHA-256                                            |
+| -------------------------------- | ----: | ------------------------------------------------------------------ |
+| Kibbles’ Casting Compendium v2.3 |   295 | `a1957d6a1357595f76186691da7a5e58e539ab8c91e0de184a1dce6b9b151e85` |
+| Spells That Don’t Suck           |   181 | `2a1c931f390242e747ba79bf973f77ea1e0b9ae141318b6638a86f95a9161fd4` |
+| So Many Spells                   |   179 | `dc5cb8c55911856ba10b4e2f2d07b447be67342615ba13ae6f62e077315e3543` |
 
-The A5E and Kibbles hashes identify their publisher PDFs. The other hashes identify the cached
+Kibbles’ hash identifies the publisher PDF. The other hashes identify the cached
 GM Binder HTML. Source URLs and replay commands are in the README.
 
 The source review checks detected headers, independent IDs, metadata boundaries,
@@ -29,10 +28,6 @@ Their counts are 295 of 295, 181 of 181, and 179 of 180 detected spells.
 These checks support reference publication; they do not establish rollable fidelity.
 
 ## Source-specific decisions
-
-A5E follows its [publisher-backed publication record](./open5e-spell-publication.md).
-Its distinct ruleset remains A5E, with no SRD edition assigned. It adds 369 cards
-from 371 discovery entries and has no accepted validation warnings.
 
 Kibbles includes every spell section, including psionics and blood magic.
 Bile Beam remains V, S, M without an invented material description.
@@ -71,6 +66,6 @@ Validate and test both repositories before publishing an updated snapshot.
 Preparation reports retain conservative blockers for unreviewed future snapshots
 and automated mechanics. This approval applies only to the pinned reference cards.
 The export command rejects unaccepted findings, unreviewed candidate editions, and mechanics.
-The remaining 744 Kobold Open5e candidates, unfinished creature candidates, and
-Elemental-Touched are outside this approval. Generic Elemental Spells v2.0 adds no spells beyond Kibbles v2.3 and
+Open5e candidates, unfinished creature candidates, and Elemental-Touched are outside
+this approval. Generic Elemental Spells v2.0 adds no spells beyond Kibbles v2.3 and
 is not shipped as a separate library.

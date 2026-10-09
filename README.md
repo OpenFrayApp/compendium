@@ -188,8 +188,8 @@ Add `--strict` to the preparation command to enforce the publishing gate.
 
 ## Publish reviewed reference spells
 
-Four pinned snapshots are approved for opt-in reference cards:
-A5E SRD spells (369), Kibbles v2.3 (295), Spells That Don’t Suck (181), and So Many Spells (179).
+Three pinned direct-source snapshots are approved for opt-in reference cards:
+Kibbles v2.3 (295), Spells That Don’t Suck (181), and So Many Spells (179).
 Their [publication record](./docs/reference-spell-publication.md) documents the
 source hashes, source-specific decisions, attribution, and manual-only limits.
 Preparation reports keep their conservative gates for future snapshots.
@@ -201,9 +201,7 @@ npm run export:reference-spells -- ../console/public/compendium
 Export checks the pinned candidate hashes and standard validation before writing.
 The only accepted warning is Bile Beam’s missing material description.
 The console supplies independent manual verdicts and blocks same-name automation.
-A5E uses Open5e for discovery and the publisher’s licensed PDF for spell text and metadata.
-Follow its [publication and replay record](./docs/open5e-spell-publication.md).
-The remaining Kobold Open5e selections and creature candidates remain outside this approval.
+Open5e and creature candidates remain outside this publication approval.
 
 ## SRD 5.2.1 from the official PDF
 

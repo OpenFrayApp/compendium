@@ -39,14 +39,14 @@ function approvalFor(content: string): ReferenceSpellApproval {
 }
 
 describe("reference-only publication approvals", () => {
-  it("limits publication to explicitly reviewed snapshots", () => {
+  it("limits publication to three explicitly reviewed snapshots", () => {
     expect(REFERENCE_SPELL_APPROVALS.map((approval) => approval.count)).toEqual(
-      [369, 295, 181, 179],
+      [295, 181, 179],
     );
     expect(
       new Set(REFERENCE_SPELL_APPROVALS.map((approval) => approval.source))
         .size,
-    ).toBe(4);
+    ).toBe(3);
     expect(
       REFERENCE_SPELL_APPROVALS.flatMap(
         (approval) => approval.acceptedWarningIds,
@@ -61,9 +61,7 @@ describe("reference-only publication approvals", () => {
       { ...SPELL, edition: "5.0" },
     ]);
     expect(
-      REFERENCE_SPELL_APPROVALS.filter((entry) => !entry.ruleset).every(
-        (entry) => entry.edition === "5.0",
-      ),
+      REFERENCE_SPELL_APPROVALS.every((entry) => entry.edition === "5.0"),
     ).toBe(true);
     expect(() => approveReferenceSpells(content + " ", approval)).toThrow(
       "Snapshot changed",
@@ -71,17 +69,6 @@ describe("reference-only publication approvals", () => {
     expect(() =>
       approveReferenceSpells(content, { ...approval, count: 2 }),
     ).toThrow("scope changed");
-  });
-
-  it("keeps A5E distinct without assigning an SRD edition", () => {
-    const content = JSON.stringify([SPELL]);
-    const { edition: _edition, ...snapshot } = approvalFor(content);
-    const result = approveReferenceSpells(content, {
-      ...snapshot,
-      ruleset: "a5e",
-    });
-    expect(result).toEqual([SPELL]);
-    expect(result[0]).not.toHaveProperty("edition");
   });
 
   it.each([
