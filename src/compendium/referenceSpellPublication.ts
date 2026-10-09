@@ -6,17 +6,28 @@ import type { Spell } from "../schema/spell.ts";
 import type { Edition } from "../schema/primitives.ts";
 import { validateSpellDataset } from "./validate.ts";
 
-export interface ReferenceSpellApproval {
+interface ReferenceSpellSnapshot {
   source: string;
   preparation: string;
   file: string;
   count: number;
-  edition: Edition;
   sha256: string;
   acceptedWarningIds: string[];
 }
 
+export type ReferenceSpellApproval = ReferenceSpellSnapshot &
+  ({ edition: Edition; ruleset?: never } | { ruleset: "a5e"; edition?: never });
+
 export const REFERENCE_SPELL_APPROVALS: ReferenceSpellApproval[] = [
+  {
+    source: "en-publishing-a5e-ag",
+    preparation: "a5e-srd-spells-preparation",
+    file: "a5e-srd-spells.json",
+    count: 369,
+    ruleset: "a5e",
+    sha256: "926a1d330ac3e8ae4930878c13326898070dafa40027842b0741e6f9321a3c91",
+    acceptedWarningIds: [],
+  },
   {
     source: "kibblestasty-casting-compendium-v2.3",
     preparation: "kibbles-casting-v23-preparation",
@@ -79,5 +90,7 @@ export function approveReferenceSpells(
   ) {
     throw new Error(`Unaccepted validation finding for ${approval.source}`);
   }
-  return spells.map((spell) => ({ ...spell, edition: approval.edition }));
+  return approval.edition
+    ? spells.map((spell) => ({ ...spell, edition: approval.edition }))
+    : spells.map((spell) => ({ ...spell }));
 }
