@@ -20,6 +20,7 @@ parser) out of the app keeps the app lean and the data reproducible here.
 | `tob1.py` → `ingest-tob1.ts` | **Tome of Beasts (Kobold Press)** via the book's PDF | OGL 1.0a, 384 OGC creatures; edition 5.0 |
 | `tob2.py` → `ingest-tob2.ts` | **Tome of Beasts 2 (Kobold Press)** via the book's PDF | OGL 1.0a, 389 OGC creatures; edition 5.0 |
 | `tob3.py` → `ingest-tob3.ts` | **Tome of Beasts 3 (Kobold Press)** via the book's PDF | OGL 1.0a, 395 OGC creatures; edition 5.0 |
+| `npm run ingest:khyberia` | **Khyberia SRD (October 2023)** by Nick Stefanski | CC-BY-4.0; 21 creatures; edition 5.0; supplied PDF required |
 | `npm run ingest:brood-and-bloom` | **Brood & Bloom** — original OpenFray creatures | authored in `src/compendium/brood-and-bloom.ts`; no PDF, no parser; edition 5.5 |
 | `npm run ingest:brood-and-bloom-spells` | **Brood & Bloom** — original OpenFray spells | authored in `src/compendium/brood-and-bloom-spells.ts` |
 | `npm run ingest:strong-waters-spells` | **On Strong Waters and Potent Simples** — original OpenFray spells | authored in `src/compendium/strong-waters-spells.ts`; spells and presets only, no creatures |
@@ -42,9 +43,110 @@ Beasts) is used under its actual license — ORC or OGL 1.0a, OGC-only — never
 CC-BY. The public record of compliance is the console repo's
 [CREDITS.md](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md).
 
-> **Open5e is no longer used.** SRD 5.2.1 creatures, spells, and conditions are all
-> parsed from WotC's official PDF; the only remaining external feed is dnd5eapi.co for
-> SRD 5.1 (its structured 2014 spellcasting maps cleanly to our slot model).
+Open5e supplies Creature Codex through `scripts/ingest-creature-codex.ts`.
+SRD 5.2.1 uses WotC’s official PDF; SRD 5.1 uses dnd5eapi.co.
+
+## Khyberia SRD from a supplied PDF
+
+The October 2023 Khyberia SRD contains 21 standard 5e-compatible creature blocks.
+This is the expanded 14-page document, not the older seven-page online version.
+Its CC-BY-4.0 notice covers the whole SRD and retains SRD 5.1 and A5ESRD credits.
+The imported creatures use conventional 5e statistics; their unusual effects are
+defined in the blocks. No A5E library or separate A5E rules implementation is added.
+
+```bash
+# Use an environment with PyMuPDF installed, as for the other PDF pipelines.
+.venv/bin/python scripts/extract-khyberia.py "/path/to/Khyberia SRD 2023-10.pdf" output/khyberia/blocks.json
+npm run ingest:khyberia
+npm run validate -- output/khyberia-creatures.json
+.venv/bin/python tests/compendium/khyberia_extractor_test.py
+```
+
+The extractor retains the PDF digest and legal page. The mapper accepts only the
+reviewed revision and all 21 blocks. Output includes `khyberia-creatures.json`,
+`khyberia/validation.json`, and `khyberia/ATTRIBUTION.md`. Ship the required
+attribution and adaptation notice with the data; the PDF itself is not committed.
+
+Published values stay unchanged. Conditional damage choices and unsupported
+rest-based recovery remain in prose rather than receiving invented automation.
+The review records the Hunter’s passive Perception mismatch, Wodyanoi’s tusk
+average discrepancy, and its omitted Gyre save DC.
+See [the Khyberia source review](./docs/khyberia-review.md).
+
+## Prepare additional Open5e libraries
+
+`prepare:open5e` creates local review artifacts only. It leaves the console and
+existing PDF-derived datasets unchanged. The active `all` batch is empty.
+Historical A5E, Black Flag, and ToB 2023 reviews remain available by explicit
+document key. Tal’Dorei is no longer a preparation candidate.
+
+| Open5e document key | Source | Records observed during preparation |
+|---|---|---|
+| `a5e-mm` | Monstrous Menagerie | 586 |
+| `bfrd` | Black Flag SRD | 360 |
+| `tob-2023` | Tome of Beasts 1 (2023 Edition) | 408 |
+
+Counts can change upstream. None of these historical review sources is selected
+for publication or included in the console. ToB 2023 has been removed from the
+active batch and local app preview. The original ToB 1–3 libraries are unchanged.
+
+Tome of Heroes has a Creature Statistics section, but Open5e’s `toh` document
+currently supplies no creatures. Its authorized sample does not include those
+stat blocks or explicitly designate them as reusable. A creature pipeline for
+that book needs authorized source material and a separate licensing review.
+
+```bash
+npm run prepare:open5e -- all
+npm run prepare:open5e -- tob-2023
+# Replay the saved snapshot without network access:
+npm run prepare:open5e -- tob-2023 output/open5e-preparation/tob-2023/raw.json
+# Fail while publishing blockers remain, even if preparation itself succeeds:
+npm run prepare:open5e -- tob-2023 output/open5e-preparation/tob-2023/raw.json --strict
+npm run validate -- output/open5e-preparation/tob-2023/candidate-creatures.json
+```
+
+Each document gets its own directory under `output/open5e-preparation/`:
+
+- `raw.json`: document metadata, retrieval time, v2 creatures, and checked v1 provenance.
+- `candidate-creatures.json`: provisional mappings with separate source IDs.
+- `report.json`: validation issues, provisional retention labels, and publishing blockers.
+- `source-statistics.json`: Black Flag check/save modifiers and available fixed Perception and Stealth values; empty for other sources.
+
+Preparation saves validation failures for review. Its exit status reports whether
+preparation succeeded; `npm run validate` remains the invariant gate.
+No candidate is approved for publication, even when validation passes.
+
+The adapter uses the shared 2014 parser and restores structured HP, saves, attacks,
+usage limits, and legendary costs. Checked v1 records recover source pages and
+legendary budgets. Spellcasting prose remains available when parsing fails.
+
+Reports include exclusions, withheld unsupported sizes, fidelity findings, and cited
+transcription corrections. Corrections fail when their expected input changes.
+Verified published arithmetic deviations remain cited warnings through exact-value
+exceptions. The validator CLI applies the same reviewed exceptions as preparation;
+other libraries and unreviewed values retain strict checks.
+Eight unresolved HP/save findings retain their Open5e values provisionally.
+Reports label them `unverified-open5e`; strict validation still reports them as errors.
+Changed inputs stop those retention labels from applying.
+
+Black Flag candidates retain Open5e’s synthesized scores without clamping them.
+Their sidecar preserves check/save modifiers separately, including any baked-in proficiency.
+It recovers publisher-checked Stealth for Aboleth and Ancient Red Dragon only while checked statistics match.
+Missing or unverified statistics remain `null`, with findings in the report.
+The sidecar is a review artifact; the console does not consume it.
+Review Advanced 5th Edition and Black Flag mechanics before publishing.
+Compare raw and mapped attacks, legendary costs, action sections, and spell links.
+The raw snapshot preserves fields the adapter does not consume.
+
+Verify each edition’s license, reuse designation, excluded content, and required
+attribution chain. Open5e metadata alone does not establish publishing compliance.
+[Source review](./docs/open5e-review.md) records publisher notices, verified
+corrections, and outstanding licensing and schema gates. Black Flag’s publisher
+offers CC-BY alongside ORC, but the feed’s older release still needs comparison.
+The authorized ToB 2023 sample verifies its reuse declaration. Exclusions cover
+named rulers, Ia’Affrat, and their explicitly named spawn. The sample omits
+Section 15, so the complete attribution chain remains a publishing gate. Console library registration, credits, and shipping the
+vetted datasets require separate work.
 
 ## SRD 5.2.1 from the official PDF
 

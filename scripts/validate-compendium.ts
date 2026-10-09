@@ -13,6 +13,7 @@
 import { readFileSync } from 'node:fs'
 import type { Creature } from '../src/schema/creature.ts'
 import { diffDatasets, validateDataset, type Issue } from '../src/compendium/validate.ts'
+import { OPEN5E_VALIDATION_EXCEPTIONS } from '../src/compendium/open5eExceptions.ts'
 
 /** Read and parse a creatures JSON file. */
 const load = (p: string): Creature[] => JSON.parse(readFileSync(p, 'utf8'))
@@ -24,10 +25,17 @@ if (!candidatePath) {
 }
 
 const candidate = load(candidatePath)
-const report = validateDataset(candidate)
+const report = validateDataset(candidate, OPEN5E_VALIDATION_EXCEPTIONS)
 
 console.log(`\n=== invariants: ${candidatePath} (${report.count} creatures) ===`)
 console.log(`errors: ${report.errors}   warnings: ${report.warns}`)
+const reviewed = report.issues.filter((issue) => issue.review)
+console.log(`reviewed published exceptions: ${reviewed.length}`)
+for (const issue of reviewed) {
+  console.log(`  ${issue.name} · ${issue.field}: ${issue.message}`)
+  console.log(`    ${issue.review!.reason}`)
+  console.log(`    Source: ${issue.review!.evidence}`)
+}
 
 if (report.errors) {
   console.log('\nerrors by field:')

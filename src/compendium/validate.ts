@@ -6,9 +6,9 @@
  * browser) used to vet a candidate creature dataset before it replaces the live one.
  *
  * Two independent lenses:
- *  - `validateDataset` — self-consistency invariants that must hold for any correct
- *    stat block (save = mod + PB, XP = CR table, HP = dice average, …). These catch
- *    *silently-wrong* values without needing a second source.
+ *  - `validateDataset` checks standard 5e arithmetic assumptions (save = mod + PB,
+ *    XP = CR table, HP = dice average, …). Cited, exact-value exceptions preserve
+ *    verified published deviations without weakening checks for other creatures.
  *  - `diffDatasets` — field-level comparison against a reference dataset (e.g. the
  *    JSON the app currently ships) to surface coverage gaps and disagreements.
  */
@@ -46,6 +46,31 @@ export interface Issue {
   field: string
   severity: Severity
   message: string
+  /** Primary-source evidence for a reviewed arithmetic deviation, retained as a warning. */
+  review?: { reason: string; evidence: string }
+}
+
+interface ExceptionEvidence {
+  id: string
+  source: string
+  reason: string
+  evidence: string
+}
+
+export type ValidationException = ExceptionEvidence & (
+  | { field: 'save'; ability: Ability; score: number; cr: number; value: number }
+  | { field: 'hpFormula'; formula: string; maxHp: number }
+)
+
+/** Match a reviewed deviation only while every input to its arithmetic check is unchanged. */
+function matchesException(c: Creature, issue: Issue, exception: ValidationException): boolean {
+  if (issue.severity !== 'error' || c.id !== exception.id || c.source !== exception.source
+    || !exception.reason.trim() || !exception.evidence.trim()) return false
+  if (exception.field === 'save') {
+    return issue.field === `saves.${exception.ability}` && c.cr === exception.cr
+      && c.abilities?.[exception.ability] === exception.score && c.saves?.[exception.ability] === exception.value
+  }
+  return issue.field === 'hpFormula' && c.hpFormula === exception.formula && c.maxHp === exception.maxHp
 }
 
 /** Average hit points of an `NdM`/`NdM+K`/`NdM-K` formula, floored as 5e prints it. */
@@ -58,7 +83,7 @@ export function hpFromFormula(formula: string): number | null {
   return Math.floor((n * (die + 1)) / 2) + mod
 }
 
-/** Invariant checks for a single creature. Errors = provably wrong; warns = suspect. */
+/** Check one creature against standard 5e arithmetic and structural assumptions. */
 export function validateCreature(c: Creature): Issue[] {
   const issues: Issue[] = []
   /** Record one issue against this creature. */
@@ -231,8 +256,8 @@ export function validateSpellDataset(spells: Spell[]): DatasetReport {
   return report(spells.length, issues)
 }
 
-/** Validate every creature plus dataset-wide duplicate-id checks; tally errors by field. */
-export function validateDataset(creatures: Creature[]): DatasetReport {
+/** Validate creatures, retain cited deviations as warnings, and report duplicate IDs. */
+export function validateDataset(creatures: Creature[], exceptions: readonly ValidationException[] = []): DatasetReport {
   const issues: Issue[] = []
 
   // Dataset-level: duplicate ids.
@@ -241,7 +266,14 @@ export function validateDataset(creatures: Creature[]): DatasetReport {
   for (const [id, n] of seen)
     if (n > 1) issues.push({ id, name: id, field: 'id', severity: 'error', message: `duplicate id (${n}×)` })
 
-  for (const c of creatures) issues.push(...validateCreature(c))
+  for (const c of creatures) {
+    for (const issue of validateCreature(c)) {
+      const reviewed = exceptions.find((exception) => matchesException(c, issue, exception))
+      if (reviewed) {
+        issues.push({ ...issue, severity: 'warn', review: { reason: reviewed.reason, evidence: reviewed.evidence } })
+      } else issues.push(issue)
+    }
+  }
 
   return report(creatures.length, issues)
 }

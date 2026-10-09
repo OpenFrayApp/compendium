@@ -13,6 +13,8 @@
     "ingest:brood-and-bloom-spells": "node scripts/ingest-brood-and-bloom-spells.ts",
     "ingest:strong-waters-spells": "node scripts/ingest-strong-waters-spells.ts",
     "ingest:waking-garden": "node scripts/ingest-waking-garden.ts",
+    "ingest:khyberia": "node scripts/ingest-khyberia.ts",
+    "prepare:open5e": "node scripts/prepare-open5e.ts",
     "validate": "node scripts/validate-compendium.ts",
     "estimate:cr": "node scripts/estimate-cr.ts",
     "typecheck": "tsc --noEmit",
