@@ -1,7 +1,19 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { createHash } from "node:crypto";
+import { join } from "node:path";
+import {
+  legacySpellDocument,
+  type LegacySpellClassSnapshot,
+} from "../src/compendium/open5eSpellClasses.ts";
 import {
   EXCLUDED_OPEN5E_SPELL_SOURCES,
   assertSpellSnapshot,
@@ -28,14 +40,16 @@ async function fetchJson(url: string): Promise<unknown> {
 
 const args = process.argv.slice(2);
 const strict = args.includes("--strict");
-const [key, cachePath, ...extra] = args.filter((arg) => arg !== "--strict");
+const [key, cachePath, legacyCachePath, ...extra] = args.filter(
+  (arg) => arg !== "--strict",
+);
 if (
   !key ||
   extra.length ||
   args.some((arg) => arg.startsWith("--") && arg !== "--strict")
 ) {
   throw new Error(
-    "Usage: npm run prepare:open5e-spells -- <document-key|all> [snapshot.json] [--strict]",
+    "Usage: npm run prepare:open5e-spells -- <document-key|all> [snapshot.json] [legacy-cache-directory] [--strict]",
   );
 }
 const loaded: Open5eSpellSnapshot = cachePath
@@ -104,9 +118,36 @@ for (const document of selected) {
     ),
   };
   writeFileSync(`${dir}/raw.json`, JSON.stringify(local, null, 2));
-  const { spells, report } = prepareOpen5eSpells(local, document);
+  const legacyFile = legacyCachePath
+    ? join(legacyCachePath, `${legacySpellDocument(document)}.json`)
+    : undefined;
+  const legacyRaw =
+    legacyFile && existsSync(legacyFile)
+      ? readFileSync(legacyFile, "utf8")
+      : undefined;
+  const legacy: LegacySpellClassSnapshot | undefined = legacyRaw
+    ? JSON.parse(legacyRaw)
+    : undefined;
+  const { spells, report } = prepareOpen5eSpells(local, document, legacy);
+  if (legacyRaw) writeFileSync(`${dir}/raw-v1.json`, legacyRaw);
+  else rmSync(`${dir}/raw-v1.json`, { force: true });
   writeFileSync(`${dir}/candidate-spells.json`, JSON.stringify(spells));
-  writeFileSync(`${dir}/report.json`, JSON.stringify(report, null, 2));
+  writeFileSync(
+    `${dir}/report.json`,
+    JSON.stringify(
+      {
+        ...report,
+        legacyClassSnapshot: legacyRaw
+          ? {
+              document: legacySpellDocument(document),
+              sha256: createHash("sha256").update(legacyRaw).digest("hex"),
+            }
+          : null,
+      },
+      null,
+      2,
+    ),
+  );
   index.push({
     document,
     rawCount: report.rawCount,

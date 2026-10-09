@@ -41,4 +41,8 @@ Deep Magic Extended, Warlock, and the Kobold compilation require their underlyin
 
 Open5e Originals requires its own content grant and required notices. Black Flag’s v1 ORC label and v2 CC-BY label require publisher verification if spell records become available.
 
-Preparation reports four duration errors and 121 component warnings across the five Kobold feeds. Compare source fields before correcting them; do not infer concentration, materials, or class assignments. Passing dataset validation does not resolve the licensing gates.
+Preparation has no duration errors. Moon Trap, Iron Gut, Stone Aegis, and Mind Maze explicitly have conditional durations without Concentration in both API versions. The validator accepts those durations without changing the source flags.
+
+Complete v1 snapshots recover 533 absent class lists when source aliases, stable IDs, names, and prose match. Existing v2 assignments remain unchanged. Each report records recovered classes and the legacy snapshot hash.
+
+The five Kobold feeds retain 121 component warnings. Both API versions lack the corresponding material descriptions or carry a non-material casting note. Do not invent missing materials. Passing dataset validation does not resolve the licensing gates.

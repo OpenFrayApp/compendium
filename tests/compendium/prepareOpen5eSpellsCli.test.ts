@@ -141,6 +141,51 @@ it("replays offline, keeps source IDs distinct, protects SRD datasets, and fails
       { cwd: dir, encoding: "utf8" },
     );
     expect(strict.status, strict.stderr).toBe(1);
+    const legacyDir = join(dir, "legacy");
+    mkdirSync(legacyDir);
+    writeFileSync(
+      join(legacyDir, "test.json"),
+      JSON.stringify({
+        count: 1,
+        next: null,
+        results: [
+          {
+            slug: "test",
+            name: "Same Spell",
+            desc: "You create a spark.",
+            dnd_class: "Wizard, Ranger",
+            document__slug: "test",
+          },
+        ],
+      }),
+    );
+    const recovered = spawnSync(
+      process.execPath,
+      [script, "all", cache, legacyDir],
+      {
+        cwd: dir,
+        encoding: "utf8",
+      },
+    );
+    expect(recovered.status, recovered.stderr).toBe(0);
+    const recoveredSpell = JSON.parse(
+      readFileSync(join(root, "test/candidate-spells.json"), "utf8"),
+    )[0];
+    expect(recoveredSpell.classes).toEqual(["Wizard", "Ranger"]);
+    expect(recoveredSpell.mechanics).toBeUndefined();
+    const recoveredReport = JSON.parse(
+      readFileSync(join(root, "test/report.json"), "utf8"),
+    );
+    expect(recoveredReport.legacyClassSnapshot.sha256).toMatch(
+      /^[a-f0-9]{64}$/,
+    );
+    expect(readFileSync(join(root, "test/raw-v1.json"), "utf8")).toBe(
+      readFileSync(join(legacyDir, "test.json"), "utf8"),
+    );
+    expect(
+      JSON.parse(readFileSync(join(root, "test/raw.json"), "utf8")).records[0]
+        .classes,
+    ).toEqual([]);
     const protectedSource = spawnSync(
       process.execPath,
       [script, "srd-2024", cache],
