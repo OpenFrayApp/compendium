@@ -41,7 +41,17 @@ The declaration includes spells as Open Game Content, excluding place names and 
 
 A keyword screen of the 91 prepared candidates flags **Deadly Salvo**. Its prose invokes the gunpowder weapon property and refers to the Adventuring Gear chapter. Review the publisher spell page and declaration before approving it. Do not copy the excluded weapon rules or remove the dependency from its mechanics. The remaining cards still require an exclusions review; a keyword screen does not establish clearance.
 
-Obtain the complete final Open Game License page, including all Section 15 entries, and the relevant spell pages before publication approval.
+A second supplied screenshot contains OGL 1.0a sections 1 through 15 and the complete chain ending in _Tome of Heroes_. Its SHA-256 is `8da2cf2da30a4e90adc93a2d13769a53d2ac1766a413d4334f4e58c769a2df98`. The [Section 15 transcript](./tome-of-heroes-section-15.md) preserves its 23 notices. The license-page evidence requirement is satisfied for this source.
+
+A prose review of all 91 prepared candidates found no additional obvious references to the named exclusions or setting-specific characters and places. This review does not verify their missing metadata against the publisher spell pages. No publication approval has been added.
+
+The dataset retains 36 missing-material-description warnings, including Deadly Salvo. All candidates have class lists, but the recovered labels include `Sorceror`. Source review must also resolve these prose ambiguities:
+
+- **Immolating Gibbet:** “pulled up to 60 into the air” omits a distance unit.
+- **Less Fool, I:** “advantage on spells” leaves the affected roll unclear.
+- **Secret Blind:** names a “disintegration” spell. Verify the source wording before changing it.
+
+Obtain the relevant publisher spell pages to resolve those fields. Do not silently correct or infer mechanics from familiar SRD effects.
 
 ## Recovered import provenance
 
@@ -91,7 +101,7 @@ Keep supplied PDFs outside Git. A local folder path is sufficient; contributors 
 
 ## Publication gates
 
-Deep Magic requires its edition-specific OGC/PI declaration and complete Section 15. Tome of Heroes requires the complete chain and an exclusions review.
+Deep Magic requires its edition-specific OGC/PI declaration and complete Section 15. Tome of Heroes has its declaration and complete chain; its remaining gates are source-field review, the Deadly Salvo decision, and console attribution and publication integration.
 
 Deep Magic Extended, Warlock, and the Kobold compilation require their underlying book or issue identities, declarations, and chains. Their Community Use Policy descriptions do not establish an independent OGL grant.
 
