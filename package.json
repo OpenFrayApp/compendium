@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Compendium data-generation tooling for OpenFray \u2014 ingests SRD and third-party sources into OpenFray's Creature schema, validates the output, and emits the JSON the app ships.",
+  "description": "Compendium data-generation tooling for OpenFray — ingests SRD and third-party sources into OpenFray's Creature schema, validates the output, and emits the JSON the app ships.",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "ingest:srd-2014": "node scripts/ingest-srd-2014.ts",
@@ -13,6 +13,11 @@
     "ingest:brood-and-bloom-spells": "node scripts/ingest-brood-and-bloom-spells.ts",
     "ingest:strong-waters-spells": "node scripts/ingest-strong-waters-spells.ts",
     "ingest:waking-garden": "node scripts/ingest-waking-garden.ts",
+    "prepare:open5e-spells": "node scripts/prepare-open5e-spells.ts",
+    "prepare:stds-spells": "node scripts/prepare-spells-that-dont-suck.ts",
+    "prepare:so-many-spells": "node scripts/prepare-so-many-spells.ts",
+    "prepare:kibbles-v23-spells": "node scripts/prepare-kibbles-v23-spells.ts",
+    "export:reference-spells": "node scripts/export-reference-spells.ts",
     "validate": "node scripts/validate-compendium.ts",
     "estimate:cr": "node scripts/estimate-cr.ts",
     "typecheck": "tsc --noEmit",
@@ -20,6 +25,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "parse5": "^8.0.1",
     "typescript": "~5.7.2",
     "vitest": "^3.0.0"
   }
