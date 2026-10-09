@@ -55,7 +55,19 @@ The dataset retains 36 missing-material-description warnings, including Deadly S
 - **Less Fool, I:** “advantage on spells” leaves the affected roll unclear.
 - **Secret Blind:** names a “disintegration” spell. Verify the source wording before changing it.
 
-Obtain the relevant publisher spell pages to resolve those fields. Do not silently correct or infer mechanics from familiar SRD effects.
+The PDF page images confirm the missing distance unit in **Immolating Gibbet** (page 288) and the unclear advantage wording in **Less Fool, I** (page 292). Preserve those printed ambiguities unless publisher errata resolves them. The metadata review must cover every header, not only material warnings: **Jagged Forcelance** (page 291) is Evocation with Concentration up to 1 minute, while the API says Transmutation, Instantaneous, and no Concentration. Its material component is “a strand of gold wire.”
+
+The publisher’s [errata page](https://koboldpress.com/errata/#tome-of-heroes), dated May 29, 2025, includes five spell corrections:
+
+| Spell                   | Page | Correction                                                                                            | API status      |
+| ----------------------- | ---: | ----------------------------------------------------------------------------------------------------- | --------------- |
+| Conjure Construct       |  278 | Higher-level challenge rating increases above a 6th-level slot                                        | Already present |
+| Glare                   |  284 | Duration is 1 round                                                                                   | Absent          |
+| Instant Armored Vehicle |  289 | Vehicle has a carrying capacity of 1,000 pounds                                                       | Absent          |
+| Outmaneuver             |  297 | Movement remains 0 until the end of the target’s next turn; clarify the triggering opportunity attack | Absent          |
+| Silvershout             |  303 | Dust persists until removed; identify shapechangers by Change Shape or Shapechanger                   | Absent          |
+
+Apply the publisher’s exact corrected wording through the generator. Do not infer mechanics from familiar SRD effects or treat unreviewed OCR as authoritative.
 
 ## Recovered import provenance
 

@@ -34,6 +34,20 @@ class TomeOfHeroesReviewTests(unittest.TestCase):
         self.assertTrue(all(line["fonts"] == ["Helvetica"] for line in lines))
         self.assertTrue(all(line["sizes"] == [11.0] for line in lines))
 
+    def test_spell_column_clips_scale_with_the_scanned_page(self):
+        """Keep both text columns isolated at ordinary and double-size scan dimensions."""
+        ordinary = toh.spell_column_clips(fitz.Rect(0, 0, 612, 792))
+        enlarged = toh.spell_column_clips(fitz.Rect(0, 0, 1224, 1584))
+        self.assertLess(ordinary[0].x1, ordinary[1].x0)
+        self.assertEqual(list(enlarged[0]), [value * 2 for value in ordinary[0]])
+        self.assertEqual(list(enlarged[1]), [value * 2 for value in ordinary[1]])
+        self.assertLess(enlarged[1].x1, 1224)
+        self.assertLess(enlarged[1].y1, 1584)
+        even = toh.spell_column_clips(fitz.Rect(0, 0, 612, 792), physical_page=288)
+        self.assertEqual(even[0].x0, ordinary[0].x0 + 28)
+        self.assertEqual(even[1].x1, ordinary[1].x1 + 28)
+        self.assertLess(even[0].x1, even[1].x0)
+
     def test_empty_scan_requires_explicit_ocr(self):
         """Reject an empty text snapshot instead of treating scanned pages as reviewed."""
         with tempfile.TemporaryDirectory() as directory:
