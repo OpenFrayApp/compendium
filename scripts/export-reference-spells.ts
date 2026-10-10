@@ -5,16 +5,20 @@ import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   approveReferenceSpells,
-  REFERENCE_SPELL_APPROVALS,
+  referenceSpellApprovalsFor,
 } from "../src/compendium/referenceSpellPublication.ts";
 
-const destination = process.argv[2];
-if (!destination)
+const [destination, flag, source, ...extra] = process.argv.slice(2);
+if (
+  !destination ||
+  extra.length ||
+  (flag !== undefined && (flag !== "--source" || !source))
+)
   throw new Error(
-    "Usage: npm run export:reference-spells -- <console-public-compendium-directory>",
+    "Usage: npm run export:reference-spells -- <console-public-compendium-directory> [--source <approved-source>]",
   );
 // Check every library before exporting any of them, so a stale snapshot cannot partially ship.
-const approved = REFERENCE_SPELL_APPROVALS.map((approval) => {
+const approved = referenceSpellApprovalsFor(source).map((approval) => {
   const content = readFileSync(
     join("output", approval.preparation, "candidate-spells.json"),
     "utf8",

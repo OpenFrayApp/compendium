@@ -12,18 +12,18 @@ parser) out of the app keeps the app lean and the data reproducible here.
 
 ## Sources
 
-| Command | Source | Notes |
-|---|---|---|
-| `npm run ingest:srd52` | **SRD 5.2.1 creatures via WotC's official CC-BY PDF** | the authoritative 5.2 creature pipeline |
-| `npm run ingest:srd52-spells` | **SRD 5.2.1 spells via WotC's official CC-BY PDF** | the authoritative 5.2 spell pipeline |
-| `npm run ingest:srd-2014` | SRD 5.1 via [dnd5eapi.co](https://www.dnd5eapi.co) | structured 2014 spellcasting/slots |
-| `tob1.py` → `ingest-tob1.ts` | **Tome of Beasts (Kobold Press)** via the book's PDF | OGL 1.0a, 384 OGC creatures; edition 5.0 |
-| `tob2.py` → `ingest-tob2.ts` | **Tome of Beasts 2 (Kobold Press)** via the book's PDF | OGL 1.0a, 389 OGC creatures; edition 5.0 |
-| `tob3.py` → `ingest-tob3.ts` | **Tome of Beasts 3 (Kobold Press)** via the book's PDF | OGL 1.0a, 395 OGC creatures; edition 5.0 |
-| `npm run ingest:khyberia` | **Khyberia SRD (October 2023)** by Nick Stefanski | CC-BY-4.0; 21 creatures; edition 5.0; supplied PDF required |
-| `npm run ingest:brood-and-bloom` | **Brood & Bloom** — original OpenFray creatures | authored in `src/compendium/brood-and-bloom.ts`; no PDF, no parser; edition 5.5 |
-| `npm run ingest:brood-and-bloom-spells` | **Brood & Bloom** — original OpenFray spells | authored in `src/compendium/brood-and-bloom-spells.ts` |
-| `npm run ingest:strong-waters-spells` | **On Strong Waters and Potent Simples** — original OpenFray spells | authored in `src/compendium/strong-waters-spells.ts`; spells and presets only, no creatures |
+| Command                                 | Source                                                             | Notes                                                                                       |
+| --------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| `npm run ingest:srd52`                  | **SRD 5.2.1 creatures via WotC's official CC-BY PDF**              | the authoritative 5.2 creature pipeline                                                     |
+| `npm run ingest:srd52-spells`           | **SRD 5.2.1 spells via WotC's official CC-BY PDF**                 | the authoritative 5.2 spell pipeline                                                        |
+| `npm run ingest:srd-2014`               | SRD 5.1 via [dnd5eapi.co](https://www.dnd5eapi.co)                 | structured 2014 spellcasting/slots                                                          |
+| `tob1.py` → `ingest-tob1.ts`            | **Tome of Beasts (Kobold Press)** via the book's PDF               | OGL 1.0a, 384 OGC creatures; edition 5.0                                                    |
+| `tob2.py` → `ingest-tob2.ts`            | **Tome of Beasts 2 (Kobold Press)** via the book's PDF             | OGL 1.0a, 389 OGC creatures; edition 5.0                                                    |
+| `tob3.py` → `ingest-tob3.ts`            | **Tome of Beasts 3 (Kobold Press)** via the book's PDF             | OGL 1.0a, 395 OGC creatures; edition 5.0                                                    |
+| `npm run ingest:khyberia`               | **Khyberia SRD (October 2023)** by Nick Stefanski                  | CC-BY-4.0; 21 creatures; edition 5.0; supplied PDF required                                 |
+| `npm run ingest:brood-and-bloom`        | **Brood & Bloom** — original OpenFray creatures                    | authored in `src/compendium/brood-and-bloom.ts`; no PDF, no parser; edition 5.5             |
+| `npm run ingest:brood-and-bloom-spells` | **Brood & Bloom** — original OpenFray spells                       | authored in `src/compendium/brood-and-bloom-spells.ts`                                      |
+| `npm run ingest:strong-waters-spells`   | **On Strong Waters and Potent Simples** — original OpenFray spells | authored in `src/compendium/strong-waters-spells.ts`; spells and presets only, no creatures |
 
 > **Per-book extractors, not shared.** `tob1.py` / `tob2.py` / `tob3.py` all use **pymupdf
 > (`import fitz`)**, but each book's fonts differ, so a filter tuned to one breaks the others
@@ -83,11 +83,11 @@ existing PDF-derived datasets unchanged. The active `all` batch is empty.
 Historical A5E, Black Flag, and ToB 2023 reviews remain available by explicit
 document key. Tal’Dorei is no longer a preparation candidate.
 
-| Open5e document key | Source | Records observed during preparation |
-|---|---|---|
-| `a5e-mm` | Monstrous Menagerie | 586 |
-| `bfrd` | Black Flag SRD | 360 |
-| `tob-2023` | Tome of Beasts 1 (2023 Edition) | 408 |
+| Open5e document key | Source                          | Records observed during preparation |
+| ------------------- | ------------------------------- | ----------------------------------- |
+| `a5e-mm`            | Monstrous Menagerie             | 586                                 |
+| `bfrd`              | Black Flag SRD                  | 360                                 |
+| `tob-2023`          | Tome of Beasts 1 (2023 Edition) | 408                                 |
 
 Counts can change upstream. None of these historical review sources is selected
 for publication or included in the console. ToB 2023 has been removed from the
@@ -250,6 +250,24 @@ The cards omit edition and rollable mechanics until reference publication approv
 The report retains `publishable: false` pending console registration, attribution, and publication checks.
 Existing reference approvals and their accepted warnings remain unchanged.
 
+## Deep Magic 2020 reference spells
+
+The [source review](./docs/deep-magic-2020-review.md) covers the 2020 book, not its 2023 successors.
+The matched Open5e selection is accepted provenance evidence under the book’s selective spell grant.
+Preparation consolidates Anchoring Rope, restores verified headers, classes, and effect wording, and applies publisher errata.
+Eleven custom-ritual spells remain withheld. Supporting rules and creature stat blocks are not imported.
+
+```bash
+npm run prepare:deep-magic-2020-spells -- output/open5e-spell-preparation/deepm/candidate-spells.json
+npm run validate -- --spells output/deep-magic-2020-preparation/candidate-spells.json
+npm run export:reference-spells -- ../console/public/compendium --source kobold-press-deepm
+```
+
+The 503-card snapshot is approved only for manual reference publication.
+A changed snapshot requires renewed review. The [35-notice transcript](./docs/deep-magic-2020-section-15.md) supplies its attribution chain.
+Preparation omits edition and combat mechanics; export assigns the reviewed 2014 edition.
+PDFs, OCR caches, and preparation artifacts remain outside Git.
+
 ## Spells That Don’t Suck from GM Binder
 
 This separate pipeline uses the [creators’ GM Binder document](https://www.gmbinder.com/share/-NR0OWlW60yv2EfA3qQp).
@@ -344,8 +362,8 @@ Add `--strict` to the preparation command to enforce the publishing gate.
 
 ## Publish reviewed reference spells
 
-Four pinned snapshots are approved for opt-in reference cards:
-Kibbles v2.3 (295), Spells That Don’t Suck (181), So Many Spells (179), and Tome of Heroes (90).
+Five pinned snapshots are approved for opt-in reference cards:
+Deep Magic 2020 (503), Kibbles v2.3 (295), Spells That Don’t Suck (181), So Many Spells (179), and Tome of Heroes (90).
 Their [publication record](./docs/reference-spell-publication.md) documents the
 source hashes, source-specific decisions, attribution, and manual-only limits.
 Preparation reports keep their conservative gates for future snapshots.

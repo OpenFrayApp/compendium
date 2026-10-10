@@ -7,6 +7,7 @@ import type { Spell } from "../../src/schema/spell.ts";
 import {
   approveReferenceSpells,
   REFERENCE_SPELL_APPROVALS,
+  referenceSpellApprovalsFor,
   type ReferenceSpellApproval,
 } from "../../src/compendium/referenceSpellPublication.ts";
 
@@ -39,19 +40,42 @@ function approvalFor(content: string): ReferenceSpellApproval {
 }
 
 describe("reference-only publication approvals", () => {
-  it("limits publication to four explicitly reviewed snapshots", () => {
+  it("limits publication to five explicitly reviewed snapshots", () => {
     expect(REFERENCE_SPELL_APPROVALS.map((approval) => approval.count)).toEqual(
-      [295, 181, 179, 90],
+      [503, 295, 181, 179, 90],
     );
     expect(
       new Set(REFERENCE_SPELL_APPROVALS.map((approval) => approval.source))
         .size,
-    ).toBe(4);
+    ).toBe(5);
     expect(
       REFERENCE_SPELL_APPROVALS.flatMap(
         (approval) => approval.acceptedWarningIds,
       ),
     ).toEqual(["kibblestasty-casting-compendium-v2.3:bile-beam"]);
+  });
+
+  it("selects only an approved source and rejects unknown or empty selections", () => {
+    expect(referenceSpellApprovalsFor()).toBe(REFERENCE_SPELL_APPROVALS);
+    expect(referenceSpellApprovalsFor("kobold-press-deepm")).toEqual([
+      REFERENCE_SPELL_APPROVALS[0],
+    ]);
+    expect(() => referenceSpellApprovalsFor("unreviewed")).toThrow(
+      "No reference spell approval",
+    );
+    expect(() => referenceSpellApprovalsFor("")).toThrow(
+      "No reference spell approval",
+    );
+  });
+
+  it("pins Deep Magic 2020 as a 503-card manual-only 2014-edition library", () => {
+    expect(referenceSpellApprovalsFor("kobold-press-deepm")[0]).toMatchObject({
+      count: 503,
+      edition: "5.0",
+      acceptedWarningIds: [],
+      sha256:
+        "12b17d8c76deb0d6169b5ae5d46c5a7f98f205870ba64df464f85efc1bd9d0c7",
+    });
   });
 
   it("accepts validated reference cards and rejects changes after approval", () => {
