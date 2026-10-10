@@ -18,6 +18,15 @@ export interface ReferenceSpellApproval {
 
 export const REFERENCE_SPELL_APPROVALS: ReferenceSpellApproval[] = [
   {
+    source: "kobold-press-deepm",
+    preparation: "deep-magic-2020-preparation",
+    file: "deep-magic-2020-spells.json",
+    count: 503,
+    edition: "5.0",
+    sha256: "12b17d8c76deb0d6169b5ae5d46c5a7f98f205870ba64df464f85efc1bd9d0c7",
+    acceptedWarningIds: [],
+  },
+  {
     source: "kibblestasty-casting-compendium-v2.3",
     preparation: "kibbles-casting-v23-preparation",
     file: "kibbles-casting-v23-spells.json",
@@ -54,6 +63,19 @@ export const REFERENCE_SPELL_APPROVALS: ReferenceSpellApproval[] = [
     acceptedWarningIds: [],
   },
 ];
+
+/** Select approved libraries and reject an unknown source before reading or writing files. */
+export function referenceSpellApprovalsFor(
+  source?: string,
+): ReferenceSpellApproval[] {
+  if (source === undefined) return REFERENCE_SPELL_APPROVALS;
+  const approvals = REFERENCE_SPELL_APPROVALS.filter(
+    (approval) => approval.source === source,
+  );
+  if (!approvals.length)
+    throw new Error(`No reference spell approval for ${source}`);
+  return approvals;
+}
 
 /** Enforce the reviewed snapshot, source boundaries, and reference-only publication verdict. */
 export function approveReferenceSpells(

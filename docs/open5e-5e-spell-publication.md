@@ -83,6 +83,20 @@ The publisher’s [errata page](https://koboldpress.com/errata/#tome-of-heroes),
 
 Apply the publisher’s exact corrected wording through the generator. Do not infer mechanics from familiar SRD effects or treat unreviewed OCR as authoritative.
 
+## Supplied Deep Magic 2020 evidence
+
+The supplied 358-page PDF identifies the 2020 edition on physical page 3.
+Its SHA-256 is `0f2e99f8184d8dbe93b9b1dcf0c90959cf7cd8c537d6ed327f1282e39fa486b8`.
+The declaration grants previously published spells and backer spells as Open Game Content.
+Physical page 357 contains OGL 1.0a and Section 15. Both pages were visually checked.
+The [copyright-chain transcript](./deep-magic-2020-section-15.md) preserves its 35 notices.
+The [2020 review](./deep-magic-2020-review.md) records the pinned 515-card snapshot,
+OCR limitations, candidate-page matches, resolved discrepancies, and the pinned reference approval.
+The 2023 volumes are outside this review. The matched Open5e subset is accepted
+as provenance evidence under the 2020 grant. The 17 targeted named-reference and
+supporting-rule flags are reviewed under that basis. Eleven custom-ritual spells remain
+withheld. The corrected 503-card snapshot is approved for optional manual reference publication.
+
 ## Recovered import provenance
 
 [Open5e import PR #178](https://github.com/open5e/open5e-api/pull/178) identifies Extended, Compilation, and Warlock as a Foundry-module import. Its discussion records uncertainty about the underlying publications. Contributors subsequently added class and school metadata using a community wiki.
@@ -131,7 +145,7 @@ Keep supplied PDFs outside Git. A local folder path is sufficient; contributors 
 
 ## Publication gates
 
-Deep Magic requires its edition-specific OGC/PI declaration and complete Section 15. Tome of Heroes has its declaration and complete chain. Its source-specific preparation withholds Deadly Salvo and applies book metadata and publisher errata. Reference approval, console attribution, and publication integration remain separate gates.
+Deep Magic 2020 has its edition-specific declaration and complete license page. Its 35-notice attribution transcript is verified. The matched Open5e selection is the accepted provenance basis. The 17 targeted licensing flags are reviewed under that basis. The corrected 503-card snapshot has hash-pinned manual-reference approval. Tome of Heroes has its declaration and complete chain. Its source-specific preparation withholds Deadly Salvo and applies book metadata and publisher errata. Reference approval, console attribution, and publication integration remain separate gates.
 
 Deep Magic Extended, Warlock, and the Kobold compilation require their underlying book or issue identities, declarations, and chains. Their Community Use Policy descriptions do not establish an independent OGL grant.
 

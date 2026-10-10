@@ -1,6 +1,6 @@
 # Reference spell publication
 
-The console ships four opt-in reference libraries. Their spell cards have no
+Five snapshots are approved for opt-in reference libraries. Their spell cards have no
 structured attacks, damage, saves, or scaling. The console also blocks same-name
 spell automation for these source IDs. Each spell has a source-specific manual
 verdict in the console’s coverage tests.
@@ -10,7 +10,7 @@ verdict in the console’s coverage tests.
 The approval module is `src/compendium/referenceSpellPublication.ts`.
 It pins each generated candidate file’s SHA-256 and expected spell count.
 A changed snapshot requires another source review and a renewed approval.
-Export validates every library before writing any file.
+Export validates every selected library before writing any file. The optional `--source` flag selects one approved library.
 
 | Source                           | Cards | Source snapshot SHA-256                                            |
 | -------------------------------- | ----: | ------------------------------------------------------------------ |
@@ -73,6 +73,22 @@ The approved candidate hash is `193349583d5f5a6e28d4396a32a3e19784c56f0046d6f5a2
 These cards have zero validation findings and no rollable mechanics.
 Export assigns the reviewed 2014 edition; console coverage supplies an independent manual verdict for every card.
 The existing 655 CC-BY reference cards and Bile Beam’s accepted warning remain unchanged.
+
+### Deep Magic 2020
+
+The [review](./deep-magic-2020-review.md) records the accepted Open5e selection basis,
+visual exception checks, printed mechanics corrections, class reconciliation, and publisher errata.
+The grant and complete license are verified on physical PDF pages 3 and 357.
+The [Section 15 transcript](./deep-magic-2020-section-15.md) preserves 35 notices.
+The console credits reproduce the full OGL, that chain, and the dataset’s OGC designation.
+
+The approved 503-card candidate SHA-256 is
+`12b17d8c76deb0d6169b5ae5d46c5a7f98f205870ba64df464f85efc1bd9d0c7`.
+The exported canonical JSON SHA-256, including edition 5.0, is
+`6ea27875af39266eaec4b445289204a657a411b97feee31314fe65c9eaa6ff85`.
+Eleven custom-ritual spells remain withheld; Anchoring Rope’s duplicate is consolidated.
+Supporting systems and summoned-creature stat blocks stay outside the library.
+Printed ambiguities remain unchanged. Every card has its own manual coverage verdict.
 
 ## Export
 
