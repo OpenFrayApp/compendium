@@ -8,11 +8,11 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { mapTob3, type Tob3Block } from '../../src/compendium/tob3.ts'
+import { map2014StatBlock, type StatBlock2014 } from '../../src/formats/statBlock2014.ts'
 import { mapSrd52 } from '../../src/compendium/srd52.ts'
 
 const fixture = fileURLToPath(new URL('../fixtures/formats/stat-block-2014.json', import.meta.url))
-const blocks: Tob3Block[] = JSON.parse(readFileSync(fixture, 'utf8'))
+const blocks: StatBlock2014[] = JSON.parse(readFileSync(fixture, 'utf8'))
 const baseline = JSON.parse(
   readFileSync(new URL('../fixtures/formats/parsing-baseline.json', import.meta.url), 'utf8')
 ) as Record<string, string>
@@ -52,7 +52,7 @@ describe('offline parsing command byte parity', () => {
 
 describe('retained parsing interpretations', () => {
   it('distinguishes daily pools, slots, apostrophe identities, and preserved conditional prose', () => {
-    const innate = mapTob3(blocks[0], 'test')
+    const innate = map2014StatBlock(blocks[0], 'test')
     expect(innate.id).toBe('test:test-warden-s-watch')
     expect(innate.edition).toBe('5.0')
     expect(innate.spellcasting?.groups).toEqual([
@@ -85,11 +85,11 @@ describe('retained parsing interpretations', () => {
       recharge: { type: 'perDay', value: 1 },
       save: { ability: 'dex', dc: 12, onSave: 'half' }
     })
-    expect(mapTob3(blocks[1], 'test').spellcasting?.slots).toEqual({ '1': 4, '2': 2 })
+    expect(map2014StatBlock(blocks[1], 'test').spellcasting?.slots).toEqual({ '1': 4, '2': 2 })
   })
 
   it('retains action-style daily groups independently of 2014 trait pools', () => {
-    const creature = mapTob3(blocks[2], 'test')
+    const creature = map2014StatBlock(blocks[2], 'test')
     expect(creature.spellcasting?.groups[1].usage).toEqual({ type: 'perDay', per: 1 })
     expect(creature.spellcasting?.groups[0].spells[0].ref).toBe('srd-5.1:hunters-mark')
     expect(creature.actions?.map((action) => action.id)).toEqual([

@@ -10,14 +10,14 @@
  * one license-clean route to it.
  *
  * The mapping is an adapter, not a second parser. Open5e hands back structured fields;
- * this file renders them into the 2014 stat-block lines `mapTob3` already reads, then
+ * this file renders them into the 2014 stat-block lines `map2014StatBlock` already reads, then
  * hands the block over. Every parser the three Tomes use — speeds, senses, skills,
  * attacks, saves, recharge, slot and innate spellcasting — is therefore the same code,
  * and a fix to one book fixes all four.
  */
 
 import type { Creature } from '../schema/creature.ts'
-import { mapTob3, type Tob3Block } from './tob3.ts'
+import { map2014StatBlock, type StatBlock2014 } from '../formats/statBlock2014.ts'
 
 /**
  * Named individuals the book reserves as Product Identity, excluded wholesale.
@@ -195,8 +195,8 @@ const entry = (e: { name?: string; desc?: string }) => ({
   text: flattenMarkdown(e.desc ?? ''),
 })
 
-/** Assemble the block `mapTob3` consumes from one Open5e record. */
-export function toBlock(r: Open5eCreature): Tob3Block {
+/** Assemble the block `map2014StatBlock` consumes from one Open5e record. */
+export function toBlock(r: Open5eCreature): StatBlock2014 {
   const sections: Record<string, { name: string; text: string }[]> = {}
   // Open5e's own stat-block ordering, so Multiattack leads its section as it does in print.
   const actions = [...(r.actions ?? [])].sort(
@@ -213,10 +213,10 @@ export function toBlock(r: Open5eCreature): Tob3Block {
     header: header(r),
     traits: (r.traits ?? []).map(entry),
     sections,
-  } as Tob3Block
+  } as StatBlock2014
 }
 
 /** Map one Open5e Creature Codex record into our schema, through the shared 2014 mapper. */
 export function mapOpen5eCcdx(r: Open5eCreature, source = 'kobold-press-ccdx'): Creature {
-  return mapTob3(toBlock(r), source)
+  return map2014StatBlock(toBlock(r), source)
 }
