@@ -82,7 +82,7 @@ Validator success alone does not prove that no entries were omitted.
 
 ## Tome of Beasts 1–3 from supplied PDFs
 
-Each book has its own PyMuPDF extractor. All three use the shared `mapTob3(block, source)` mapper.
+Each book has its own PyMuPDF extractor. All three use the shared [`map2014StatBlock(block, source)` mapper](../formats.md).
 These are 2014 libraries; cast spells link to the SRD 5.1 library.
 Supply the reviewed PDFs lawfully and keep them outside Git.
 The corresponding observed datasets have 384, 389, and 395 OGC creatures.
