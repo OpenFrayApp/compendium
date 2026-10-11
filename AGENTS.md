@@ -19,6 +19,13 @@ npm test           # mapper/harness unit tests
 npm run typecheck
 ```
 
+## Branching
+
+Use the persistent `develop` branch for integration. Create short-lived branches
+from `develop` and target their pull requests to `develop`. Promote reviewed,
+licensed, and validated content from `develop` to `main` when ready for release.
+Retain `develop` after each promotion.
+
 ## The rules
 
 - **Consistent tooling.** The PDF extractors use **pymupdf (`import fitz`)**, one

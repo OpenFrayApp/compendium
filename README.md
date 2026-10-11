@@ -471,6 +471,9 @@ cp output/srd-creatures.json output/srd-spells.json ../console/public/compendium
 
 ## Before contributing
 
+Follow the [branching workflow](./AGENTS.md#branching) for feature branches,
+pull-request targets, and promotion to `main`.
+
 Read [AGENTS.md](./AGENTS.md) and the shared
 [Contributing](https://github.com/OpenFrayApp/openfray/blob/main/CONTRIBUTING.md).
 Use [Verification commands](https://github.com/OpenFrayApp/openfray/blob/main/docs/development/verification.md)
