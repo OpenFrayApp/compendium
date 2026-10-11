@@ -171,7 +171,8 @@ npm run validate -- --spells output/open5e-spell-preparation/deepm/candidate-spe
 ```
 
 `all` fetches third-party source documents using the API’s document filter.
-It selects 2014 and 2024 D&D 5e documents, including Open5e Originals and Black Flag.
+It selects supported 2014 and 2024 D&D 5e documents, including Black Flag.
+The [publication policy](./docs/open5e-5e-spell-publication.md#scope) records excluded catalogs.
 It excludes core `srd-2024`, core `srd-2014`, A5E, and unsupported rulesets before making spell requests.
 Spells That Don’t Suck uses its existing direct-publisher source route and is excluded from this preparation.
 Offline replay removes these records from legacy caches before writing artifacts.
