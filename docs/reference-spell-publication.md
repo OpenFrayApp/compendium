@@ -1,9 +1,9 @@
 # Reference spell publication
 
-Five snapshots are approved for opt-in reference libraries. Their spell cards have no
-structured attacks, damage, saves, or scaling. The console also blocks same-name
-spell automation for these source IDs. Each spell has a source-specific manual
-verdict in the console’s coverage tests.
+Six snapshots are approved for opt-in reference libraries. Their spell cards have no
+embedded attacks, damage, saves, or scaling. The console supplies source-specific
+casting profiles for supported board consequences and blocks same-name fallback.
+Unsupported rules remain prose.
 
 ## Approved snapshots
 
@@ -89,6 +89,20 @@ The exported canonical JSON SHA-256, including edition 5.0, is
 Eleven custom-ritual spells remain withheld; Anchoring Rope’s duplicate is consolidated.
 Supporting systems and summoned-creature stat blocks stay outside the library.
 Printed ambiguities remain unchanged. Every card has its own manual coverage verdict.
+
+### Warlock Grimoire
+
+The [content-boundary review](./warlock-content-boundaries.md) selects 35 corrected cards.
+Three located entries and five unsupplied imports remain withheld.
+The console credits contain all four relevant copyright chains and the complete OGL.
+Zymurgic Aura’s unspecified material component is an explicitly accepted warning.
+No material description or contextual class assignment is invented.
+
+The approved candidate SHA-256 is
+`b4998d3f06a869cb81861c52bc863e5da090a1bfbe745b76870656d83fa3cd6f`.
+Every exported card has an exact source, edition, and name-bound casting verdict.
+Ordinary saves, attacks, conditions, and reminders use existing console helpers.
+Unusual saves, conditional riders, summons, terrain, and source subsystems remain manual.
 
 ## Export
 

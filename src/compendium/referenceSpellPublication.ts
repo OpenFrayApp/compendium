@@ -18,6 +18,15 @@ export interface ReferenceSpellApproval {
 
 export const REFERENCE_SPELL_APPROVALS: ReferenceSpellApproval[] = [
   {
+    source: "kobold-press-wz",
+    preparation: "warlock-grimoire-preparation",
+    file: "warlock-grimoire-spells.json",
+    count: 35,
+    edition: "5.0",
+    sha256: "b4998d3f06a869cb81861c52bc863e5da090a1bfbe745b76870656d83fa3cd6f",
+    acceptedWarningIds: ["kobold-press-wz:zymurgic-aura"],
+  },
+  {
     source: "kobold-press-deepm",
     preparation: "deep-magic-2020-preparation",
     file: "deep-magic-2020-spells.json",

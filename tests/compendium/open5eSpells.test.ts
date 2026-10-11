@@ -60,6 +60,21 @@ function snapshot(records = [record()]): Open5eSpellSnapshot {
 }
 
 describe("Open5e spell mapping", () => {
+  it.each(["kp", "open5e", "open5e-2024", "o5e"])(
+    "rejects direct mapping and preparation for excluded source %s",
+    (key) => {
+      const source = document(key);
+      const spell = record({ key: `${key}_fire`, document: { key } });
+      const cache = { ...snapshot([spell]), documents: [source] };
+      expect(() => mapOpen5eSpell(spell, source)).toThrow(
+        "Unsupported spell source",
+      );
+      expect(() => prepareOpen5eSpells(cache, key)).toThrow(
+        "Unsupported spell source",
+      );
+    },
+  );
+
   it("uses namespaced stable API keys, preserves prose, and does not guess mechanics", () => {
     const original = record();
     const before = JSON.stringify(original);
@@ -223,18 +238,10 @@ describe("Open5e spell snapshots", () => {
   });
 
   it("selects all third-party 5e books, including Black Flag, but excludes A5E and core SRDs", () => {
-    const keys = [
-      "deepm",
-      "deepmx",
-      "vom",
-      "wz",
-      "bfrd",
-      "toh",
-      "kp",
-      "open5e",
-    ];
+    const keys = ["deepm", "deepmx", "vom", "wz", "bfrd", "toh"];
     const documents = [
       ...keys.map((key) => document(key)),
+      ...["kp", "open5e", "open5e-2024", "o5e"].map((key) => document(key)),
       document("srd-2014"),
       {
         ...document("srd-2024"),
@@ -310,11 +317,14 @@ describe("Open5e spell snapshots", () => {
       const parsed = new URL(url);
       if (parsed.pathname === "/v2/documents/")
         return {
-          count: 7,
+          count: 11,
           next: null,
           results: [
             document(),
             document("second"),
+            ...["kp", "open5e", "open5e-2024", "o5e"].map((key) =>
+              document(key),
+            ),
             document("srd-2014"),
             document("srd-2024"),
             document("spells-that-dont-suck"),
@@ -342,18 +352,23 @@ describe("Open5e spell snapshots", () => {
     expect(fetchJson).toHaveBeenCalledTimes(3);
   });
 
-  it.each(["srd-2014", "srd-2024", "spells-that-dont-suck"])(
-    "refuses %s before making any spell request",
-    async (key) => {
-      const fetchJson = vi
-        .fn()
-        .mockResolvedValue({ count: 1, next: null, results: [document(key)] });
-      await expect(fetchSpellSnapshot(fetchJson, key)).rejects.toThrow(
-        "Unsupported spell source",
-      );
-      expect(fetchJson).toHaveBeenCalledTimes(1);
-    },
-  );
+  it.each([
+    "srd-2014",
+    "srd-2024",
+    "spells-that-dont-suck",
+    "kp",
+    "open5e",
+    "open5e-2024",
+    "o5e",
+  ])("refuses %s before making any spell request", async (key) => {
+    const fetchJson = vi
+      .fn()
+      .mockResolvedValue({ count: 1, next: null, results: [document(key)] });
+    await expect(fetchSpellSnapshot(fetchJson, key)).rejects.toThrow(
+      "Unsupported spell source",
+    );
+    expect(fetchJson).toHaveBeenCalledTimes(1);
+  });
 
   it("rejects pagination that changes the document filter or responses from another source", async () => {
     const changed = vi

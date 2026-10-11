@@ -21,7 +21,6 @@ const aliases = new Map([
   ["deepm", "dmag"],
   ["deepmx", "dmag-e"],
   ["wz", "warlock"],
-  ["open5e", "o5e"],
 ]);
 
 /** Resolve the explicit v1 document alias without inferring a source from a spell name. */

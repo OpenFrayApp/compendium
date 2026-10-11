@@ -32,12 +32,21 @@ it("replays offline, keeps source IDs distinct, protects SRD datasets, and fails
       "srd-2024",
       "srd-2014",
       "spells-that-dont-suck",
+      "kp",
       "open5e",
+      "open5e-2024",
       "a5e-ag",
       "bfrd",
       "vom",
     ];
-    for (const key of ["spells-that-dont-suck", "a5e-ag"]) {
+    for (const key of [
+      "spells-that-dont-suck",
+      "a5e-ag",
+      "kp",
+      "open5e",
+      "open5e-2024",
+      "o5e",
+    ]) {
       const old = join(dir, "output/open5e-spell-preparation", key);
       mkdirSync(old, { recursive: true });
       writeFileSync(join(old, "candidate-spells.json"), "[]");
@@ -87,34 +96,48 @@ it("replays offline, keeps source IDs distinct, protects SRD datasets, and fails
     const index = JSON.parse(readFileSync(join(root, "index.json"), "utf8"));
     expect(
       index.sources.map((source: { document: string }) => source.document),
-    ).toEqual(["open5e", "second", "test"]);
+    ).toEqual(["second", "test"]);
     expect(index.emptySources).toEqual(["bfrd", "vom"]);
     expect(index.inventory).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ document: "bfrd", rawCount: 0 }),
         expect.objectContaining({ document: "vom", rawCount: 0 }),
-        expect.objectContaining({ document: "open5e", rawCount: 1 }),
       ]),
     );
     expect(index.skipped).toEqual([
       "a5e-ag",
+      "kp",
+      "open5e",
+      "open5e-2024",
       "spells-that-dont-suck",
       "srd-2014",
       "srd-2024",
     ]);
-    for (const key of ["spells-that-dont-suck", "a5e-ag"])
+    for (const key of [
+      "spells-that-dont-suck",
+      "a5e-ag",
+      "kp",
+      "open5e",
+      "open5e-2024",
+      "o5e",
+    ])
       expect(existsSync(join(root, key))).toBe(false);
+    expect(
+      index.inventory.some((source: { document: string }) =>
+        ["kp", "open5e", "open5e-2024", "o5e"].includes(source.document),
+      ),
+    ).toBe(false);
     const discovery = JSON.parse(
       readFileSync(join(root, "discovery.json"), "utf8"),
     );
     expect(
       discovery.documents.map((entry: { key: string }) => entry.key),
-    ).toEqual(["test", "second", "open5e", "bfrd", "vom"]);
+    ).toEqual(["test", "second", "bfrd", "vom"]);
     expect(
       discovery.records.map(
         (entry: { document: { key: string } }) => entry.document.key,
       ),
-    ).toEqual(["test", "second", "open5e"]);
+    ).toEqual(["test", "second"]);
     const first = JSON.parse(
       readFileSync(join(root, "test/candidate-spells.json"), "utf8"),
     );

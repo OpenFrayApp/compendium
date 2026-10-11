@@ -151,6 +151,34 @@ named rulers, Ia’Affrat, and their explicitly named spawn. The sample omits
 Section 15, so the complete attribution chain remains a publishing gate. Console library registration, credits, and shipping the
 vetted datasets require separate work.
 
+## Warlock Grimoire source review
+
+The [content-boundary review](./docs/warlock-content-boundaries.md) records
+source-specific licensing decisions for the located drafts and excludes unsupplied imports.
+The [copyright transcripts](./docs/warlock-section-15.md) preserve the relevant notices.
+The extraction reviews produce no publication or combat approval.
+The source-corrected 35-card selection is authored in `src/compendium/warlockGrimoireSpells.ts`.
+Prepare, validate, and export only that reviewed subset:
+
+```sh
+npm run prepare:warlock-grimoire-spells
+npm run validate -- --spells output/warlock-grimoire-preparation/candidate-spells.json
+npm run export:reference-spells -- ../console/public/compendium --source kobold-press-wz
+```
+
+Its console profiles use existing saves, attacks, conditions, and reminders.
+Unsupported mechanics remain prose. Three located entries and five unsupplied imports remain excluded.
+
+`npm run review:warlock-grimoire -- "$WARLOCK_DRAFT" "$WARLOCK_RTF"` compares
+pinned local drafts with the supplied 2019 book. Add
+`--grimoire-2 "$WARLOCK_GRIMOIRE_2_RTF"` to include the 2020 volume, and
+`--grimoire-3 "$WARLOCK_GRIMOIRE_3_RTF"` for the 2022 volume. Include
+`--grimoire-4 "$WARLOCK_GRIMOIRE_4_RTF"` to record the 2023 volume’s negative
+match inventory.
+It requires macOS `textutil`. Private review artifacts stay under ignored `output/`; no spell cards or approvals
+are produced. See the [source review](./docs/warlock-grimoire-review.md) for
+located entries, unresolved drafts, corrections, and publication gates.
+
 ## Prepare Open5e spell libraries
 
 `prepare:open5e-spells` requests third-party v2 spells separately for each source document.
@@ -171,7 +199,8 @@ npm run validate -- --spells output/open5e-spell-preparation/deepm/candidate-spe
 ```
 
 `all` fetches third-party source documents using the API’s document filter.
-It selects 2014 and 2024 D&D 5e documents, including Open5e Originals and Black Flag.
+It selects supported 2014 and 2024 D&D 5e documents, including Black Flag.
+The [publication policy](./docs/open5e-5e-spell-publication.md#scope) records excluded catalogs.
 It excludes core `srd-2024`, core `srd-2014`, A5E, and unsupported rulesets before making spell requests.
 Spells That Don’t Suck uses its existing direct-publisher source route and is excluded from this preparation.
 Offline replay removes these records from legacy caches before writing artifacts.
@@ -470,6 +499,9 @@ cp output/srd-creatures.json output/srd-spells.json ../console/public/compendium
 ```
 
 ## Before contributing
+
+Follow the [branching workflow](./AGENTS.md#branching) for feature branches,
+pull-request targets, and promotion to `main`.
 
 Read [AGENTS.md](./AGENTS.md) and the shared
 [Contributing](https://github.com/OpenFrayApp/openfray/blob/main/CONTRIBUTING.md).

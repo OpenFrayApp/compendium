@@ -43,7 +43,6 @@ describe("legacy spell class recovery", () => {
     expect(legacySpellDocument("deepm")).toBe("dmag");
     expect(legacySpellDocument("deepmx")).toBe("dmag-e");
     expect(legacySpellDocument("wz")).toBe("warlock");
-    expect(legacySpellDocument("open5e")).toBe("o5e");
     expect(legacySpellDocument("toh")).toBe("toh");
   });
 

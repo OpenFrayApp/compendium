@@ -54,6 +54,10 @@ export const EXCLUDED_OPEN5E_SPELL_SOURCES = new Set([
   "srd-2024",
   "srd-2014",
   "spells-that-dont-suck",
+  "kp",
+  "open5e",
+  "open5e-2024",
+  "o5e",
 ]);
 
 /** Read complete API pages while rejecting count drift, foreign URLs, and pagination cycles. */
@@ -271,6 +275,8 @@ export function mapOpen5eSpell(
   record: Open5eSpellRecord,
   document: Open5eSpellDocument,
 ): Spell {
+  if (EXCLUDED_OPEN5E_SPELL_SOURCES.has(document.key))
+    throw new Error(`Unsupported spell source: ${document.key}`);
   if (record.document.key !== document.key)
     throw new Error("Spell document mismatch");
   const missing = missingFields(record);
