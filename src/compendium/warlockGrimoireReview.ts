@@ -10,8 +10,22 @@ export const WARLOCK_GRIMOIRE_TEXT_SHA256 =
   "be0ea3624a7d9cb997163c344f539b1146403d927ac844b7104ae02faf6ac2d1";
 export const WARLOCK_DRAFT_SHA256 =
   "94fac4a9342f2798d15ef35cdbfcafb4eacbfbfe524b87af7696f60eb83fb006";
+export const WARLOCK_GRIMOIRE_2_RTF_SHA256 =
+  "fa193e556011b3c8ea91f0a12b6255d1b95da5228cb6e4e24aafb040e1070b20";
+export const WARLOCK_GRIMOIRE_2_TEXT_SHA256 =
+  "0c63fda22bdd835c9ea6cd79d6e2c4059b4fc6b80f7bee551eff06cd356ccfb0";
 
-const entries = [
+type GrimoireEntry = {
+  key: string;
+  title: string;
+  pages: readonly number[];
+  end?: string;
+  duration: string;
+  interleavedColumns?: boolean;
+  reviewNotes?: readonly string[];
+};
+
+const entries: readonly GrimoireEntry[] = [
   {
     key: "avert-evil-eye",
     title: "AVERT EVIL EYE",
@@ -84,6 +98,67 @@ const entries = [
   },
 ] as const;
 
+const secondEntries: readonly GrimoireEntry[] = [
+  {
+    key: "battle-chant",
+    title: "BATTLE CHANT",
+    pages: [176, 177],
+    end: "HEDGEHOG DOZEN",
+    duration: "Concentration, up to 5 minutes",
+  },
+  {
+    key: "hedgehog-dozen",
+    title: "HEDGEHOG DOZEN",
+    pages: [177],
+    end: "MARCH OF THE DEAD",
+    duration: "1 minute",
+    reviewNotes: [
+      "Preserve conditional Advantage in prose; the printed duplicates/d8 rules require consistency review.",
+    ],
+  },
+  {
+    key: "march-of-the-dead",
+    title: "MARCH OF THE DEAD",
+    pages: [177],
+    duration: "Instantaneous",
+    reviewNotes: [
+      "The header is Instantaneous; the body gives a 24-hour control period. Keep both and review duration ownership.",
+    ],
+  },
+  {
+    key: "remove-insulation",
+    title: "REMOVE INSULATION",
+    pages: [165],
+    duration: "8 hours",
+    reviewNotes: [
+      "The printed save is Fortitude. Do not silently convert it to Constitution or generate automatic saves.",
+    ],
+  },
+  {
+    key: "storm-of-axes",
+    title: "STORM OF AXES",
+    pages: [178],
+    end: "Dwarven Magical Items of the Cantons",
+    duration: "concentration + 1 round",
+    reviewNotes: [
+      "The printed duration is Concentration plus 1 round; a fixed 1-round timer would change the rule.",
+    ],
+  },
+  {
+    key: "summon-clockwork-beast",
+    title: "SUMMON CLOCKWORK BEAST",
+    pages: [20, 21],
+    end: "CLOCKWORK BEAST",
+    duration: "1 hour",
+    interleavedColumns: true,
+    reviewNotes: [
+      "The declaration names summon clockwork while the heading names Summon Clockwork Beast; verify designation identity before approval.",
+      "The source interleaves subclass text with the spell body. Reconstruct from visual evidence before comparing or generating prose.",
+      "Review the Circle of the Evergyre context, once-per-day restriction, and separate summoned-creature stat block without build automation.",
+    ],
+  },
+] as const;
+
 /** Escape a literal source heading for an exact header expression. */
 function literal(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -110,7 +185,8 @@ function display(value: string): string {
       .toLowerCase()
       .replace(/ or ritual$/, "")
       .replace(/^action$/, "1 action")
-      .replace(/^up to /, ""),
+      .replace(/^up to /, "")
+      .replace(/\bft\.(?=\s|$)/g, "feet"),
   ).join(" ");
 }
 
@@ -118,8 +194,9 @@ function display(value: string): string {
 export function compareWarlockGrimoireSpell(
   spell: Spell,
   transcription: string,
+  book: 1 | 2 = 1,
 ) {
-  const entry = entries.find(
+  const entry = (book === 1 ? entries : secondEntries).find(
     (entry) => spell.id === `kobold-press-wz:${entry.key}`,
   );
   if (!entry) throw new Error(`No reviewed Grimoire entry: ${spell.id}`);
@@ -141,31 +218,51 @@ export function compareWarlockGrimoireSpell(
   const parts = content.split(entry.title);
   if (parts.length !== 2)
     throw new Error(`No unique spell heading: ${entry.title}`);
-  const bounded = parts[1].split(entry.end);
-  if (bounded.length !== 2)
+  const bounded = entry.end ? parts[1].split(entry.end) : [parts[1]];
+  if (entry.end && bounded.length !== 2)
     throw new Error(`No unique entry boundary: ${entry.end}`);
   const header = bounded[0].match(
     new RegExp(
-      `^ (\\d+)(?:st|nd|rd|th)-level ([a-z]+)(?: \\(([^)]*)\\))? Casting Time: (.*?) Range: (.*?) Components: (.*?) Duration: ${literal(entry.duration)} ([\\s\\S]+)$`,
+      `^ (\\d+)(?:st|nd|rd|th)-level ([a-z]+)((?: \\([^)]*\\))*) Casting [Tt]ime: (.*?) Range: (.*?) Components: (.*?) Duration: ${literal(entry.duration)} ([\\s\\S]+)$`,
     ),
   );
   if (!header) throw new Error(`Printed header changed: ${entry.title}`);
   const [
     ,
     level,
-    school,
+    printedSchool,
     qualifier = "",
     castingTime,
     range,
     components,
     body,
   ] = header;
-  const concentration = entry.duration.startsWith("Concentration");
-  const duration =
-    entry.duration.replace(/^Concentration(?:, )?/, "") || "Special";
+  const qualifiers = [...qualifier.matchAll(/\(([^)]*)\)/g)].map(
+    (match) => match[1],
+  );
+  const schools = new Set([
+    "abjuration",
+    "conjuration",
+    "divination",
+    "enchantment",
+    "evocation",
+    "illusion",
+    "necromancy",
+    "transmutation",
+  ]);
+  const school = schools.has(printedSchool)
+    ? printedSchool
+    : qualifiers.find((label) => schools.has(label));
+  if (!school) throw new Error(`Unresolved printed school: ${entry.title}`);
+  const concentration = /^concentration/i.test(entry.duration);
+  const duration = entry.duration.includes("+")
+    ? entry.duration
+    : entry.duration.replace(/^Concentration(?:, )?/i, "") || "Special";
   const materials = components.match(/\((.*)\)$/)?.[1];
   const componentFlags = components.split(" (")[0].split(", ");
-  const classes = qualifier
+  const classes = (
+    qualifiers.find((label) => label.startsWith("ley line; ")) ?? ""
+  )
     .replace(/^ley line; /, "")
     .split(", ")
     .filter((label) => ["sorcerer", "warlock", "wizard"].includes(label));
@@ -178,7 +275,7 @@ export function compareWarlockGrimoireSpell(
     ["range", spell.range, range],
     ["duration", spell.duration, duration],
     ["concentration", spell.concentration, concentration],
-    ["ritual", spell.ritual, qualifier === "ritual"],
+    ["ritual", spell.ritual, qualifiers.includes("ritual")],
     [
       "components.verbal",
       spell.components.verbal,
@@ -228,18 +325,21 @@ export function compareWarlockGrimoireSpell(
     name: spell.name,
     printedTitle: entry.title,
     printedPages: entry.pages,
+    grimoire: book,
     status: "located-transcription-only" as const,
     approved: false as const,
     headerDifferences: differences,
     bodyComparison: {
-      status:
-        offset === original.length && offset === printed.length
+      status: entry.interleavedColumns
+        ? "manual-layout-review-required"
+        : offset === original.length && offset === printed.length
           ? "normalized-match"
           : "difference",
       draftWords: original.length,
-      bookWords: printed.length,
+      bookWords: entry.interleavedColumns ? null : printed.length,
       firstDifference:
-        offset === original.length && offset === printed.length
+        entry.interleavedColumns ||
+        (offset === original.length && offset === printed.length)
           ? null
           : {
               wordOffset: offset,
@@ -255,6 +355,7 @@ export function compareWarlockGrimoireSpell(
       ? "explicit-header-list"
       : "contextual-class-review-required",
     licensingReview: [
+      ...(entry.reviewNotes ?? []),
       "Check Product Identity and supporting-rule dependencies before producing a publishable card.",
       ...(/Evermaw|River of Tears|Vitreous Mire|Plains of Bone|Mot\b|Bemmea|Wasted West/.test(
         body + components,
@@ -272,17 +373,28 @@ export function compareWarlockGrimoireSpell(
   };
 }
 
-/** Audit the three pinned artifacts with zero approvals and no candidate mutations. */
+/** Audit pinned source books with zero approvals and no candidate mutations. */
 export function reviewWarlockGrimoire(
   drafts: string,
   transcription: string,
   rtf: Uint8Array,
+  second?: { transcription: string; rtf: Uint8Array },
 ) {
-  for (const [label, content, expected] of [
+  const artifacts: [string, string | Uint8Array, string][] = [
     ["Draft", drafts, WARLOCK_DRAFT_SHA256],
     ["Transcription", transcription, WARLOCK_GRIMOIRE_TEXT_SHA256],
     ["RTF", rtf, WARLOCK_GRIMOIRE_RTF_SHA256],
-  ] as const) {
+  ];
+  if (second)
+    artifacts.push(
+      [
+        "Grimoire 2 source",
+        second.transcription,
+        WARLOCK_GRIMOIRE_2_TEXT_SHA256,
+      ],
+      ["Grimoire 2 RTF", second.rtf, WARLOCK_GRIMOIRE_2_RTF_SHA256],
+    );
+  for (const [label, content, expected] of artifacts) {
     if (createHash("sha256").update(content).digest("hex") !== expected)
       throw new Error(`${label} snapshot changed; renew Warlock source review`);
   }
@@ -298,11 +410,17 @@ export function reviewWarlockGrimoire(
     )
   )
     throw new Error("Warlock draft scope changed");
+  const activeEntries = second ? [...entries, ...secondEntries] : entries;
   const matchedIds = new Set(
+    activeEntries.map((entry) => `kobold-press-wz:${entry.key}`),
+  );
+  if (matchedIds.size !== activeEntries.length)
+    throw new Error("Duplicate reviewed source assignment");
+  const firstIds = new Set(
     entries.map((entry) => `kobold-press-wz:${entry.key}`),
   );
   if (
-    entries.some(
+    activeEntries.some(
       (entry) =>
         !spells.some((spell) => spell.id === `kobold-press-wz:${entry.key}`),
     )
@@ -311,29 +429,41 @@ export function reviewWarlockGrimoire(
   return {
     publishable: false,
     approvedCount: 0,
-    source: "Warlock Grimoire (2019)",
+    source: second
+      ? "Warlock Grimoire 1 (2019) and 2 (2020)"
+      : "Warlock Grimoire (2019)",
     evidence: {
       rtfSha256: WARLOCK_GRIMOIRE_RTF_SHA256,
       transcriptionSha256: WARLOCK_GRIMOIRE_TEXT_SHA256,
       draftSha256: WARLOCK_DRAFT_SHA256,
+      grimoire2: second
+        ? {
+            rtfSha256: WARLOCK_GRIMOIRE_2_RTF_SHA256,
+            sourceSha256: WARLOCK_GRIMOIRE_2_TEXT_SHA256,
+          }
+        : undefined,
     },
     inputCount: spells.length,
-    locatedCount: entries.length,
+    locatedCount: activeEntries.length,
     located: spells
       .filter((spell) => matchedIds.has(spell.id))
-      .map((spell) => compareWarlockGrimoireSpell(spell, transcription)),
+      .map((spell) =>
+        firstIds.has(spell.id)
+          ? compareWarlockGrimoireSpell(spell, transcription)
+          : compareWarlockGrimoireSpell(spell, second!.transcription, 2),
+      ),
     unresolved: spells
       .filter((spell) => !matchedIds.has(spell.id))
       .map((spell) => ({
         id: spell.id,
         name: spell.name,
         reason:
-          "No verified spell entry in the supplied compilation; obtain its actual source and license. This is not a finding that the spell is unlicensed.",
+          "No verified spell entry in the supplied compilations; obtain its actual source and license. This is not a finding that the spell is unlicensed.",
       })),
     blockers: [
       "Verify transcription fidelity, spell boundaries, and notices against a visual source.",
       "Resolve header/body differences, class metadata, Product Identity, and supporting-rule dependencies.",
-      "Ship the full OGL, the verified 19-notice chain, and the OGC designation in console credits before publication.",
+      "Ship the full OGL, each book’s verified copyright chain, and the OGC designation in console credits before publication.",
       "No draft changes, reference approval, or combat implementation are produced by this audit.",
     ],
   };

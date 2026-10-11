@@ -137,6 +137,124 @@ it("joins a continuation without including the following entry", () => {
   ).toBe("normalized-match");
 });
 
+it("preserves the second book’s unusual duration without imposing a fixed timer", () => {
+  const candidate: Spell = {
+    ...spell,
+    id: "kobold-press-wz:storm-of-axes",
+    name: "Storm of Axes",
+    level: 4,
+    school: "Conjuration",
+    range: "25 feet",
+    duration: "1 round",
+    text: "The target takes damage.",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: true,
+      materials: "a test handle",
+    },
+  };
+  const source =
+    "178 STORM OF AXES 4th-level conjuration (battle) Casting Time: 1 action Range: 25 feet Components: V, S, M (a test handle) Duration: concentration + 1 round The target takes damage. Dwarven Magical Items of the Cantons Setting prose.";
+  const result = compareWarlockGrimoireSpell(candidate, source, 2);
+  expect(result.grimoire).toBe(2);
+  expect(result.headerDifferences).toEqual([
+    { field: "duration", draft: "1 round", book: "concentration + 1 round" },
+    { field: "concentration", draft: false, book: true },
+  ]);
+  expect(candidate.duration).toBe("1 round");
+  expect(result.licensingReview.join(" ")).toContain(
+    "fixed 1-round timer would change the rule",
+  );
+});
+
+it("does not transfer first-volume coverage to the second volume", () => {
+  expect(() => compareWarlockGrimoireSpell(spell, echo, 2)).toThrow(
+    "No reviewed Grimoire entry",
+  );
+});
+
+it("holds interleaved columns while parsing the explicitly printed primary school and ritual", () => {
+  const candidate: Spell = {
+    ...spell,
+    id: "kobold-press-wz:summon-clockwork-beast",
+    name: "Summon Clockwork Beast",
+    level: 5,
+    school: "Conjuration",
+    castingTime: "10minutes or Ritual",
+    range: "10 feet",
+    duration: "1 hour",
+    ritual: true,
+    components: {
+      verbal: true,
+      somatic: true,
+      material: true,
+      materials: "a test gear",
+    },
+    text: "The beast appears.",
+  };
+  const source =
+    "20 SUMMON CLOCKWORK BEAST 5th-level clockwork (conjuration) (ritual) Casting time: 10 minutes Range: 10 ft. Components: V, S, M (a test gear) Duration: 1 hour The beast appears. Unrelated feature inserted.\n\n21 The spell continues. CLOCKWORK BEAST Creature statistics.";
+  const result = compareWarlockGrimoireSpell(candidate, source, 2);
+  expect(result.approved).toBe(false);
+  expect(result.headerDifferences).toEqual([]);
+  expect(result.bodyComparison.status).toBe("manual-layout-review-required");
+  expect(result.bodyComparison.firstDifference).toBeNull();
+  expect(result.licensingReview.join(" ")).toContain(
+    "verify designation identity",
+  );
+});
+
+it("reports the actual Fortitude rule without converting it to a supported save", () => {
+  const candidate: Spell = {
+    ...spell,
+    id: "kobold-press-wz:remove-insulation",
+    name: "Remove Insulation",
+    level: 4,
+    range: "30 feet",
+    duration: "8 hours",
+    text: "The target makes a Fortitude saving throw.",
+    components: { verbal: true, somatic: true, material: false },
+  };
+  const source =
+    "165 REMOVE INSULATION 4th-level necromancy Casting Time: 1 action Range: 30 feet Components: V, S Duration: 8 hours The target makes a Fortitude saving throw.";
+  const result = compareWarlockGrimoireSpell(candidate, source, 2);
+  expect(result.bodyComparison.status).toBe("normalized-match");
+  expect(result.licensingReview.join(" ")).toContain(
+    "Do not silently convert it to Constitution",
+  );
+  expect(candidate.mechanics).toBeUndefined();
+  expect(candidate.text).toContain("Fortitude");
+});
+
+it("joins the second-volume concentration spell and excludes the next entry", () => {
+  const candidate: Spell = {
+    ...spell,
+    id: "kobold-press-wz:battle-chant",
+    name: "Battle Chant",
+    level: 2,
+    school: "Enchantment",
+    castingTime: "1minute or Ritual",
+    range: "60 feet",
+    duration: "5 minutes",
+    ritual: true,
+    components: {
+      verbal: true,
+      somatic: true,
+      material: true,
+      materials: "test incense",
+    },
+    text: "Allies gain damage. The chant continues.",
+  };
+  const source =
+    "176 BATTLE CHANT 2nd-level enchantment (ritual) Casting Time: 1 minute Range: 60 feet Components: V, S, M (test incense) Duration: Concentration, up to 5 minutes Allies gain damage.\n\n177 The chant continues. HEDGEHOG DOZEN 3rd-level illusion Other rules.";
+  const result = compareWarlockGrimoireSpell(candidate, source, 2);
+  expect(result.bodyComparison.status).toBe("normalized-match");
+  expect(result.headerDifferences).toEqual([
+    { field: "concentration", draft: false, book: true },
+  ]);
+});
+
 it("fails closed for changed artifacts instead of extending an old approval", () => {
   expect(() => reviewWarlockGrimoire("[]", echo, new Uint8Array())).toThrow(
     "Draft snapshot changed",

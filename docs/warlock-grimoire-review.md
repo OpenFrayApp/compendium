@@ -3,11 +3,13 @@
 ## Scope and status
 
 The supplied RTF identifies *Warlock Grimoire*, © 2019 Open Design LLC.
-The back cover gives ISBN `978-1-936781-15-7`. This review concerns the 43 local
-Warlock draft spells. None are approved for publication or combat implementation.
+The back cover gives ISBN `978-1-936781-15-7`. The second supplied volume is
+*Warlock Grimoire 2*, © 2020 Open Design LLC, ISBN `978-1-936781-44-7`.
+This review concerns the 43 local Warlock draft spells. None are approved for
+publication or combat implementation.
 
-Ten drafts have actual spell entries in this book. The other 33 require their
-actual sources and declarations. An unresolved source is not a finding that its
+Ten drafts have actual spell entries in the first volume. Six more are located
+in the second. The remaining 27 require their actual sources and declarations. An unresolved source is not a finding that its
 content is unlicensed. Narrative references, creature spell lists, and similar
 words do not establish spell-entry provenance.
 
@@ -16,7 +18,7 @@ The [publisher’s store](https://koboldpress.com/kpstore/product/warlock-grimoi
 confirms this scope and advertises 28 spells. The book inventory and draft overlap
 are separate counts. Additional book spells are outside this audit.
 
-## Located entries
+## First-volume entries
 
 | Draft | Printed pages | Required correction or review |
 | --- | --- | --- |
@@ -78,14 +80,70 @@ This title inventory does not replace the full verbatim copyright chain.
 Preserve the upstream SRD notice when shipping this source under OGL.
 OpenFray’s CC-BY election for directly sourced WotC content does not remove it.
 
+## Second-volume declaration and entries
+
+Printed page 3 designates six spell names as Open Game Content: Battle Chant,
+Hedgehog Dozen, March of the Dead, Remove Insulation, Storm of Axes, and
+“summon clockwork.” The declaration does not cover every spell or invocation.
+The broad first-volume spell grant must not be transferred to this volume.
+
+The back cover identifies issues 10–19 plus new material. Its advertised
+24 spells and invocations are a marketing inventory, separate from the reuse
+list. The declaration also names the Circle of the Evergyre subclass and
+clockwork beast monster. Confirm the abbreviated spell designation’s relationship
+to Summon Clockwork Beast before approving that entry.
+
+| Draft | Printed pages | Required correction or review |
+| --- | --- | --- |
+| Battle Chant | 176–177 | Concentration; material description; contextual class evidence |
+| Hedgehog Dozen | 177 | Conditional Advantage and duplicate/d8 consistency; contextual class evidence |
+| March of the Dead | 177 | Material description; minor wording difference; setting prose; Instantaneous header and 24-hour control period |
+| Remove Insulation | 165 | Printed Fortitude saving throw; contextual class evidence |
+| Storm of Axes | 178 | Concentration; material description; imported metadata prefix; Concentration plus 1 round duration |
+| Summon Clockwork Beast | 20–21 | Material description; truncated draft body; interleaved source columns; abbreviated designation; subclass and summoned-creature boundaries |
+
+Two additional Concentration flags and four material descriptions are missing.
+Three second-volume bodies match after typography normalization. Two show text
+differences. Summon Clockwork Beast requires manual layout reconstruction; the
+audit deliberately produces no body-equivalence verdict for that entry.
+
+Remove Insulation’s Fortitude saving throw is present in the supplied source.
+Do not convert it to Constitution without an explicit adaptation record.
+Storm of Axes’ printed duration is “concentration + 1 round.” A fixed one-round
+timer would change the rule. Preserve source-original rules pending review.
+
+Printed page 292 supplies OGL 1.0a and 17 Section 15 notices, including the
+license notice. The first six are Open Game License v 1.0a, System Reference
+Document 5.0, Tome of Beasts, Creature Codex, Midgard Worldbook, and Midgard
+Heroes Handbook. They are followed, in source order, by:
+
+1. Warlock 10: The Magocracies
+2. Warlock 11: Treasure Vaults
+3. Warlock 12: Dwarves
+4. Warlock 13: War & Battle
+5. Warlock 14: Clockwork
+6. Warlock 15: Boss Monsters
+7. Warlock 16: The Eleven Hells
+8. Warlock 17: Halflings
+9. Warlock 18: Blood Kingdoms
+10. Warlock 19: Masters of the Arcane
+11. Warlock Grimoire 2
+
+Preserve the complete verbatim chain before publication. These titles alone are
+not attribution notices. The second-volume RTF SHA-256 is
+`fa193e556011b3c8ea91f0a12b6255d1b95da5228cb6e4e24aafb040e1070b20`.
+
 ## Reproduce the private audit
 
 Set `WARLOCK_DRAFT` to the local candidate JSON and `WARLOCK_RTF` to the supplied
 book. Run:
 
 ```sh
-npm run review:warlock-grimoire -- "$WARLOCK_DRAFT" "$WARLOCK_RTF"
+npm run review:warlock-grimoire -- "$WARLOCK_DRAFT" "$WARLOCK_RTF" \
+  --grimoire-2 "$WARLOCK_GRIMOIRE_2_RTF"
 ```
+
+Omit the second-volume option to reproduce the first-volume-only audit.
 
 The command requires macOS `textutil`. It checks pinned artifact hashes, exact
 entry headings, page continuations, and boundaries before comparing headers and
@@ -104,8 +162,8 @@ The draft SHA-256 is
    against a lawfully obtained visual source.
 2. Resolve header and body differences, class assignments, Product Identity,
    supporting rules, and OGC scope. Add no conditional advantage or build automation.
-3. Obtain actual source evidence for the 33 unresolved drafts. Review each source
-   independently; this book’s grant does not cover later Warlock issues.
+3. Obtain actual source evidence for the 27 unresolved drafts. Review each source
+   independently; neither book’s grant covers other Warlock issues.
 4. Preserve full OGL 1.0a, the verified verbatim Section 15 chain, and OpenFray’s
    OGC designation in console credits before publishing.
 5. Prepare vetted typed sources or generators, run the ingest and dataset validator,
