@@ -5,6 +5,10 @@ embedded attacks, damage, saves, or scaling. The console supplies source-specifi
 casting profiles for supported board consequences and blocks same-name fallback.
 Unsupported rules remain prose.
 
+See [Domain ownership and contracts](./domain.md) for the distinction between validation,
+publication approval, and console casting verdicts. The [review index](./README.md)
+links the source evidence and legal transcripts.
+
 ## Approved snapshots
 
 The approval module is `src/compendium/referenceSpellPublication.ts`.
@@ -32,7 +36,7 @@ These checks support reference publication; they do not establish rollable fidel
 
 Kibbles includes every spell section, including psionics and blood magic.
 Bile Beam remains V, S, M without an invented material description.
-Its material-component warning is the only accepted validation finding.
+Its material-component warning is the only accepted validation finding for the three CC-BY selections.
 Physical PDF page numbers are retained and documented in console credits.
 Wall of Blood retains the separate So Many Spells credit.
 

@@ -6,6 +6,13 @@ live in the
 [STYLE.md](./STYLE.md) (the data voice). The [README](./README.md) documents every
 pipeline and command; this file carries the rules.
 
+## Domain documentation
+
+Read [CONTEXT.md](./CONTEXT.md) before changing domain terms or content identity.
+Read [Domain ownership and contracts](./docs/domain.md) when changing schema mappings,
+publication gates, or console integration. Use the [review index](./docs/README.md)
+to locate source-specific evidence. Shared contracts stay linked to their owning repositories.
+
 ## What this repo is
 
 Build-time ingest tooling: it parses SRD and third-party sources into OpenFray's
