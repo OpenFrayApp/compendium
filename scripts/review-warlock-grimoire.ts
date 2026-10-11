@@ -27,7 +27,11 @@ function readBook(file: string) {
 
 const { positionals, values } = parseArgs({
   allowPositionals: true,
-  options: { "grimoire-2": { type: "string" }, output: { type: "string" } },
+  options: {
+    "grimoire-2": { type: "string" },
+    "grimoire-3": { type: "string" },
+    output: { type: "string" },
+  },
 });
 const [draftFile, rtfFile, legacyDirectory, ...extra] = positionals;
 if (
@@ -37,7 +41,7 @@ if (
   (legacyDirectory && values.output)
 )
   throw new Error(
-    "Usage: review:warlock-grimoire -- <draft-json> <source-rtf> [--grimoire-2 <source-rtf>] [--output <ignored-directory>]",
+    "Usage: review:warlock-grimoire -- <draft-json> <source-rtf> [--grimoire-2 <source-rtf>] [--grimoire-3 <source-rtf>] [--output <ignored-directory>]",
   );
 const output = resolve(
   values.output ?? legacyDirectory ?? "output/warlock-grimoire-review",
@@ -50,8 +54,15 @@ const first = readBook(rtfFile);
 const second = values["grimoire-2"]
   ? readBook(values["grimoire-2"])
   : undefined;
+const third = values["grimoire-3"] ? readBook(values["grimoire-3"]) : undefined;
 const report = {
-  ...reviewWarlockGrimoire(drafts, first.transcription, first.rtf, second),
+  ...reviewWarlockGrimoire(
+    drafts,
+    first.transcription,
+    first.rtf,
+    second,
+    third,
+  ),
   existingDraftValidation: validateSpellDataset(JSON.parse(drafts)),
 };
 mkdirSync(output, { recursive: true });

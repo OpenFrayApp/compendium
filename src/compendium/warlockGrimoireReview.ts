@@ -14,6 +14,10 @@ export const WARLOCK_GRIMOIRE_2_RTF_SHA256 =
   "fa193e556011b3c8ea91f0a12b6255d1b95da5228cb6e4e24aafb040e1070b20";
 export const WARLOCK_GRIMOIRE_2_TEXT_SHA256 =
   "0c63fda22bdd835c9ea6cd79d6e2c4059b4fc6b80f7bee551eff06cd356ccfb0";
+export const WARLOCK_GRIMOIRE_3_RTF_SHA256 =
+  "2f997c4f6d93c704cc0c73b4d04dca74e2431185c52ebd1da3961a7df9da30d4";
+export const WARLOCK_GRIMOIRE_3_TEXT_SHA256 =
+  "db1c76ba641c9794f3c23b467e9736a329276ea2806dc328466013708eda1c7c";
 
 type GrimoireEntry = {
   key: string;
@@ -159,6 +163,80 @@ const secondEntries: readonly GrimoireEntry[] = [
   },
 ] as const;
 
+const thirdEntries: readonly GrimoireEntry[] = [
+  {
+    key: "abrupt-hug",
+    title: "ABRUPT HUG",
+    pages: [201],
+    end: "BEAST WITHIN",
+    duration: "Instantaneous",
+  },
+  {
+    key: "bombardment-of-stings",
+    title: "BOMBARDMENT OF STINGS",
+    pages: [202],
+    end: "FIND THE MOONLIT PATH",
+    duration: "Instantaneous",
+  },
+  {
+    key: "charming-aesthetics",
+    title: "CHARMING AESTHETICS",
+    pages: [57],
+    end: "TOXIC POLLEN",
+    duration: "1 day",
+  },
+  {
+    key: "exchanged-knowledge",
+    title: "EXCHANGED KNOWLEDGE",
+    pages: [120],
+    end: "INCONSPICUOUS FACADE",
+    duration: "Concentration, up to 1 hour",
+    reviewNotes: [
+      "The named library conduit needs Product Identity review. Proficiency and conditional Advantage remain prose; add no build automation.",
+    ],
+  },
+  {
+    key: "inconspicuous-facade",
+    title: "INCONSPICUOUS FACADE",
+    pages: [120],
+    end: "CATALOGUING BOOK",
+    duration: "Until dispelled",
+  },
+  {
+    key: "rise-of-the-green",
+    title: "RISE OF THE GREEN",
+    pages: [59],
+    end: "Freerunner Druids of the Rothenian Plain",
+    duration: "Concentration, up to 10 minutes",
+  },
+  {
+    key: "suppress-regeneration",
+    title: "SUPPRESS REGENERATION",
+    pages: [204],
+    duration: "1 minute",
+    reviewNotes: [
+      "The printed save is Fortitude. Do not silently convert it to Constitution or generate automatic saves.",
+    ],
+  },
+  {
+    key: "toxic-pollen",
+    title: "TOXIC POLLEN",
+    pages: [57],
+    end: "Druid Militants of the Gennecka",
+    duration: "1 year",
+  },
+  {
+    key: "zymurgic-aura",
+    title: "ZYMURGIC AURA",
+    pages: [264],
+    end: "Druid Background: Zymurgist",
+    duration: "Instantaneous",
+    reviewNotes: [
+      "The header declares a Material component but specifies no material description. Preserve the omission pending source clarification.",
+    ],
+  },
+] as const;
+
 /** Escape a literal source heading for an exact header expression. */
 function literal(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -194,11 +272,11 @@ function display(value: string): string {
 export function compareWarlockGrimoireSpell(
   spell: Spell,
   transcription: string,
-  book: 1 | 2 = 1,
+  book: 1 | 2 | 3 = 1,
 ) {
-  const entry = (book === 1 ? entries : secondEntries).find(
-    (entry) => spell.id === `kobold-press-wz:${entry.key}`,
-  );
+  const entry = (
+    book === 1 ? entries : book === 2 ? secondEntries : thirdEntries
+  ).find((entry) => spell.id === `kobold-press-wz:${entry.key}`);
   if (!entry) throw new Error(`No reviewed Grimoire entry: ${spell.id}`);
   const pages = new Map<number, string>();
   for (const match of transcription.matchAll(
@@ -260,12 +338,21 @@ export function compareWarlockGrimoireSpell(
     : entry.duration.replace(/^Concentration(?:, )?/i, "") || "Special";
   const materials = components.match(/\((.*)\)$/)?.[1];
   const componentFlags = components.split(" (")[0].split(", ");
-  const classes = (
-    qualifiers.find((label) => label.startsWith("ley line; ")) ?? ""
-  )
-    .replace(/^ley line; /, "")
-    .split(", ")
-    .filter((label) => ["sorcerer", "warlock", "wizard"].includes(label));
+  const classes = qualifiers
+    .flatMap((label) => label.replace(/^ley line; /, "").split(", "))
+    .filter((label) =>
+      [
+        "artificer",
+        "bard",
+        "cleric",
+        "druid",
+        "paladin",
+        "ranger",
+        "sorcerer",
+        "warlock",
+        "wizard",
+      ].includes(label),
+    );
   const differences: { field: string; draft: unknown; book: unknown }[] = [];
   const fields = [
     ["name", spell.name, entry.title],
@@ -379,6 +466,7 @@ export function reviewWarlockGrimoire(
   transcription: string,
   rtf: Uint8Array,
   second?: { transcription: string; rtf: Uint8Array },
+  third?: { transcription: string; rtf: Uint8Array },
 ) {
   const artifacts: [string, string | Uint8Array, string][] = [
     ["Draft", drafts, WARLOCK_DRAFT_SHA256],
@@ -393,6 +481,15 @@ export function reviewWarlockGrimoire(
         WARLOCK_GRIMOIRE_2_TEXT_SHA256,
       ],
       ["Grimoire 2 RTF", second.rtf, WARLOCK_GRIMOIRE_2_RTF_SHA256],
+    );
+  if (third)
+    artifacts.push(
+      [
+        "Grimoire 3 source",
+        third.transcription,
+        WARLOCK_GRIMOIRE_3_TEXT_SHA256,
+      ],
+      ["Grimoire 3 RTF", third.rtf, WARLOCK_GRIMOIRE_3_RTF_SHA256],
     );
   for (const [label, content, expected] of artifacts) {
     if (createHash("sha256").update(content).digest("hex") !== expected)
@@ -410,14 +507,43 @@ export function reviewWarlockGrimoire(
     )
   )
     throw new Error("Warlock draft scope changed");
-  const activeEntries = second ? [...entries, ...secondEntries] : entries;
+  const sources: {
+    book: 1 | 2 | 3;
+    entries: readonly GrimoireEntry[];
+    transcription: string;
+  }[] = [
+    { book: 1, entries, transcription },
+    ...(second
+      ? [
+          {
+            book: 2 as const,
+            entries: secondEntries,
+            transcription: second.transcription,
+          },
+        ]
+      : []),
+    ...(third
+      ? [
+          {
+            book: 3 as const,
+            entries: thirdEntries,
+            transcription: third.transcription,
+          },
+        ]
+      : []),
+  ];
+  const activeEntries = sources.flatMap((source) => source.entries);
   const matchedIds = new Set(
     activeEntries.map((entry) => `kobold-press-wz:${entry.key}`),
   );
   if (matchedIds.size !== activeEntries.length)
     throw new Error("Duplicate reviewed source assignment");
-  const firstIds = new Set(
-    entries.map((entry) => `kobold-press-wz:${entry.key}`),
+  const assignments = new Map<string, (typeof sources)[number]>(
+    sources.flatMap((source) =>
+      source.entries.map(
+        (entry) => [`kobold-press-wz:${entry.key}`, source] as const,
+      ),
+    ),
   );
   if (
     activeEntries.some(
@@ -429,9 +555,11 @@ export function reviewWarlockGrimoire(
   return {
     publishable: false,
     approvedCount: 0,
-    source: second
-      ? "Warlock Grimoire 1 (2019) and 2 (2020)"
-      : "Warlock Grimoire (2019)",
+    source: [
+      "Warlock Grimoire (2019)",
+      ...(second ? ["Warlock Grimoire 2 (2020)"] : []),
+      ...(third ? ["Warlock Grimoire 3 (2022)"] : []),
+    ].join("; "),
     evidence: {
       rtfSha256: WARLOCK_GRIMOIRE_RTF_SHA256,
       transcriptionSha256: WARLOCK_GRIMOIRE_TEXT_SHA256,
@@ -442,16 +570,25 @@ export function reviewWarlockGrimoire(
             sourceSha256: WARLOCK_GRIMOIRE_2_TEXT_SHA256,
           }
         : undefined,
+      grimoire3: third
+        ? {
+            rtfSha256: WARLOCK_GRIMOIRE_3_RTF_SHA256,
+            sourceSha256: WARLOCK_GRIMOIRE_3_TEXT_SHA256,
+          }
+        : undefined,
     },
     inputCount: spells.length,
     locatedCount: activeEntries.length,
     located: spells
       .filter((spell) => matchedIds.has(spell.id))
-      .map((spell) =>
-        firstIds.has(spell.id)
-          ? compareWarlockGrimoireSpell(spell, transcription)
-          : compareWarlockGrimoireSpell(spell, second!.transcription, 2),
-      ),
+      .map((spell) => {
+        const source = assignments.get(spell.id)!;
+        return compareWarlockGrimoireSpell(
+          spell,
+          source.transcription,
+          source.book,
+        );
+      }),
     unresolved: spells
       .filter((spell) => !matchedIds.has(spell.id))
       .map((spell) => ({

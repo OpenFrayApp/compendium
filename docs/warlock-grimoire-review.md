@@ -5,11 +5,13 @@
 The supplied RTF identifies *Warlock Grimoire*, © 2019 Open Design LLC.
 The back cover gives ISBN `978-1-936781-15-7`. The second supplied volume is
 *Warlock Grimoire 2*, © 2020 Open Design LLC, ISBN `978-1-936781-44-7`.
-This review concerns the 43 local Warlock draft spells. None are approved for
+The third is *Warlock Grimoire 3*, © 2022 Open Design LLC,
+ISBN `978-1-950789-27-6`. This review concerns the 43 local Warlock draft spells. None are approved for
 publication or combat implementation.
 
 Ten drafts have actual spell entries in the first volume. Six more are located
-in the second. The remaining 27 require their actual sources and declarations. An unresolved source is not a finding that its
+in the second, and nine more in the third. In total, 25 are located and 18
+require their actual sources and declarations. An unresolved source is not a finding that its
 content is unlicensed. Narrative references, creature spell lists, and similar
 words do not establish spell-entry provenance.
 
@@ -133,6 +135,68 @@ Preserve the complete verbatim chain before publication. These titles alone are
 not attribution notices. The second-volume RTF SHA-256 is
 `fa193e556011b3c8ea91f0a12b6255d1b95da5228cb6e4e24aafb040e1070b20`.
 
+## Third-volume declaration and entries
+
+Printed page 3 names exactly nine spells as Open Game Content: Abrupt Hug,
+Bombardment of Stings, Charming Aesthetics, Exchanged Knowledge, Inconspicuous
+Facade, Rise of the Green, Suppress Regeneration, Toxic Pollen, and Zymurgic Aura.
+Each has a located spell entry. The declaration remains source-specific and
+retains the Product Identity exclusions.
+
+The back cover identifies issues 20–28 plus Warlock Guide to the Planes.
+Its 42 spells, invocations, and runes are a combined marketing inventory.
+They are separate from the nine-spell designation.
+
+| Draft | Printed pages | Required correction or review |
+| --- | --- | --- |
+| Abrupt Hug | 201 | Reaction notation; body wording variant |
+| Bombardment of Stings | 202 | Cone range; material description; Sorcerer spelling; body variant |
+| Charming Aesthetics | 57 | Material description; preserve conditional consequences in prose |
+| Exchanged Knowledge | 120 | Concentration; consumed material description; named library and body variant; no proficiency/build automation |
+| Inconspicuous Facade | 120 | Material description; Sorcerer spelling |
+| Rise of the Green | 59 | Concentration; material description; separate treant and terrain scope review |
+| Suppress Regeneration | 204 | Extra Concentration in draft; material description; Sorcerer spelling; major body variant and printed Fortitude save |
+| Toxic Pollen | 57 | Material description; year-long preparation and later one-minute Poisoned effect are separate |
+| Zymurgic Aura | 264 | Printed Material component has no specified description; no description may be invented |
+
+Two Concentration flags are missing; Suppress Regeneration has an extra flag.
+Seven material descriptions are missing from these drafts. Five bodies match
+after typography normalization, and four require variant review. A normalized
+text match does not establish reuse clearance or combat implementation approval.
+
+Printed page 288 supplies OGL 1.0a and 25 Section 15 notices, including the
+license notice. Their titles, in source order, are:
+
+1. Open Game License v 1.0a
+2. System Reference Document 5.0
+3. Deep Magic: Clockwork
+4. Tome of Beasts
+5. Demon Cults & Secret Societies for 5th Edition
+6. Deep Magic: Time Magic
+7. Midgard Worldbook
+8. Midgard Heroes Handbook
+9. Creature Codex
+10. Deep Magic for 5th Edition
+11. Warlock 7: Fey Courts
+12. Warlock 8: Undead
+13. Warlock 9: The World Tree
+14. Warlock 14: Clockwork
+15. Warlock 20: Redtower
+16. Warlock 21: Legends
+17. Warlock 22: Druids
+18. Warlock 23: Bearfolk
+19. Warlock 24: Strange Nature
+20. Warlock 25: Dungeons
+21. Warlock 26: Dragons
+22. Warlock 27: Southlands
+23. Warlock 28: Ravenfolk
+24. Warlock Guide to the Planes
+25. Warlock Grimoire 3
+
+These titles do not replace the full verbatim notices. The third-volume RTF
+SHA-256 is
+`2f997c4f6d93c704cc0c73b4d04dca74e2431185c52ebd1da3961a7df9da30d4`.
+
 ## Reproduce the private audit
 
 Set `WARLOCK_DRAFT` to the local candidate JSON and `WARLOCK_RTF` to the supplied
@@ -140,10 +204,11 @@ book. Run:
 
 ```sh
 npm run review:warlock-grimoire -- "$WARLOCK_DRAFT" "$WARLOCK_RTF" \
-  --grimoire-2 "$WARLOCK_GRIMOIRE_2_RTF"
+  --grimoire-2 "$WARLOCK_GRIMOIRE_2_RTF" \
+  --grimoire-3 "$WARLOCK_GRIMOIRE_3_RTF"
 ```
 
-Omit the second-volume option to reproduce the first-volume-only audit.
+Each additional-volume option is independent. Omit both for the first-volume-only audit.
 
 The command requires macOS `textutil`. It checks pinned artifact hashes, exact
 entry headings, page continuations, and boundaries before comparing headers and
@@ -162,8 +227,8 @@ The draft SHA-256 is
    against a lawfully obtained visual source.
 2. Resolve header and body differences, class assignments, Product Identity,
    supporting rules, and OGC scope. Add no conditional advantage or build automation.
-3. Obtain actual source evidence for the 27 unresolved drafts. Review each source
-   independently; neither book’s grant covers other Warlock issues.
+3. Obtain actual source evidence for the 18 unresolved drafts. Review each source
+   independently; these books’ grants do not cover other Warlock issues.
 4. Preserve full OGL 1.0a, the verified verbatim Section 15 chain, and OpenFray’s
    OGC designation in console credits before publishing.
 5. Prepare vetted typed sources or generators, run the ingest and dataset validator,

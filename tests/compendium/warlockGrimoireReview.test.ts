@@ -255,6 +255,122 @@ it("joins the second-volume concentration spell and excludes the next entry", ()
   ]);
 });
 
+it("reads an explicit third-volume Druid class without inferring it from surrounding prose", () => {
+  const candidate: Spell = {
+    ...spell,
+    id: "kobold-press-wz:charming-aesthetics",
+    name: "Charming Aesthetics",
+    level: 3,
+    school: "Enchantment",
+    range: "60 feet",
+    duration: "1 day",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: true,
+      materials: "a test flower",
+    },
+    classes: ["Warlock"],
+    text: "The target is charmed.",
+  };
+  const source =
+    "57 CHARMING AESTHETICS 3rd-level enchantment (druid) Casting Time: 1 action Range: 60 feet Components: V, S, M (a test flower) Duration: 1 day The target is charmed. TOXIC POLLEN Another entry.";
+  const result = compareWarlockGrimoireSpell(candidate, source, 3);
+  expect(result.grimoire).toBe(3);
+  expect(result.classEvidence).toBe("explicit-header-list");
+  expect(result.headerDifferences).toEqual([
+    { field: "classes", draft: ["Warlock"], book: ["druid"] },
+  ]);
+  expect(candidate.classes).toEqual(["Warlock"]);
+});
+
+it("retains the third-volume cone header and diagnoses Sorceror spelling", () => {
+  const candidate: Spell = {
+    ...spell,
+    id: "kobold-press-wz:bombardment-of-stings",
+    name: "Bombardment of Stings",
+    level: 2,
+    school: "Evocation",
+    range: "Self",
+    duration: "Instantaneous",
+    text: "The target takes damage.",
+    components: { verbal: true, somatic: true, material: false },
+    classes: ["Druid", "Ranger", "Sorceror", "Wizard"],
+  };
+  const source =
+    "202 BOMBARDMENT OF STINGS 2nd-level evocation (druid, ranger, sorcerer, wizard) Casting Time: 1 action Range: Self (30-foot cone) Components: V, S Duration: Instantaneous The target takes damage. FIND THE MOONLIT PATH Another entry.";
+  expect(
+    compareWarlockGrimoireSpell(candidate, source, 3).headerDifferences,
+  ).toEqual([
+    { field: "range", draft: "Self", book: "Self (30-foot cone)" },
+    {
+      field: "classes",
+      draft: candidate.classes,
+      book: ["druid", "ranger", "sorcerer", "wizard"],
+    },
+  ]);
+});
+
+it("diagnoses extra Concentration without changing a source-original Fortitude rule", () => {
+  const candidate: Spell = {
+    ...spell,
+    id: "kobold-press-wz:suppress-regeneration",
+    name: "Suppress Regeneration",
+    level: 1,
+    school: "Transmutation",
+    range: "30 feet",
+    duration: "1 minute",
+    concentration: true,
+    components: { verbal: true, somatic: true, material: false },
+    classes: ["Ranger", "Sorcerer", "Warlock", "Wizard"],
+    text: "The target makes a Fortitude saving throw.",
+  };
+  const source =
+    "204 SUPPRESS REGENERATION 1st-level transmutation (ranger, sorcerer, warlock, wizard) Casting Time: 1 action Range: 30 feet Components: V, S Duration: 1 minute The target makes a Fortitude saving throw.";
+  const result = compareWarlockGrimoireSpell(candidate, source, 3);
+  expect(result.headerDifferences).toEqual([
+    { field: "concentration", draft: true, book: false },
+  ]);
+  expect(result.licensingReview.join(" ")).toContain(
+    "Do not silently convert it to Constitution",
+  );
+  expect(candidate.concentration).toBe(true);
+  expect(candidate.mechanics).toBeUndefined();
+});
+
+it("keeps a printed but undescribed Material component pending source clarification", () => {
+  const candidate: Spell = {
+    ...spell,
+    id: "kobold-press-wz:zymurgic-aura",
+    name: "Zymurgic Aura",
+    level: 7,
+    range: "Self",
+    duration: "Instantaneous",
+    components: { verbal: true, somatic: false, material: true },
+    classes: ["Druid"],
+    text: "The target takes damage.",
+  };
+  const source =
+    "264 ZYMURGIC AURA 7th-level necromancy (druid) Casting Time: 1 action Range: Self Components: V, M Duration: Instantaneous The target takes damage. Druid Background: Zymurgist Background text.";
+  const result = compareWarlockGrimoireSpell(candidate, source, 3);
+  expect(result.headerDifferences).toEqual([]);
+  expect(result.bodyComparison.status).toBe("normalized-match");
+  expect(result.licensingReview.join(" ")).toContain(
+    "specifies no material description",
+  );
+  expect(candidate.components.materials).toBeUndefined();
+});
+
+it("does not transfer second-volume named coverage to the third", () => {
+  expect(() =>
+    compareWarlockGrimoireSpell(
+      { ...spell, id: "kobold-press-wz:remove-insulation" },
+      "165 REMOVE INSULATION",
+      3,
+    ),
+  ).toThrow("No reviewed Grimoire entry");
+});
+
 it("fails closed for changed artifacts instead of extending an old approval", () => {
   expect(() => reviewWarlockGrimoire("[]", echo, new Uint8Array())).toThrow(
     "Draft snapshot changed",
