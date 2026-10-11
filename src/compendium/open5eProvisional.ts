@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
+import type { Open5eRecord } from "./open5eTypes.ts";
+
 import type { Creature } from '../schema/creature.ts'
-import { OPEN5E_ABILITIES, type Open5eRecord } from './open5e.ts'
+import { OPEN5E_ABILITIES } from './open5e.ts'
 import { validateDataset, type ValidationException } from './validate.ts'
 
 const REASON = 'Retain the Open5e value provisionally at the maintainer’s request; no primary-source confirmation is available.'

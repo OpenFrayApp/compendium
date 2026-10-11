@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
+import type { Open5eRecord } from "../../src/compendium/open5eTypes.ts";
+
 import { describe, expect, it } from 'vitest'
-import { prepareOpen5e, type PreparationRecord } from '../../src/compendium/open5ePreparation.ts'
+import { prepareOpen5e } from '../../src/compendium/open5ePreparation.ts'
 import { provisionalFindings } from '../../src/compendium/open5eProvisional.ts'
 import { validateDataset } from '../../src/compendium/validate.ts'
 
 /** Build an API record retaining Black Flag's separate statistics. */
-function aboleth(): PreparationRecord {
+function aboleth(): Open5eRecord {
   return {
     key: 'bfrd_aboleth', name: 'Aboleth', document: { key: 'bfrd' },
     size: { name: 'Large' }, type: { name: 'Aberration' }, armor_class: 17, hit_points: 165, challenge_rating: 10,
@@ -20,7 +22,7 @@ function aboleth(): PreparationRecord {
 
 describe('provisional source retention', () => {
   it('labels retained API arithmetic without waiving strict checks or claiming primary evidence', () => {
-    const record: PreparationRecord = {
+    const record: Open5eRecord = {
       ...aboleth(), key: 'a5e-mm_yobbo', name: 'Yobbo', document: { key: 'a5e-mm' },
       hit_points: 11, hit_dice: '3d6', challenge_rating: 1,
     }

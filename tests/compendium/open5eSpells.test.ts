@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
+import type { Open5eSpellDocument, Open5eSpellRecord, Open5eSpellSnapshot } from "../../src/compendium/open5eTypes.ts";
+
 import { describe, expect, it, vi } from "vitest";
 import {
   assertSpellSnapshot,
@@ -8,10 +10,7 @@ import {
   mapOpen5eSpell,
   prepareOpen5eSpells,
   spellDocument,
-  thirdPartySpellDocuments,
-  type Open5eSpellDocument,
-  type Open5eSpellRecord,
-  type Open5eSpellSnapshot,
+  thirdPartySpellDocuments
 } from "../../src/compendium/open5eSpells.ts";
 
 /** Build API metadata for a third-party source. */

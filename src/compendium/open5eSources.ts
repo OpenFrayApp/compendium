@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import type { CandidateKey } from './open5ePreparation.ts'
+export const OPEN5E_CANDIDATES = {
+  'a5e-mm': { name: 'Monstrous Menagerie', source: 'en-publishing-a5e-mm' },
+  bfrd: { name: 'Black Flag SRD', source: 'kobold-press-bfrd' },
+  'tob-2023': { name: 'Tome of Beasts 1 (2023 Edition)', source: 'kobold-press-tob-2023' },
+} as const
+
+export type CandidateKey = keyof typeof OPEN5E_CANDIDATES
 
 // The 2023 sample reserves named individuals and all text related to archdevils,
 // demon lords, and fey rulers, including named minion entries.

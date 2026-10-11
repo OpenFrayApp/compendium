@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
+import type { Open5eRecord } from "../../src/compendium/open5eTypes.ts";
+
 import { describe, expect, it, vi } from 'vitest'
 import {
-  assertRecords, candidateKey, fetchLegacyRecords, fetchOpen5eRecords, preparationKeys, prepareOpen5e, withLegacy,
-  type PreparationRecord,
-} from '../../src/compendium/open5ePreparation.ts'
+  assertRecords, candidateKey, fetchLegacyRecords, fetchOpen5eRecords, preparationKeys, prepareOpen5e, withLegacy } from '../../src/compendium/open5ePreparation.ts'
 
 /** Build a complete creature record for preparation tests. */
-function record(key = 'bfrd_test'): PreparationRecord {
+function record(key = 'bfrd_test'): Open5eRecord {
   return {
     key, name: 'Test Creature', document: { key: 'bfrd' },
     size: { name: 'Medium' }, type: { name: 'Beast' }, alignment: 'unaligned',
