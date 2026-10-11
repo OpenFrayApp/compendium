@@ -22,6 +22,40 @@ it('reproduces all original datasets and publication approval bytes in isolated 
   expect(result.stdout).toContain('6 publication approval records match')
 })
 
+it('compares exact binary approval-module bytes without normalizing line endings', () => {
+  const directory = mkdtempSync(join(tmpdir(), 'compendium-approval-bytes-'))
+  directories.push(directory)
+  const module = join(directory, 'approval.bin')
+  const file = join(directory, 'baseline.json')
+  const baseline = JSON.parse(
+    readFileSync('tests/fixtures/verification/offline-baseline.json', 'utf8')
+  )
+  writeFileSync(module, Buffer.from([0, 255, 13, 10, 195, 169]))
+  writeFileSync(
+    file,
+    JSON.stringify({
+      ...baseline,
+      datasets: [],
+      approvalModule: {
+        path: module,
+        sha256: 'b49c931f68247e438f39b1fb1cd68e54e1c60ca467f8b11e8228317dd85f71bd'
+      }
+    })
+  )
+  const matched = spawnSync(process.execPath, ['scripts/verify-offline.ts', file], {
+    encoding: 'utf8'
+  })
+  expect(matched.status, matched.stderr).toBe(0)
+  expect(matched.stdout).toBe('6 publication approval records match\n')
+  expect(matched.stderr).toBe('')
+  writeFileSync(module, Buffer.from([0, 255, 10, 195, 169]))
+  const changed = spawnSync(process.execPath, ['scripts/verify-offline.ts', file], {
+    encoding: 'utf8'
+  })
+  expect(changed.status).not.toBe(0)
+  expect(changed.stderr).toContain('Publication approval module bytes changed')
+})
+
 it('rejects changed output bytes without updating the expected baseline', () => {
   const directory = mkdtempSync(join(tmpdir(), 'compendium-baseline-test-'))
   directories.push(directory)

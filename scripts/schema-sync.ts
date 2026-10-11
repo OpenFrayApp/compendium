@@ -2,19 +2,14 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import assert from 'node:assert/strict'
-import { createHash } from 'node:crypto'
 import { existsSync, globSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { dirname } from 'node:path'
+import { sha256 } from './lib/sha256.ts'
 
 interface SchemaProvenance {
   repository: string
   revision: string
   files: { path: string; sha256: string }[]
-}
-
-/** Hash vendored files without normalizing their console-owned bytes. */
-function sha256(bytes: Uint8Array): string {
-  return createHash('sha256').update(bytes).digest('hex')
 }
 
 /** Require an immutable console revision and a complete, safe file inventory. */
