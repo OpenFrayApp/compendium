@@ -33,52 +33,17 @@ See [the Khyberia source review](../khyberia-review.md).
 
 ## SRD 5.2.1 from the official PDF
 
-The official **SRD 5.2.1** PDF is the authoritative CC-BY source.
-The existing extractors use **pdfplumber**, an explicit exception to the PyMuPDF convention.
-Keep their two-column extraction rules independent of the book-specific PyMuPDF pipelines.
-Create `output/` first; these extractors and mappers write to the supplied file paths:
-
-```bash
-# Setup installs the pinned pdfplumber dependency from requirements.txt.
-mkdir -p output
-# download the CC-BY PDF (not committed): https://www.dndbeyond.com/srd
-
-# Spells first (creatures hover-link cast spell names against them):
-python scripts/extract-srd52-spells-pdf.py SRD_CC_v5.2.1.pdf output/srd52-spell-blocks.json
-npm run ingest:srd52-spells -- output/srd52-spell-blocks.json output/srd-spells.json
-
-# Then creatures (3rd arg = the spells JSON, for prose spell-links):
-python scripts/extract-srd52-pdf.py SRD_CC_v5.2.1.pdf output/srd52-blocks.json
-npm run ingest:srd52 -- output/srd52-blocks.json output/srd-creatures.json output/srd-spells.json
-npm run validate -- --spells output/srd-spells.json
-npm run validate -- output/srd-creatures.json
-```
-
-The creature extractor takes each section’s verbatim text from `extract_text()`.
-It uses a font pass to order entry names, then splits the section on those names.
-This avoids row-bucketing artifacts that reorder bold names within prose.
-The spell extractor uses `extract_text(use_text_flow=True)` for content-stream reading order.
-It segments on the `Level N <School>` or `<School> Cantrip` header following each spell name.
-Both extractors stay within their PDF sections.
-Known WotC typos, including the Archmage’s XP, use the errata map in `src/compendium/srd52.ts`.
+Follow [SRD ingestion](../srd-ingestion.md#srd-521-from-the-official-pdf) for extraction and mapping commands.
+The existing SRD extractors use **pdfplumber**, an explicit exception to the PyMuPDF convention.
+Extractors require existing destination directories; successful ingest commands create their own.
+The creature and spell runners validate before replacing their respective datasets.
 
 ## SRD 5.1 from dnd5eapi
 
-This network-only runner obtains SRD 5.1 creatures and spells from
-[dnd5eapi.co](https://www.dnd5eapi.co), including structured 2014 spellcasting and slots.
-OpenFray elects CC-BY-4.0 for SRD 5.1; see the
-[console’s attribution record](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md).
-
-```sh
-npm run ingest:srd-2014
-npm run validate -- --spells output/srd-2014-spells.json
-npm run validate -- output/srd-2014-creatures.json
-```
-
-The runner has no cached-input argument and writes into this repository’s `output/`.
-Check its mapping counts and failures before treating output as complete.
-The current runner can write a successful subset after mapping failures.
-Validator success alone does not prove that no entries were omitted.
+Follow [SRD ingestion](../srd-ingestion.md#srd-51-from-dnd5eapi) for the unchanged API command.
+Both collections must map completely and validate before either dataset is replaced.
+Unexpected omissions exit nonzero with entry identities; no successful subset is written.
+See the [failure and parity limits](../srd-ingestion.md#findings-and-preservation).
 
 ## Tome of Beasts 1–3 from supplied PDFs
 

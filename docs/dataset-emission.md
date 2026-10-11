@@ -1,8 +1,9 @@
 # Validated dataset emission
 
-The four original-content ingest commands share
+The four original-content and three SRD ingest commands share
 [`emitValidatedDataset`](../src/compendium/datasetEmission.ts).
-They need no source snapshots or network access.
+Original-content commands need no source snapshots or network access.
+[SRD ingestion](./srd-ingestion.md) documents source inputs and the combined API validation gate.
 See [installation](./verification.md#install) and
 [original-content authoring](./guides/original-content.md).
 
@@ -72,7 +73,9 @@ Source fidelity, licensing, completeness, exclusions, and attribution remain sou
 [Approved reference publication](./reference-spell-publication.md) retains its independent candidate hashes,
 counts, editions, mechanics limits, and accepted-warning checks.
 The emission interface does not replace those gates or register a console library.
-SRD and Kobold runners can reuse it after their own source-specific checks; they are not migrated here.
+SRD runners reuse it after their source-specific mapping checks.
+The combined SRD 2014 runner validates both datasets before emitting either, using precomputed reports in its validator callbacks.
+Kobold runners are outside this source-family migration.
 
 ## Checks
 
