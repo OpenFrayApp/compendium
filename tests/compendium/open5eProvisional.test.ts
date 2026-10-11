@@ -42,11 +42,6 @@ describe('provisional source retention', () => {
 
   it.each([
     ['kobold-press-tob-2023', 'soul-eater', 'con', 17, 7, 5],
-    ['green-ronin-tdcs', 'stoneguard', 'str', 18, 7, 8],
-    ['green-ronin-tdcs', 'stoneguard', 'con', 20, 7, 9],
-    ['green-ronin-tdcs', 'stoneguard', 'wis', 14, 7, 6],
-    ['green-ronin-tdcs', 'waverider', 'con', 12, 4, 4],
-    ['green-ronin-tdcs', 'waverider', 'wis', 16, 4, 6],
   ] as const)('guards provisional save inputs for %s:%s %s', (source, name, ability, score, cr, value) => {
     const base = prepareOpen5e('bfrd', [aboleth()]).creatures[0]
     const creature = { ...base, id: `${source}:${name}`, source, cr,

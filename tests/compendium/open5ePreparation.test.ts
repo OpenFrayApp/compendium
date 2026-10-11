@@ -31,7 +31,7 @@ describe('Open5e preparation', () => {
 
   it('allows only missing sources, including prototype-like keys', () => {
     expect(candidateKey('a5e-mm')).toBe('a5e-mm')
-    for (const key of ['tob', 'ccdx', 'srd-2024', 'toString', '../console']) {
+    for (const key of ['tdcs', 'tob', 'ccdx', 'srd-2024', 'toString', '../console']) {
       expect(() => candidateKey(key)).toThrow('Unknown candidate')
     }
   })

@@ -14,13 +14,7 @@ const RETAINED: ValidationException[] = [
   { id: 'en-publishing-a5e-mm:miremuck-goblin-king', source: 'en-publishing-a5e-mm', field: 'hpFormula', maxHp: 62, formula: '8d8+16', reason: REASON, evidence: `${API}a5e-mm_miremuck-goblin-king/` },
   { id: 'en-publishing-a5e-mm:yobbo', source: 'en-publishing-a5e-mm', field: 'hpFormula', maxHp: 11, formula: '3d6', reason: REASON, evidence: `${API}a5e-mm_yobbo/` },
   { id: 'kobold-press-tob-2023:soul-eater', source: 'kobold-press-tob-2023', field: 'save', ability: 'con', score: 17, cr: 7, value: 5, reason: REASON, evidence: `${API}tob-2023_soul-eater/` },
-  ...([
-    ['stoneguard', 'str', 18, 7, 8], ['stoneguard', 'con', 20, 7, 9], ['stoneguard', 'wis', 14, 7, 6],
-    ['waverider', 'con', 12, 4, 4], ['waverider', 'wis', 16, 4, 6],
-  ] as const).map(([name, ability, score, cr, value]): ValidationException => ({
-    id: `green-ronin-tdcs:${name}`, source: 'green-ronin-tdcs', field: 'save', ability, score, cr, value,
-    reason: REASON, evidence: `${API}tdcs_${name}/`,
-  })),
+
 ]
 
 /** Label exact retained API findings without downgrading the strict validation report. */

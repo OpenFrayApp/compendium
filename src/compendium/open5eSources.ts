@@ -58,13 +58,4 @@ export const OPEN5E_SOURCE_REVIEW = {
       'Verify Soul Eater’s Constitution save; the Dwarven Ringmage and Valkyrie publisher errata are applied.',
     ],
   },
-  tdcs: {
-    license: 'OGL-1.0a',
-    noticeUrl: 'https://greenronin.com/blog/2017/06/01/critical-role-release-plan/',
-    blockers: [
-      'Obtain the 2017 edition’s OGC/PI declaration and full Section 15 chain from an authorized public source; do not substitute the Reborn edition.',
-      'Verify generic creature names are reusable and review the Stoneguard and Waverider saving throws.',
-      'The feed duplicates Flamecharm inside Firetamer’s Scimitar and merges spell-level headings. Preserve source prose until primary-source corrections are verified.',
-    ],
-  },
 } as const
