@@ -8,10 +8,7 @@ docs/**
 # Authored content, reviewed approval bytes, and console-owned schema are separate changes.
 src/schema/**
 src/compendium/libraries.ts
-src/compendium/brood-and-bloom.ts
-src/compendium/brood-and-bloom-spells.ts
-src/compendium/waking-garden.ts
-src/compendium/strong-waters-spells.ts
+src/originals/**
 src/compendium/referenceSpellPublication.ts
 # Source snapshots and expected outputs are evidence, not formatting targets.
 tests/fixtures/**

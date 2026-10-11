@@ -2,10 +2,10 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import { describe, expect, it } from 'vitest'
-import { wakingGardenCreatures } from '../../src/compendium/waking-garden.ts'
-import { broodAndBloomCreatures } from '../../src/compendium/brood-and-bloom.ts'
-import { broodAndBloomSpells } from '../../src/compendium/brood-and-bloom-spells.ts'
-import { strongWatersSpells } from '../../src/compendium/strong-waters-spells.ts'
+import { wakingGardenCreatures } from '../../src/originals/waking-garden.ts'
+import { broodAndBloomCreatures } from '../../src/originals/brood-and-bloom.ts'
+import { broodAndBloomSpells } from '../../src/originals/brood-and-bloom-spells.ts'
+import { strongWatersSpells } from '../../src/originals/strong-waters-spells.ts'
 import { validateDataset, validateSpellDataset } from '../../src/compendium/validate.ts'
 
 const libraries = [

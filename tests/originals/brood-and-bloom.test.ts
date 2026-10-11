@@ -2,8 +2,8 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import { describe, expect, it } from 'vitest'
-import { broodAndBloomCreatures as creatures } from '../../src/compendium/brood-and-bloom.ts'
-import { broodAndBloomSpells as spells } from '../../src/compendium/brood-and-bloom-spells.ts'
+import { broodAndBloomCreatures as creatures } from '../../src/originals/brood-and-bloom.ts'
+import { broodAndBloomSpells as spells } from '../../src/originals/brood-and-bloom-spells.ts'
 
 describe('Brood & Bloom dataset', () => {
   it('gives every creature its lore layer — the description is part of the library', () => {

@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import { describe, expect, it } from 'vitest'
-import { strongWatersSpells as spells } from '../../src/compendium/strong-waters-spells.ts'
+import { strongWatersSpells as spells } from '../../src/originals/strong-waters-spells.ts'
 
 describe('Strong Waters dataset', () => {
   it('carries the two spells the book promises by name', () => {
