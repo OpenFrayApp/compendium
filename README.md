@@ -151,6 +151,14 @@ named rulers, Ia’Affrat, and their explicitly named spawn. The sample omits
 Section 15, so the complete attribution chain remains a publishing gate. Console library registration, credits, and shipping the
 vetted datasets require separate work.
 
+## Warlock Grimoire source review
+
+`npm run review:warlock-grimoire -- "$WARLOCK_DRAFT" "$WARLOCK_RTF"` compares
+pinned local drafts with the supplied 2019 book. It requires macOS `textutil`.
+Private review artifacts stay under ignored `output/`; no spell cards or approvals
+are produced. See the [source review](./docs/warlock-grimoire-review.md) for
+located entries, unresolved drafts, corrections, and publication gates.
+
 ## Prepare Open5e spell libraries
 
 `prepare:open5e-spells` requests third-party v2 spells separately for each source document.
