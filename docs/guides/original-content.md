@@ -36,6 +36,33 @@ The previous `src/compendium/` authoring paths have no forwarding modules: all r
 External tooling that imports typed collections must update its import paths; aggregate export names remain unchanged.
 Existing npm command names, default output paths, sorting, validation, and serialization remain unchanged.
 
+### Large-collection grouping assessment
+
+Brood & Bloom’s creature aggregate assembles four contiguous editorial groups from the existing record order and descriptions:
+
+| Group | Authoring file | Records in original order |
+| --- | --- | --- |
+| Parasite brood, its predator, and the Lazaret | [parasites-and-lazaret.ts](../../src/originals/brood-and-bloom/parasites-and-lazaret.ts) | 18: Latchling through Exemplar |
+| Fungal bloom and its infected forms | [fungal-bloom.ts](../../src/originals/brood-and-bloom/fungal-bloom.ts) | 24: Driftling through Nave |
+| Wakelight brood, husks, and its predator | [wakelight-brood.ts](../../src/originals/brood-and-bloom/wakelight-brood.ts) | 19: Cinder Nit through Lychfield |
+| Hands of the Host | [hands-of-the-host.ts](../../src/originals/brood-and-bloom/hands-of-the-host.ts) | 6: Almoner through The First Graft |
+
+Edit those group files; `brood-and-bloom.ts` preserves the public aggregate in that order.
+Each group retains the complete original layered licensing header.
+These boundaries follow the existing parasite, fungal, wakelight, and cult descriptions without reclassifying individual entries.
+
+The Waking Garden retains one 67-creature collection in its existing alphabetical order.
+Its descriptions identify plant lineages, animated implements, and garden inhabitants, but the records do not define a complete editorial partition.
+Lineages and inhabitants interleave; variants also share themes such as burned ground and ley lines across lineages.
+Splitting by name ranges would be arbitrary, while splitting by creature type would separate related inhabitants and their grown forms.
+A complete thematic split would require new editorial assignments for shared or peripheral entries.
+Retain the collection until an authored grouping establishes those assignments.
+
+The collection tests live in `tests/originals/`.
+They retain lore, cross-spell-reference, Lazaret chassis, and Strong Waters book-promise checks alongside dataset invariants.
+Aggregate hashes pin every field and authored order before relocation; `npm run verify:offline` separately checks sorted output bytes and approval records.
+Neither check grants publication approval.
+
 ## Generate original datasets
 
 ```bash
