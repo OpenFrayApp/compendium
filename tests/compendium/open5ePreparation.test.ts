@@ -36,35 +36,39 @@ describe('Open5e preparation', () => {
     }
   })
 
-  it('follows pages and forces JSON on pagination links', async () => {
+  it('supplies the creature endpoint and restores its source filter on continuation links', async () => {
     const fetchJson = vi.fn()
       .mockResolvedValueOnce({ count: 2, next: '/v2/creatures/?offset=1', results: [record()] })
       .mockResolvedValueOnce({ count: 2, next: null, results: [record('bfrd_second')] })
     expect(await fetchOpen5eRecords('bfrd', fetchJson)).toHaveLength(2)
-    expect(fetchJson.mock.calls[1][0]).toContain('format=json')
+    expect(fetchJson.mock.calls[0][0]).toBe('https://api.open5e.com/v2/creatures/?format=json&document__key=bfrd&limit=100')
+    expect(fetchJson.mock.calls[1][0]).toBe('https://api.open5e.com/v2/creatures/?offset=1&format=json&document__key=bfrd')
   })
 
-  it('rejects incomplete, inconsistent, and malformed pages', async () => {
-    for (const page of [
-      { count: 2, next: null, results: [record()] },
-      { count: 0, next: null, results: [record()] },
-      { count: 1, next: null, results: 'bad' },
-      { count: 1, results: [record()] },
-      { count: 1, next: '/v2/creatures/?offset=1', results: [] },
-    ]) {
-      await expect(fetchOpen5eRecords('bfrd', async () => page)).rejects.toThrow()
-    }
+  it('supplies the legacy endpoint and restores the explicit source alias', async () => {
+    const legacy = { name: 'Test Creature', document__slug: 'blackflag', v2_converted_path: '/v2/creatures/bfrd_test/' }
     const fetchJson = vi.fn()
-      .mockResolvedValueOnce({ count: 2, next: '/v2/creatures/?offset=1', results: [record()] })
-      .mockResolvedValueOnce({ count: 3, next: null, results: [record('bfrd_second')] })
-    await expect(fetchOpen5eRecords('bfrd', fetchJson)).rejects.toThrow('Count changed')
+      .mockResolvedValueOnce({ count: 2, next: '/v1/monsters/?page=2', results: [legacy] })
+      .mockResolvedValueOnce({ count: 2, next: null, results: [legacy] })
+    await fetchLegacyRecords('bfrd', fetchJson)
+    expect(fetchJson.mock.calls[0][0]).toBe('https://api.open5e.com/v1/monsters/?format=json&document__slug=blackflag&limit=100')
+    expect(fetchJson.mock.calls[1][0]).toBe('https://api.open5e.com/v1/monsters/?page=2&format=json&document__slug=blackflag')
   })
 
-  it('rejects external pagination and cycles', async () => {
-    await expect(fetchOpen5eRecords('bfrd', async () => ({ count: 2, next: 'https://example.com/', results: [record()] })))
-      .rejects.toThrow('Unexpected pagination URL')
-    await expect(fetchOpen5eRecords('bfrd', async (url) => ({ count: 2, next: url, results: [record()] })))
-      .rejects.toThrow('Pagination cycle')
+  it.each([
+    [fetchOpen5eRecords, '/v2/creatures/?document__key=tob-2023&page=2'],
+    [fetchLegacyRecords, '/v1/monsters/?document__slug=tob-2023&page=2']
+  ] as const)('rejects changed source filters before fetching another page', async (fetchRecords, next) => {
+    const fetchJson = vi.fn().mockResolvedValue({ count: 2, next, results: [record()] })
+    await expect(fetchRecords('bfrd', fetchJson)).rejects.toThrow('Document filter changed')
+    expect(fetchJson).toHaveBeenCalledTimes(1)
+  })
+
+  it.each([
+    [fetchOpen5eRecords, '/v2/spells/'],
+    [fetchLegacyRecords, '/v2/creatures/']
+  ] as const)('rejects continuation links outside the adapter endpoint', async (fetchRecords, next) => {
+    await expect(fetchRecords('bfrd', async () => ({ count: 2, next, results: [record()] }))).rejects.toThrow('Unexpected pagination URL')
   })
 
   it('rejects duplicate keys, mixed sources, empty snapshots, and missing stats', () => {

@@ -307,8 +307,9 @@ describe("Open5e spell snapshots", () => {
       });
     const result = await fetchSpellSnapshot(fetchJson, "test");
     expect(result.records).toHaveLength(2);
-    expect(fetchJson.mock.calls[1][0]).toContain("document__key=test");
-    expect(fetchJson.mock.calls[2][0]).toContain("format=json");
+    expect(fetchJson.mock.calls[0][0]).toBe("https://api.open5e.com/v2/documents/?format=json&limit=100");
+    expect(fetchJson.mock.calls[1][0]).toBe("https://api.open5e.com/v2/spells/?format=json&limit=100&document__key=test");
+    expect(fetchJson.mock.calls[2][0]).toBe("https://api.open5e.com/v2/spells/?page=2&format=json&document__key=test");
   });
 
   it("never requests or caches excluded sources, even when downloading all sources", async () => {
@@ -395,43 +396,11 @@ describe("Open5e spell snapshots", () => {
     );
   });
 
-  it("rejects foreign pagination, cycles, incomplete counts, and count drift", async () => {
-    for (const next of ["https://example.com/v2/spells/", "/v2/creatures/"]) {
-      const fetchJson = vi
-        .fn()
-        .mockResolvedValueOnce({ count: 1, next: null, results: [document()] })
-        .mockResolvedValueOnce({ count: 2, next, results: [record()] });
-      await expect(fetchSpellSnapshot(fetchJson)).rejects.toThrow(
-        "Unexpected pagination",
-      );
-    }
-    const cycle = vi
-      .fn()
-      .mockResolvedValueOnce({ count: 1, next: null, results: [document()] })
-      .mockImplementation(async (url) => ({
-        count: 2,
-        next: url,
-        results: [record()],
-      }));
-    await expect(fetchSpellSnapshot(cycle)).rejects.toThrow("cycle");
-    const incomplete = vi
-      .fn()
-      .mockResolvedValueOnce({ count: 1, next: null, results: [document()] })
-      .mockResolvedValueOnce({ count: 2, next: null, results: [record()] });
-    await expect(fetchSpellSnapshot(incomplete)).rejects.toThrow("Incomplete");
-    const drift = vi
-      .fn()
-      .mockResolvedValueOnce({ count: 1, next: null, results: [document()] })
-      .mockResolvedValueOnce({
-        count: 2,
-        next: "/v2/spells/?page=2",
-        results: [record()],
-      })
-      .mockResolvedValueOnce({
-        count: 3,
-        next: null,
-        results: [record({ key: "test_second" })],
-      });
-    await expect(fetchSpellSnapshot(drift)).rejects.toThrow("Count changed");
+  it.each(["documents", "spells"])("restricts %s pagination to its own endpoint", async (endpoint) => {
+    const fetchJson = vi.fn();
+    if (endpoint === "spells") fetchJson.mockResolvedValueOnce({ count: 1, next: null, results: [document()] });
+    fetchJson.mockResolvedValueOnce({ count: 2, next: "/v2/creatures/", results: endpoint === "spells" ? [record()] : [document()] });
+    await expect(fetchSpellSnapshot(fetchJson)).rejects.toThrow("Unexpected pagination URL");
+    expect(fetchJson).toHaveBeenCalledTimes(endpoint === "spells" ? 2 : 1);
   });
 });

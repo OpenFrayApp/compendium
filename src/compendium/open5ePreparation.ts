@@ -28,7 +28,7 @@ export function preparationKeys(key: string): CandidateKey[] {
 
 /** Fetch every v2 creature and reject mixed documents or incomplete records. */
 export async function fetchOpen5eRecords(key: CandidateKey, fetchJson: JsonFetcher): Promise<Open5eRecord[]> {
-  const records = await fetchOpen5ePages<Open5eRecord>(`${API}creatures/?format=json&document__key=${key}&limit=100`, '/v2/creatures/', fetchJson, undefined, 'Got')
+  const records = await fetchOpen5ePages<Open5eRecord>(`${API}creatures/?format=json&document__key=${key}&limit=100`, '/v2/creatures/', fetchJson, { parameter: 'document__key', value: key }, 'Got')
   assertRecords(records, key)
   return records
 }
@@ -40,7 +40,7 @@ const LEGACY_KEYS: Record<CandidateKey, string> = {
 /** Fetch v1 provenance that the v2 conversion discards. */
 export async function fetchLegacyRecords(key: CandidateKey, fetchJson: JsonFetcher): Promise<LegacyRecord[]> {
   const slug = LEGACY_KEYS[key]
-  const records = await fetchOpen5ePages<LegacyRecord>(`https://api.open5e.com/v1/monsters/?format=json&document__slug=${slug}&limit=100`, '/v1/monsters/', fetchJson, undefined, 'Got')
+  const records = await fetchOpen5ePages<LegacyRecord>(`https://api.open5e.com/v1/monsters/?format=json&document__slug=${slug}&limit=100`, '/v1/monsters/', fetchJson, { parameter: 'document__slug', value: slug }, 'Got')
   for (const record of records) {
     if (record.document__slug !== slug || !record.v2_converted_path?.startsWith(`/v2/creatures/${key}_`)) {
       throw new Error(`Unexpected v1 provenance for ${key}`)
