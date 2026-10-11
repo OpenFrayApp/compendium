@@ -8,13 +8,13 @@
  *   node scripts/ingest-brood-and-bloom-spells.ts [out.json]
  *
  * Like the book's creatures there is no PDF and no prose parser: the spells are authored
- * directly (and type-checked by tsc) in ../src/compendium/brood-and-bloom-spells.ts. This
+ * directly (and type-checked by tsc) in ../src/originals/brood-and-bloom-spells.ts. This
  * runner sorts them, runs the spell invariants, and refuses to write on any error, so a
  * bad edit can't reach the app. Original content, not OGL/CC-BY — see CREDITS.md.
  */
 
 import { writeFileSync } from 'node:fs'
-import { broodAndBloomSpells } from '../src/compendium/brood-and-bloom-spells.ts'
+import { broodAndBloomSpells } from '../src/originals/brood-and-bloom-spells.ts'
 import { validateSpellDataset } from '../src/compendium/validate.ts'
 
 const outPath = process.argv[2] ?? 'output/brood-and-bloom-spells.json'

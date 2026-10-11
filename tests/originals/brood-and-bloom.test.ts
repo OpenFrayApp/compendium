@@ -2,8 +2,8 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import { describe, expect, it } from 'vitest'
-import { broodAndBloomCreatures as creatures } from '../../src/compendium/brood-and-bloom.ts'
-import { broodAndBloomSpells as spells } from '../../src/compendium/brood-and-bloom-spells.ts'
+import { broodAndBloomCreatures as creatures } from '../../src/originals/brood-and-bloom.ts'
+import { broodAndBloomSpells as spells } from '../../src/originals/brood-and-bloom-spells.ts'
 import { validateDataset, validateSpellDataset } from '../../src/compendium/validate.ts'
 
 // Same gates as the Waking Garden suite: the typed source is where a bad field is

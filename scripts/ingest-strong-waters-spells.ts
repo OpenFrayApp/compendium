@@ -8,13 +8,13 @@
  *   node scripts/ingest-strong-waters-spells.ts [out.json]
  *
  * Like Brood & Bloom there is no PDF and no prose parser: the spells are authored
- * directly (and type-checked by tsc) in ../src/compendium/strong-waters-spells.ts. This
+ * directly (and type-checked by tsc) in ../src/originals/strong-waters-spells.ts. This
  * runner sorts them, runs the spell invariants, and refuses to write on any error, so a
  * bad edit can't reach the app. Original content, not OGL/CC-BY — see CREDITS.md.
  */
 
 import { writeFileSync } from 'node:fs'
-import { strongWatersSpells } from '../src/compendium/strong-waters-spells.ts'
+import { strongWatersSpells } from '../src/originals/strong-waters-spells.ts'
 import { validateSpellDataset } from '../src/compendium/validate.ts'
 
 const outPath = process.argv[2] ?? 'output/strong-waters-spells.json'

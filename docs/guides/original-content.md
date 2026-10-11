@@ -3,24 +3,40 @@
 Run commands from the repository root after [setup](../../README.md#setup).
 Check the [source status](../source-status.md) before choosing inputs or distributing results.
 
-## Original content (Brood & Bloom, The Waking Garden)
+## Typed authoring area
 
-Author original creatures directly as typed `Creature[]` values in
-`src/compendium/brood-and-bloom.ts` and `src/compendium/waking-garden.ts`.
+Author OpenFray collections in `src/originals/` as typed `Creature[]` or `Spell[]` values:
+
+| Collection | Typed source | Public aggregate |
+| --- | --- | --- |
+| Brood & Bloom creatures | [brood-and-bloom.ts](../../src/originals/brood-and-bloom.ts) | `broodAndBloomCreatures` |
+| Brood & Bloom spells | [brood-and-bloom-spells.ts](../../src/originals/brood-and-bloom-spells.ts) | `broodAndBloomSpells` |
+| The Waking Garden creatures | [waking-garden.ts](../../src/originals/waking-garden.ts) | `wakingGardenCreatures` |
+| On Strong Waters and Potent Simples spells | [strong-waters-spells.ts](../../src/originals/strong-waters-spells.ts) | `strongWatersSpells` |
+
 Typechecking checks fields before ingest; the console consumes generated JSON.
 These pipelines need no PDF or prose parser.
 Ingest sorts entries, runs the shared invariant validator, and writes only when no errors remain.
 Edit the typed sources; JSON is a build artifact.
-Preserve the layered notices in each collection and the
-[console’s original-content licensing record](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md#openfray-original-content).
+Keep authored aggregate order, identifiers, source IDs, rules editions, and spell references stable during structural changes.
 
-Brood & Bloom and On Strong Waters and Potent Simples also ship spells of their own. They
-are authored the same way, in `src/compendium/brood-and-bloom-spells.ts` and
-`src/compendium/strong-waters-spells.ts`, and gated by a spell-side validator
-(`validateSpellDataset`) that checks what a spell can be silently wrong about: a
-Concentration duration that repeats the word the card already prints, a ritual flag that
-disagrees with the casting time, scaling steps at or below the spell's own level. The
-spells speak to the caster directly: “You touch,” following the SRD’s spell voice.
+Preserve each source’s layered licensing notice and the
+[console’s original-content licensing record](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md#openfray-original-content).
+Code uses AGPL-3.0-or-later; original mechanics use CC-BY-4.0 with attribution to OpenFray.
+Creature descriptions and family lore remain protected prose, with all rights reserved.
+Spell origin notes remain protected book prose outside these mechanics collections.
+
+The spell-side validator (`validateSpellDataset`) checks Concentration duration wording, ritual flags against casting time, and scaling steps above the spell’s level.
+Spells speak to the caster directly: “You touch,” following the SRD’s spell voice.
+
+### Consumers and migration
+
+The four ingest runners and collection tests import `src/originals/` directly.
+The previous `src/compendium/` authoring paths have no forwarding modules: all repository callers moved together.
+External tooling that imports typed collections must update its import paths; aggregate export names remain unchanged.
+Existing npm command names, default output paths, sorting, validation, and serialization remain unchanged.
+
+## Generate original datasets
 
 ```bash
 mkdir -p output

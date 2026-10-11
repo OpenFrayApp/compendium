@@ -65,6 +65,6 @@ Keep source evidence in the [review documents](./README.md) and historical leads
 Link shared licensing rules and console contracts to their owners.
 Source-specific copyright transcripts retain their exact legal wording.
 
-Typed original content lives in `src/compendium/`; generated JSON lives under ignored `output/`.
+Typed original content lives in `src/originals/`; generated JSON lives under ignored `output/`.
 Keep supplied PDFs, extracted pages, and private review caches outside Git under the parent’s
 [repository file policy](https://github.com/OpenFrayApp/openfray/blob/main/docs/development/repository-files.md).

@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import { describe, expect, it } from 'vitest'
-import { wakingGardenCreatures as creatures } from '../../src/compendium/waking-garden.ts'
+import { wakingGardenCreatures as creatures } from '../../src/originals/waking-garden.ts'
 import { validateDataset } from '../../src/compendium/validate.ts'
 
 // The authored source is the only place a bad field can be caught before the JSON

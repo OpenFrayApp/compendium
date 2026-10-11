@@ -47,7 +47,7 @@ Retain `develop` after each promotion.
   Never swap PDF libraries or reimplement extraction inline.
 - **Edit the `.ts`, never the JSON.** Original content (the Waking Garden,
   Brood & Bloom, Strong Waters) is authored as typed `Creature[]`/`Spell[]` sources
-  in `src/compendium/`; the JSON in `output/` is a build artifact.
+  in `src/originals/`; the JSON in `output/` is a build artifact.
 - **Stat-block text is mechanics only.** Trait and action text carries rules;
   lore lives in the creature's `description`, and GM advice nowhere.
 - **Never bake conditional advantage into data.** A trait that grants advantage

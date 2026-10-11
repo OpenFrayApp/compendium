@@ -3,10 +3,10 @@
 
 import { createHash } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
-import { broodAndBloomCreatures } from '../../src/compendium/brood-and-bloom.ts'
-import { broodAndBloomSpells } from '../../src/compendium/brood-and-bloom-spells.ts'
-import { strongWatersSpells } from '../../src/compendium/strong-waters-spells.ts'
-import { wakingGardenCreatures } from '../../src/compendium/waking-garden.ts'
+import { broodAndBloomCreatures } from '../../src/originals/brood-and-bloom.ts'
+import { broodAndBloomSpells } from '../../src/originals/brood-and-bloom-spells.ts'
+import { strongWatersSpells } from '../../src/originals/strong-waters-spells.ts'
+import { wakingGardenCreatures } from '../../src/originals/waking-garden.ts'
 
 // Captured from the public typed aggregates at 5dc803b before relocation.
 // CLI baselines sort entries; these hashes also protect authored aggregate order.
