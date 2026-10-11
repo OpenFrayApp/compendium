@@ -246,6 +246,7 @@ function checkCreatureCodexRecord(record: Open5eRecord, index: number): void {
   if (
     record.languages != null &&
     (typeof record.languages !== 'object' ||
+      Array.isArray(record.languages) ||
       (record.languages.as_string != null && typeof record.languages.as_string !== 'string'))
   )
     fail('languages')

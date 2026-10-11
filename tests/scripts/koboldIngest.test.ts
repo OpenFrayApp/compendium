@@ -240,6 +240,13 @@ describe.each(['cached', 'live'])('Creature Codex %s evidence', (mode) => {
       }
     ],
     [
+      'language array',
+      'languages',
+      (record: any) => {
+        record.languages = []
+      }
+    ],
+    [
       'malformed languages',
       'languages',
       (record: any) => {
