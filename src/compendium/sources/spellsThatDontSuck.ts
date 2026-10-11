@@ -6,9 +6,6 @@ import {
   prepareGmBinderSpells,
   type GmBinderSpellSource,
 } from "../formats/gmBinderSpells.ts";
-import { mapDirectSpellBlock, type DirectSpellBlock } from "../formats/directSpells.ts";
-export type { DirectSpellBlock } from "../formats/directSpells.ts";
-
 export const STDS_URL = "https://www.gmbinder.com/share/-NR0OWlW60yv2EfA3qQp";
 const CONFIG: GmBinderSpellSource = {
   source: "somanyrobots-spells-that-dont-suck",
@@ -21,11 +18,6 @@ const CONFIG: GmBinderSpellSource = {
 /** Extract the creators’ spell text and verify this document’s licensing credits. */
 export function extractStdsSpells(html: string) {
   return extractGmBinderSpells(html, CONFIG.requiredCredits);
-}
-
-/** Map this source’s display fields without interpreting conditional mechanics. */
-export function mapStdsSpell(block: DirectSpellBlock) {
-  return mapDirectSpellBlock(block, CONFIG.source);
 }
 
 /** Prepare direct-source candidates with publisher licensing evidence and review gates. */
