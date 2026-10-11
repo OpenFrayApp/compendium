@@ -68,6 +68,18 @@ it.each(['document__key', 'document__slug'])(
   }
 )
 
+it.each([
+  'document__key=',
+  'document__key=test&document__key=other',
+  'document__key=test&document__key='
+])('rejects changed explicit filter values in %s before fetching', async (query) => {
+  const fetchJson = vi.fn()
+  await expect(
+    fetchOpen5ePages(`https://api.open5e.com/v2/spells/?${query}`, path, fetchJson, filter)
+  ).rejects.toThrow('Document filter changed')
+  expect(fetchJson).not.toHaveBeenCalled()
+})
+
 it('detects cycles after restoring JSON and source filters', async () => {
   const fetchJson = vi
     .fn()
