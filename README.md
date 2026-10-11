@@ -55,6 +55,9 @@ Neither command needs purchased PDFs or network access after installation.
 Run the dataset validator after each ingest or preparation; passing tests does not
 approve a source for publication.
 
+The [migration audit](./docs/migration-audit.md) records replacement coverage, retained interfaces, parity, and private retention procedures.
+`npm run check:docs` checks tracked public links, anchors, and npm command coverage offline.
+
 The [verification guide](./docs/verification.md) covers individual checks,
 `npm run format:check`, explicit-file `npm run format -- <files...>`,
 `npm run check:prose`, and missing full-source parity inputs.
@@ -109,11 +112,13 @@ Compendium export does not register libraries or deploy OpenFray.
 
 ## Repository layout
 
-- `src/schema/`: vendored [console types](https://github.com/OpenFrayApp/console/tree/main/src/schema).
-- `src/compendium/`: mappers, source-specific review data, typed originals, and validators.
-- `scripts/`: ingest runners, extractors, preparation, review, and export CLIs.
-- `tests/`: TypeScript behavior tests and Python extractor tests.
-- `docs/`: task guides, source reviews, publication records, and investigation navigation.
+- [`src/schema/`](./src/schema/): vendored [console types](https://github.com/OpenFrayApp/console/tree/main/src/schema).
+- [`src/compendium/`](./src/compendium/): source adapters, review data, validation, and publication gates.
+- [`src/formats/`](./src/formats/): shared stat-block, identity, and direct-spell parsing.
+- [`src/originals/`](./src/originals/): typed original-content collections.
+- [`scripts/`](./scripts/): ingest, extraction, preparation, review, and export commands.
+- [`tests/`](./tests/): behavior tests grouped into compendium, formats, originals, and scripts; Python suites under scripts.
+- [`docs/`](./docs/): task guides, source reviews, publication records, and investigation navigation.
 - `output/`: ignored generated datasets and local evidence. Preserve existing caches.
 
 Before contributing, read the shared

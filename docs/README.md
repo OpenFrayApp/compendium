@@ -24,6 +24,8 @@ The [verification guide](./verification.md) covers `npm run verify`,
 `npm run verify:offline`, individual checks, formatting, prose, and parity limits.
 Start with the [README checks](../README.md#verification).
 The [shared formats guide](./formats.md) records parser ownership, consumers, grammar boundaries, and representative byte parity.
+The [reviewed spell guide](./reviewed-spell-preparation.md) maps source corrections and publication gates.
+The [migration audit](./migration-audit.md) accounts for replaced tests, retained interfaces, verification evidence, and private retention.
 
 ## Current publication records and source evidence
 

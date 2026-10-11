@@ -66,7 +66,7 @@ The verification slice adds 11 TypeScript command tests: 408 tests across 35 fil
 All 34 Python tests remain.
 The four Khyberia extractor tests moved unchanged into `tests/scripts/test_extract_khyberia.py` for consistent discovery.
 Those counts describe the initial verification slice.
-Subsequent slices retain their own behavioral coverage and parity guides.
+Subsequent slice coverage and the final consistency results are recorded in the [migration audit](./migration-audit.md).
 `check:docs` requires a Git checkout and reads only tracked Markdown and `package.json`.
 It checks inline local links and ATX heading anchors, including duplicate headings.
 It rejects links to untracked local artifacts without opening them.
