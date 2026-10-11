@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import type { Open5eCreature } from "../src/compendium/open5eTypes.ts";
+import type { Open5eCreature } from '../src/compendium/open5eTypes.ts'
 
 /**
  * Map Creature Codex (Kobold Press) into our Creature schema, from the Open5e v2 API.
@@ -20,7 +20,8 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import {
   isReservedIndividual,
   mapOpen5eCcdx,
-  RESERVED_INDIVIDUALS } from '../src/compendium/open5eCcdx.ts'
+  RESERVED_INDIVIDUALS
+} from '../src/compendium/open5eCcdx.ts'
 
 const [outPath = 'output/creature-codex-creatures.json', cachePath] = process.argv.slice(2)
 

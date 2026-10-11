@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import type { Open5eRecord } from "./open5eTypes.ts";
-
+import type { Open5eRecord } from './open5eTypes.ts'
 import type { Creature } from '../schema/creature.ts'
 import { OPEN5E_ABILITIES } from './open5e.ts'
 import { validateDataset, type ValidationException } from './validate.ts'
@@ -14,7 +13,6 @@ const RETAINED: ValidationException[] = [
   { id: 'en-publishing-a5e-mm:miremuck-goblin-king', source: 'en-publishing-a5e-mm', field: 'hpFormula', maxHp: 62, formula: '8d8+16', reason: REASON, evidence: `${API}a5e-mm_miremuck-goblin-king/` },
   { id: 'en-publishing-a5e-mm:yobbo', source: 'en-publishing-a5e-mm', field: 'hpFormula', maxHp: 11, formula: '3d6', reason: REASON, evidence: `${API}a5e-mm_yobbo/` },
   { id: 'kobold-press-tob-2023:soul-eater', source: 'kobold-press-tob-2023', field: 'save', ability: 'con', score: 17, cr: 7, value: 5, reason: REASON, evidence: `${API}tob-2023_soul-eater/` },
-
 ]
 
 /** Label exact retained API findings without downgrading the strict validation report. */

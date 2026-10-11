@@ -1,12 +1,18 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import type { LegacyRecord, Open5eRecord } from "../src/compendium/open5eTypes.ts";
-
+import type { LegacyRecord, Open5eRecord } from '../src/compendium/open5eTypes.ts'
 import { OPEN5E_CANDIDATES } from '../src/compendium/open5eSources.ts'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import {
-  assertRecords, candidateKey, fetchOpen5eRecords, fetchLegacyRecords, preparationKeys, prepareOpen5e, withLegacy } from '../src/compendium/open5ePreparation.ts'
+  assertRecords,
+  candidateKey,
+  fetchOpen5eRecords,
+  fetchLegacyRecords,
+  preparationKeys,
+  prepareOpen5e,
+  withLegacy
+} from '../src/compendium/open5ePreparation.ts'
 
 /** Fetch JSON explicitly; Open5e otherwise returns its browsable HTML interface. */
 async function fetchJson(url: string): Promise<unknown> {

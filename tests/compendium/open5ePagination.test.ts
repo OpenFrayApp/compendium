@@ -56,13 +56,11 @@ it('checks the initial URL before calling the injected fetcher', async () => {
 it.each(['document__key', 'document__slug'])(
   'rejects an explicitly changed %s filter',
   async (parameter) => {
-    const fetchJson = vi
-      .fn()
-      .mockResolvedValue({
-        count: 2,
-        next: `/v2/spells/?${parameter}=other&page=2`,
-        results: ['first']
-      })
+    const fetchJson = vi.fn().mockResolvedValue({
+      count: 2,
+      next: `/v2/spells/?${parameter}=other&page=2`,
+      results: ['first']
+    })
     await expect(
       fetchOpen5ePages(initial, path, fetchJson, { parameter, value: 'test' })
     ).rejects.toThrow('Document filter changed')

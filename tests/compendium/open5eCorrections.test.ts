@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import type { Open5eRecord } from "../../src/compendium/open5eTypes.ts";
-
+import type { Open5eRecord } from '../../src/compendium/open5eTypes.ts'
 import { expect, it } from 'vitest'
 import { correctOpen5e } from '../../src/compendium/open5eCorrections.ts'
 import { mapOpen5e } from '../../src/compendium/open5e.ts'

@@ -16,6 +16,7 @@
  * and a fix to one book fixes all four.
  */
 
+import type { Open5eCreature } from './open5eTypes.ts'
 import type { Creature } from '../schema/creature.ts'
 import { mapTob3, type Tob3Block } from './tob3.ts'
 
@@ -36,8 +37,6 @@ export function isReservedIndividual(name: string): boolean {
   const n = name.trim().toLowerCase()
   return RESERVED_INDIVIDUALS.some((r) => r.toLowerCase() === n)
 }
-
-import type { Open5eCreature } from './open5eTypes.ts'
 
 const ABILITY_ORDER = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma']
 const SHORT: Record<string, string> = {

@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import type { Open5eAction, Open5eRecord } from "./open5eTypes.ts";
-
+import type { Open5eAction, Open5eRecord } from './open5eTypes.ts'
 import type { Action, Recharge } from '../schema/action.ts'
 import type { Ability, Size } from '../schema/primitives.ts'
 import type { Creature } from '../schema/creature.ts'

@@ -3,7 +3,6 @@
 
 import type { Open5eSpellRecord } from "./open5eTypes.ts";
 
-
 export interface LegacySpellClassRecord {
   slug: string;
   name: string;

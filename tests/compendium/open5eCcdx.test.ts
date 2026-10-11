@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import type { Open5eCreature } from "../../src/compendium/open5eTypes.ts";
-
+import type { Open5eCreature } from '../../src/compendium/open5eTypes.ts'
 import { describe, expect, it } from 'vitest'
 import {
   flattenMarkdown,
   isReservedIndividual,
-  mapOpen5eCcdx } from '../../src/compendium/open5eCcdx.ts'
+  mapOpen5eCcdx
+} from '../../src/compendium/open5eCcdx.ts'
 
 /** A minimal Open5e v2 record; overrides fill in what a case is about. */
 const record = (over: Partial<Open5eCreature> = {}): Open5eCreature => ({

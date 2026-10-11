@@ -4,7 +4,12 @@
 import { fetchOpen5ePages, type JsonFetcher } from './open5ePagination.ts'
 import type { Open5eRecord, LegacyRecord } from './open5eTypes.ts'
 import { auditOpen5e, mapOpen5e, OPEN5E_SIZES } from './open5e.ts'
-import { exclusionReason, OPEN5E_SOURCE_REVIEW, OPEN5E_CANDIDATES, type CandidateKey } from './open5eSources.ts'
+import {
+  exclusionReason,
+  OPEN5E_SOURCE_REVIEW,
+  OPEN5E_CANDIDATES,
+  type CandidateKey
+} from './open5eSources.ts'
 import { validateDataset } from './validate.ts'
 import { correctOpen5e } from './open5eCorrections.ts'
 import { OPEN5E_VALIDATION_EXCEPTIONS } from './open5eExceptions.ts'
