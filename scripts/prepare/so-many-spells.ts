@@ -3,14 +3,14 @@
 
 import {
   prepareSoManySpells,
-  SO_MANY_SPELLS_URL,
-} from "../../src/compendium/sources/soManySpells.ts";
-import { prepareGmBinderLibrary } from "../lib/prepare-gmbinder-spells.ts";
+  SO_MANY_SPELLS_URL
+} from '../../src/compendium/sources/soManySpells.ts'
+import { prepareGmBinderLibrary } from '../lib/prepare-gmbinder-spells.ts'
 
 await prepareGmBinderLibrary({
-  name: "So Many Spells",
-  root: "output/so-many-spells-preparation",
+  name: 'So Many Spells',
+  root: 'output/so-many-spells-preparation',
   url: SO_MANY_SPELLS_URL,
-  command: "prepare:so-many-spells",
-  prepare: prepareSoManySpells,
-});
+  command: 'prepare:so-many-spells',
+  prepare: prepareSoManySpells
+})
