@@ -1,18 +1,15 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-// Map Tome of Beasts 3 blocks (from scripts/tob3.py) into the Creature schema.
-// ToB 3 uses the 2014 stat-block format — "Melee Weapon Attack: +9 to hit, reach 5
-// ft., one target. Hit: 14 (2d8 + 5) bludgeoning damage", a STR/DEX table, "Challenge
-// X (Y XP)" — so the prose parsers here differ from srd52.ts (2024). Open Game Content
-// only; the PI flavor and the Lord/Archangel entries are already dropped upstream.
+/** Shared 2014 stat-block mapping; source adapters own extraction and exclusions. */
 
 import type { Ability, AbilityScores, DamageType, SaveBonuses, Senses, Size, SkillBonuses, Speeds } from '../schema/primitives.ts'
 import type { Action, ActionKind, DamageRoll, Range, Recharge, SaveOutcome, SaveRequirement } from '../schema/action.ts'
 import type { Creature, LegendaryActions, SpellGroup, SpellLevel, SpellRef, SpellSlots, Spellcasting, SpellUsage, Trait } from '../schema/creature.ts'
-import { parseSpellcasting, slug } from './srd52.ts'
+import { parseSpellcasting } from './innateSpellcasting.ts'
+import { slug } from './identity.ts'
 
-export interface Tob3Block {
+export interface StatBlock2014 {
   name: string
   sourcePage: number | null
   header: string[]
@@ -223,12 +220,8 @@ function skills(s: string): SkillBonuses {
   return out
 }
 
-// ── 2014 trait-based spellcasting (ToB 2) ─────────────────────────────────────
-// ToB 2 carries spellcasting as a *trait* ("Innate Spellcasting" / "Spellcasting"),
-// phrased "spellcasting ability is X" (not 2024's "using X as the ability"), in two
-// shapes: innate (At will / N per day) and slot-based ("Nth-level spellcaster …
-// Cantrips (at will): … 1st level (4 slots): …"). srd52's parseSpellcasting only does
-// the 2024 innate form, so this handles the 2014 forms.
+// Trait-based 2014 casting retains slots and shared daily pools. Action-style
+// casting uses the shared innate parser and retains its separate interpretation.
 
 const FULL_ABILITY: Record<string, Ability> = {
   strength: 'str', dexterity: 'dex', constitution: 'con', intelligence: 'int', wisdom: 'wis', charisma: 'cha',
@@ -325,9 +318,8 @@ function parse2014Spellcasting(entry: { name: string; text: string }, spellSourc
   return sc
 }
 
-// `source` lets the 2014-format Kobold books (ToB 2 / ToB 3) share this mapper — the
-// block shape is identical, so only the source id (and thus the entry ids) differ.
-export function mapTob3(block: Tob3Block, source = 'kobold-press-tob3'): Creature {
+/** Map a shared 2014 block using the source identity supplied by its adapter. */
+export function map2014StatBlock(block: StatBlock2014, source: string): Creature {
   const { sizeType, fields, abilities } = parseHeader(block.header)
   const stM = /^(Tiny|Small|Medium|Large|Huge|Gargantuan)(?:\s+or\s+Small)?\s+(.+?),\s*(.+)$/i.exec(sizeType)
   const size = (stM ? stM[1] : "Medium") as Size
@@ -387,7 +379,7 @@ export function mapTob3(block: Tob3Block, source = 'kobold-press-tob3'): Creatur
   if (fields["Condition Immunities"]) creature.conditionImmunities = list(fields["Condition Immunities"])
   if (fields["Languages"]) { const l = list(fields["Languages"]); if (l.length) creature.languages = l }
 
-  // ToB 2/3 are 2014 (edition 5.0): cast spells link to the 5.1 library, not 5.2.
+  // 2014 blocks (edition 5.0) link cast spells to the 5.1 library.
   const spellSource = 'srd-5.1'
   const traits: Trait[] = []
   for (const t of block.traits) {

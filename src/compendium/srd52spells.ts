@@ -16,7 +16,7 @@ import type {
   SpellSave,
   SpellScaling,
 } from '../schema/spell.ts'
-import { slug } from './srd52.ts'
+import { slug } from '../formats/identity.ts'
 
 export interface Srd52SpellBlock {
   name: string

@@ -52,8 +52,10 @@ Retain `develop` after each promotion.
   lore lives in the creature's `description`, and GM advice nowhere.
 - **Never bake conditional advantage into data.** A trait that grants advantage
   under a condition stays prose; the GM applies it at the table.
-- **Schema is vendored.** `src/schema/` is a copy of the console's types; the
-  source of truth is the console repo. Sync it, never fork it.
+- **Schema is vendored.** `src/schema/` and its recorded dependencies are complete
+  console-owned files pinned in `schema-provenance.json`. Sync them, never fork them.
+  Follow [schema synchronization](./docs/schema-sync.md); run `npm run schema:check`
+  to detect drift offline.
 - **Licensing gates every source**: CC-BY > ORC > OGL, OGC-only under OGL, and
   never SRD-excluded WotC IP. The checklist is in the parent's
   [Content licensing](https://github.com/OpenFrayApp/openfray/blob/main/docs/development/content-licensing.md);

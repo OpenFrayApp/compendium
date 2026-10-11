@@ -2,9 +2,9 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import { describe, expect, it } from 'vitest'
-import { mapTob3, type Tob3Block } from '../../src/compendium/tob3.ts'
+import { map2014StatBlock, type StatBlock2014 } from '../../src/formats/statBlock2014.ts'
 
-const block = (over: Partial<Tob3Block>): Tob3Block => ({
+const block = (over: Partial<StatBlock2014>): StatBlock2014 => ({
   name: 'Test',
   sourcePage: 10,
   header: ['Large Aberration, Chaotic Evil'],
@@ -13,8 +13,8 @@ const block = (over: Partial<Tob3Block>): Tob3Block => ({
   ...over,
 })
 
-describe('mapTob3 spellcasting', () => {
-  const c = mapTob3(
+describe('map2014StatBlock spellcasting', () => {
+  const c = map2014StatBlock(
     block({
       name: 'Adult Prismatic Dragon',
       sections: {
@@ -25,7 +25,7 @@ describe('mapTob3 spellcasting', () => {
           },
         ],
       },
-    }),
+    }), 'kobold-press-tob3',
   )
 
   it('lifts a Spellcasting action into the structured block', () => {
@@ -41,8 +41,8 @@ describe('mapTob3 spellcasting', () => {
   })
 })
 
-describe('mapTob3 bulleted "choose one" actions', () => {
-  const c = mapTob3(
+describe('map2014StatBlock bulleted "choose one" actions', () => {
+  const c = map2014StatBlock(
     block({
       name: 'Ahu-Nixta Mechanon',
       sections: {
@@ -57,7 +57,7 @@ describe('mapTob3 bulleted "choose one" actions', () => {
           },
         ],
       },
-    }),
+    }), 'kobold-press-tob3',
   )
 
   it('keeps a framing parent and adds a clickable sub-action per option', () => {
@@ -75,8 +75,8 @@ describe('mapTob3 bulleted "choose one" actions', () => {
   })
 })
 
-describe('mapTob3 recharge "choose one" (breath weapon)', () => {
-  const c = mapTob3(
+describe('map2014StatBlock recharge "choose one" (breath weapon)', () => {
+  const c = map2014StatBlock(
     block({
       name: 'Adult Prismatic Dragon',
       sections: {
@@ -90,7 +90,7 @@ describe('mapTob3 recharge "choose one" (breath weapon)', () => {
           },
         ],
       },
-    }),
+    }), 'kobold-press-tob3',
   )
   const by = (n: string) => (c.actions ?? []).find((a) => a.name === n)!
 
@@ -108,20 +108,20 @@ describe('mapTob3 recharge "choose one" (breath weapon)', () => {
   })
 })
 
-describe('mapTob3 prose tidy', () => {
+describe('map2014StatBlock prose tidy', () => {
   it('strips the leading "." the extractor leaves on a split entry', () => {
-    const c = mapTob3(
+    const c = map2014StatBlock(
       block({
         sections: { Actions: [{ name: 'Frightful Presence', text: '. Each creature must save.' }] },
-      }),
+      }), 'kobold-press-tob3',
     )
     expect(c.actions?.[0].text).toBe('Each creature must save.')
   })
 })
 
-describe('mapTob3 ToB 2 trait spellcasting (2014 format)', () => {
+describe('map2014StatBlock ToB 2 trait spellcasting (2014 format)', () => {
   it('lifts an innate trait ("ability is X") into structured groups', () => {
-    const c = mapTob3(
+    const c = map2014StatBlock(
       block({
         name: 'Angel',
         traits: [
@@ -151,7 +151,7 @@ describe('mapTob3 ToB 2 trait spellcasting (2014 format)', () => {
   })
 
   it('lifts a slot-based caster into per-level slot pools', () => {
-    const c = mapTob3(
+    const c = map2014StatBlock(
       block({
         name: 'Savant',
         traits: [

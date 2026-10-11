@@ -33,7 +33,10 @@ It excludes core `srd-2024`, core `srd-2014`, A5E, and unsupported rulesets befo
 Spells That Don’t Suck uses its existing direct-publisher source route and is excluded from this preparation.
 Offline replay removes these records from legacy caches before writing artifacts.
 Preparation also removes their stale directories within `output/open5e-spell-preparation/`.
-It checks pagination counts, duplicate keys, document identity, and source metadata.
+The shared [Open5e paginator](../../src/compendium/open5ePagination.ts) restricts origin and endpoint and retains each spell document filter.
+Continuation links with omitted filters regain them; explicitly changed filters fail before another request.
+It also rejects credentials, fragments, cycles, malformed pages, stalled progress, and inconsistent or incomplete counts.
+The spell adapter checks duplicate keys, document identity, source eligibility, and metadata separately.
 Each source directory under `output/open5e-spell-preparation/` contains:
 
 - `raw.json`: source metadata, retrieval time, and unchanged API records.

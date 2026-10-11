@@ -3,19 +3,20 @@
 
 export type Ability = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'
 
+/** The six abilities in stat-block order — the runtime companion to the type. */
+export const ABILITIES: Ability[] = ['str', 'dex', 'con', 'int', 'wis', 'cha']
+
 export type AbilityScores = Record<Ability, number>
+
+/** The 5e ability modifier for a score (10–11 → 0, 14 → +2, 8 → −1). */
+export function abilityMod(score: number): number {
+  return Math.floor((score - 10) / 2)
+}
 
 /** Saving-throw proficiency bonuses, keyed by ability. Partial — most absent. */
 export type SaveBonuses = Partial<Record<Ability, number>>
 
-export type Size =
-  | 'Tiny'
-  | 'Small'
-  | 'Medium or Small'
-  | 'Medium'
-  | 'Large'
-  | 'Huge'
-  | 'Gargantuan'
+export type Size = 'Tiny' | 'Small' | 'Medium or Small' | 'Medium' | 'Large' | 'Huge' | 'Gargantuan'
 
 /** The 18 standard 5e skills. */
 export type Skill =
@@ -40,6 +41,28 @@ export type Skill =
 
 export type SkillBonuses = Partial<Record<Skill, number>>
 
+/** The ability each skill checks with, per the 5e skill list. */
+export const SKILL_ABILITY: Record<Skill, Ability> = {
+  acrobatics: 'dex',
+  animalHandling: 'wis',
+  arcana: 'int',
+  athletics: 'str',
+  deception: 'cha',
+  history: 'int',
+  insight: 'wis',
+  intimidation: 'cha',
+  investigation: 'int',
+  medicine: 'wis',
+  nature: 'int',
+  perception: 'wis',
+  performance: 'cha',
+  persuasion: 'cha',
+  religion: 'int',
+  sleightOfHand: 'dex',
+  stealth: 'dex',
+  survival: 'wis',
+}
+
 /** Damage types are metadata tags for display/resistance — never used in math. */
 export type DamageType =
   | 'acid'
@@ -55,6 +78,22 @@ export type DamageType =
   | 'radiant'
   | 'slashing'
   | 'thunder'
+
+export const DAMAGE_TYPES: DamageType[] = [
+  'acid',
+  'bludgeoning',
+  'cold',
+  'fire',
+  'force',
+  'lightning',
+  'necrotic',
+  'piercing',
+  'poison',
+  'psychic',
+  'radiant',
+  'slashing',
+  'thunder',
+]
 
 /** Movement speeds in feet. `hover` flags a flying speed that can hover. */
 export interface Speeds {
@@ -77,7 +116,7 @@ export interface Senses {
 /**
  * Origin of a piece of content. Specific enough to drive licensing/attribution,
  * e.g. `'srd-5.2'`, `'srd-5.1'`, `'kobold-press-tob'`, `'custom'`.
- * See docs/content-licensing.md.
+ * See CREDITS.md and the parent repo's docs/development/content-licensing.md.
  */
 export type ContentSource = string
 

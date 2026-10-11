@@ -9,6 +9,10 @@ Check the [source status](../source-status.md) before choosing inputs or distrib
 existing PDF-derived datasets unchanged. The active `all` batch is empty.
 Historical A5E, Black Flag, and ToB 2023 reviews remain available by explicit
 document key. Tal’Dorei is no longer a preparation candidate.
+Its [withdrawn review](../open5e-review.md#taldorei-campaign-setting-removed-from-scope) remains historical evidence.
+The [former preparation metadata](https://github.com/OpenFrayApp/compendium/blob/5dc803bbd76b64ea69af41b63d5b08b13a7fd308/src/compendium/open5eSources.ts)
+and [five provisional save labels](https://github.com/OpenFrayApp/compendium/blob/5dc803bbd76b64ea69af41b63d5b08b13a7fd308/src/compendium/open5eProvisional.ts)
+remain available in Git history; they no longer apply to preparation.
 
 | Open5e document key | Source                          | Records observed during preparation |
 | ------------------- | ------------------------------- | ----------------------------------- |
@@ -55,7 +59,7 @@ transcription corrections. Corrections fail when their expected input changes.
 Verified published arithmetic deviations remain cited warnings through exact-value
 exceptions. The validator CLI applies the same reviewed exceptions as preparation;
 other libraries and unreviewed values retain strict checks.
-Eight unresolved HP/save findings retain their Open5e values provisionally.
+Three unresolved HP/save findings retain their Open5e values provisionally.
 Reports label them `unverified-open5e`; strict validation still reports them as errors.
 Changed inputs stop those retention labels from applying.
 
@@ -67,6 +71,14 @@ The sidecar is a review artifact; the console does not consume it.
 Review Advanced 5th Edition and Black Flag mechanics before publishing.
 Compare raw and mapped attacks, legendary costs, action sections, and spell links.
 The raw snapshot preserves fields the adapter does not consume.
+
+Creature and spell adapters use `src/compendium/open5ePagination.ts` with an injected JSON fetcher.
+It restricts pagination to the Open5e origin and each adapter’s endpoint.
+It rejects credentials, fragments, cycles, malformed pages, stalled progress, and inconsistent or incomplete counts.
+Creature requests retain `document__key`; v1 provenance requests retain the explicit `document__slug` alias.
+Continuation links with omitted filters regain them. Explicitly changed filters fail before the next request.
+Record identity and source eligibility checks remain in the preparation adapters.
+Shared record types live in `src/compendium/open5eTypes.ts`; source keys and candidate identities live in `src/compendium/open5eSources.ts`.
 
 Verify each edition’s license, reuse designation, excluded content, and required
 attribution chain. Open5e metadata alone does not establish publishing compliance.

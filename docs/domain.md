@@ -16,7 +16,8 @@ The [parent context map](https://github.com/OpenFrayApp/openfray/blob/main/CONTE
 ## Console contract
 
 The console owns the [schema](https://github.com/OpenFrayApp/console/tree/main/src/schema).
-`src/schema/` is a vendored copy. Schema changes originate in the console and are synced here.
+`src/schema/` and its required dependencies are vendored from the immutable console revision in [the provenance manifest](../schema-provenance.json).
+Schema changes originate in the console and follow the [sync and drift-check workflow](./schema-sync.md).
 A mapper must preserve unsupported mechanics as prose or withhold the entry with a review finding.
 Conditional advantage remains prose.
 

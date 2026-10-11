@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
+import type { Open5eRecord } from '../../src/compendium/open5eTypes.ts'
 import { describe, expect, it } from 'vitest'
-import { auditOpen5e, mapOpen5e, type Open5eRecord } from '../../src/compendium/open5e.ts'
+import { auditOpen5e, mapOpen5e } from '../../src/compendium/open5e.ts'
 import { exclusionReason } from '../../src/compendium/open5eSources.ts'
 
 /** Build a source record with explicit numeric values for mapper tests. */
