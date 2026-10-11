@@ -162,6 +162,98 @@ describe('SRD 2014 failure preservation', () => {
   })
 })
 
+describe.each([
+  {
+    command: 'ingest:srd52',
+    kind: 'creatures',
+    identity: 'srd-5.2:zinc-guardian',
+    finding: 'hpFormula'
+  },
+  {
+    command: 'ingest:srd52-spells',
+    kind: 'spells',
+    identity: 'srd-5.2:zinc-light',
+    finding: 'no description text'
+  }
+])('$command validation gate', ({ command, kind, identity, finding }) => {
+  it('creates nested positional output with unchanged successful bytes', () => {
+    const directory = checkout()
+    const destination = join(directory, 'nested', 'new', 'dataset.json')
+    if (kind === 'creatures') {
+      const spells = run(directory, 'ingest:srd52-spells', ['spells.json'])
+      expect(spells.status, spells.stderr).toBe(0)
+    }
+    const result = run(directory, command, [
+      `${kind}.json`,
+      destination,
+      ...(kind === 'creatures' ? ['output/srd-spells.json'] : [])
+    ])
+    expect(result.status, result.stderr).toBe(0)
+    const expected = baseline.datasets.find(
+      (dataset: { command: string }) => dataset.command === command
+    )
+    expect(createHash('sha256').update(readFileSync(destination)).digest('hex')).toBe(
+      expected.sha256
+    )
+  })
+
+  it('leaves default output absent when validation fails', () => {
+    const directory = checkout((input) => {
+      if (kind === 'spells') input.spells[0].text = ''
+      else input.creatures[0].header[2] = 'HP 10 (2d8)'
+    })
+    expect(run(directory, command, [`${kind}.json`]).status).toBe(1)
+    expect(existsSync(join(directory, 'output'))).toBe(false)
+  })
+
+  it('leaves existing output intact when a block cannot be mapped', () => {
+    const directory = checkout((input) => {
+      input[kind][0].name = null
+    })
+    const destination = join(directory, 'existing.json')
+    writeFileSync(destination, 'existing dataset')
+    const result = run(directory, command, [`${kind}.json`, destination])
+    expect(result.status).toBe(1)
+    expect(result.stdout).not.toContain('mapped ')
+    expect(readFileSync(destination, 'utf8')).toBe('existing dataset')
+  })
+
+  it('reports warnings and retains the original values', () => {
+    const directory = checkout((input) => {
+      if (kind === 'spells') input.spells[0].components = 'V, S, M'
+      else input.creatures[0].header[6] = 'Senses Passive Perception 11'
+    })
+    const destination = join(directory, 'result.json')
+    const result = run(directory, command, [`${kind}.json`, destination])
+    expect(result.status, result.stderr).toBe(0)
+    expect(result.stdout).toContain('errors: 0, warnings: 1')
+    expect(result.stderr).toContain(
+      kind === 'spells' ? 'material flag and material text disagree' : 'senses.passivePerception'
+    )
+    const records = JSON.parse(readFileSync(destination, 'utf8'))
+    const record = records.find((record: { id: string }) => record.id === identity)
+    if (kind === 'spells')
+      expect(record.components).toEqual({ verbal: true, somatic: true, material: true })
+    else expect(record.senses.passivePerception).toBe(11)
+  })
+
+  it('reports invalid entries and preserves the positional destination', () => {
+    const directory = checkout((input) => {
+      if (kind === 'spells') input.spells[0].text = ''
+      else input.creatures[0].header[2] = 'HP 10 (2d8)'
+    })
+    const destination = join(directory, 'existing.json')
+    const sentinel = Buffer.from('existing dataset\n\u0000preserve')
+    writeFileSync(destination, sentinel)
+    const result = run(directory, command, [`${kind}.json`, destination])
+    expect(result.status).toBe(1)
+    expect(result.stderr).toContain(identity)
+    expect(result.stderr).toContain(finding)
+    expect(result.stdout).not.toContain('mapped ')
+    expect(readFileSync(destination)).toEqual(sentinel)
+  })
+})
+
 describe('SRD ingest CLI parity', () => {
   it('retains SRD 2014 API order, identities, spell references, and compact serialization', () => {
     const directory = checkout()
@@ -173,7 +265,7 @@ describe('SRD ingest CLI parity', () => {
 
   it('retains PDF-derived spell sorting, creature order, and positional spell linking', () => {
     const directory = checkout()
-    mkdirSync(join(directory, 'output'))
+    expect(existsSync(join(directory, 'output'))).toBe(false)
     const spells = run(directory, 'ingest:srd52-spells', ['spells.json'])
     expect(spells.status, spells.stderr).toBe(0)
     const creatures = run(directory, 'ingest:srd52', [

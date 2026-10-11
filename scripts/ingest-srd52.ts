@@ -11,9 +11,12 @@
  * names in the prose. Sourced from WotC's official SRD 5.2 PDF under CC-BY-4.0.
  */
 
-import { readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { makeSpellLinker } from '../src/compendium/spelllinker.ts'
 import { mapSrd52, type Srd52Block } from '../src/compendium/srd52.ts'
+import { emitValidatedDataset } from '../src/compendium/datasetEmission.ts'
+import { validateDataset } from '../src/compendium/validate.ts'
+import { reportSrdValidation } from './lib/srdValidation.ts'
 
 const [inPath, outPath = 'output/srd-creatures.json', spellsPath] = process.argv.slice(2)
 if (!inPath) {
@@ -29,5 +32,11 @@ if (spellsPath) {
 
 const blocks: Srd52Block[] = JSON.parse(readFileSync(inPath, 'utf8'))
 const creatures = blocks.map((b) => mapSrd52(b, opts))
-writeFileSync(outPath, JSON.stringify(creatures, null, 0))
-console.log(`mapped ${creatures.length} creatures → ${outPath}${spellsPath ? ' (spells linked)' : ''}`)
+const report = emitValidatedDataset(creatures, outPath, {
+  validate: validateDataset,
+  report: (report) => reportSrdValidation('creatures', report)
+})
+if (report.errors) process.exit(1)
+console.log(
+  `mapped ${creatures.length} creatures → ${outPath}${spellsPath ? ' (spells linked)' : ''}`
+)
