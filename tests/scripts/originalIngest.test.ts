@@ -74,7 +74,7 @@ function inject(directory: string, module: string, records: string, mutation: st
   const preload = join(directory, 'inject.mjs')
   writeFileSync(
     preload,
-    `import { ${records} as records } from './src/compendium/${module}.ts';\n${mutation}\n`
+    `import { ${records} as records } from './src/originals/${module}.ts';\n${mutation}\n`
   )
   return preload
 }

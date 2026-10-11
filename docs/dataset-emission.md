@@ -92,7 +92,7 @@ Failure fixtures mutate only child-process memory; authored files stay unchanged
 
 [`datasetEmission.test.ts`](../tests/compendium/datasetEmission.test.ts) checks reusable indentation,
 input order, and returned reporting.
-[`originalLibraries.test.ts`](../tests/compendium/originalLibraries.test.ts) consolidates repeated
+[`originalLibraries.test.ts`](../tests/originals/originalLibraries.test.ts) consolidates repeated
 counts, uniqueness, validation, identity, and edition checks.
 Collection suites retain lore, cross-spell references, Lazaret consistency, and Strong Waters promises.
 The [offline baseline](./verification.md#output-baselines) pins all four datasets and the six publication approval records.
