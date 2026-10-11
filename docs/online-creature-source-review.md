@@ -1,5 +1,9 @@
 # Additional online creature sources
 
+Status: historical investigation only. These observations grant no publication approval.
+See the [investigation index](./investigations/README.md) for per-source lead statuses and
+[source status](./source-status.md) for current reviewed selections.
+
 ## Confirmed reuse-license leads
 
 ### Lazy GM’s 5e Monster Builder Resource Document

@@ -1,5 +1,9 @@
 # Verified additional creature-source search
 
+Status: historical investigation only. These observations grant no publication approval.
+See the [investigation index](./investigations/README.md) for per-source lead statuses and
+[source status](./source-status.md) for current reviewed selections.
+
 ## Khyberia SRD
 
 Author: Nick Stefanski.

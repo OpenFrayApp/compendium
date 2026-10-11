@@ -6,7 +6,8 @@ The [combined content-boundary review](./warlock-content-boundaries.md) adds the
 supplied Liminal Magic guide, licensing preparation, and explicit exclusions.
 This document retains the four-Grimoire audit’s original scope.
 The console credits now contain the relevant OGL and copyright chains.
-The combined pipeline selects 35 corrected references with source-specific casting verdicts.
+The separate [publication decision](./reference-spell-publication.md#warlock-grimoire) approves 35 corrected reference cards.
+Their source-specific console casting verdicts have independent limits.
 The extraction audit itself grants no publication or combat approval.
 
 The supplied RTF identifies _Warlock Grimoire_, © 2019 Open Design LLC.
@@ -270,7 +271,10 @@ The RTF SHA-256 is
 The draft SHA-256 is
 `94fac4a9342f2798d15ef35cdbfcafb4eacbfbfe524b87af7696f60eb83fb006`.
 
-## Publication gates
+## Gates for changed selections
+
+The [35-card publication decision](./reference-spell-publication.md#warlock-grimoire) records the current approved subset and attribution.
+The following audit requirements apply when reviewing changed or additional content:
 
 1. Verify the RTF’s fidelity, column order, page continuations, and exact printing
    against a lawfully obtained visual source.
@@ -285,5 +289,5 @@ The draft SHA-256 is
    and review attribution before copying any approved JSON into the console.
 
 The 43 preserved drafts remain unchanged. This extraction audit produces no
-publication approval. The combined pipeline prepares a separate 35-card selection
-and its source-specific console profiles.
+publication approval. The combined pipeline prepares the separate approved 35-card selection;
+it does not extend approval to the original drafts or withheld entries.
