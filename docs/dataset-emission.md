@@ -1,8 +1,8 @@
 # Validated dataset emission
 
-The four original-content ingest commands share
+The four original-content ingest commands and four [Kobold creature runners](./kobold-ingestion.md) share
 [`emitValidatedDataset`](../src/compendium/datasetEmission.ts).
-They need no source snapshots or network access.
+The original-content commands need no source snapshots or network access.
 See [installation](./verification.md#install) and
 [original-content authoring](./guides/original-content.md).
 
@@ -72,7 +72,8 @@ Source fidelity, licensing, completeness, exclusions, and attribution remain sou
 [Approved reference publication](./reference-spell-publication.md) retains its independent candidate hashes,
 counts, editions, mechanics limits, and accepted-warning checks.
 The emission interface does not replace those gates or register a console library.
-SRD and Kobold runners can reuse it after their own source-specific checks; they are not migrated here.
+Kobold runners apply their own source-specific checks before using this interface.
+Their [ingestion contract](./kobold-ingestion.md) records stricter failures and source-comparison limits.
 
 ## Checks
 
