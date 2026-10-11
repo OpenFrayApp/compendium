@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import { mapDirectSpellBlock, type DirectSpellBlock } from '../formats/directSpells.ts'
+import { mapDirectSpellBlock, type DirectSpellBlock } from '../../formats/directSpells.ts'
 import { reservedWotcName } from '../sourcePolicy.ts'
 import { validateSpellDataset } from '../validate.ts'
 

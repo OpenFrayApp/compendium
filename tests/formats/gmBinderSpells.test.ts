@@ -2,8 +2,8 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import { describe, expect, it } from 'vitest'
-import { extractGmBinderSpells } from '../../../src/compendium/formats/gmBinderSpells.ts'
-import { stdsHtml as page, spellHeading as heading } from '../../helpers/directSpellFixtures.ts'
+import { extractGmBinderSpells } from '../../src/formats/gmBinderSpells.ts'
+import { stdsHtml as page, spellHeading as heading } from '../helpers/directSpellFixtures.ts'
 
 describe('GM Binder spell extraction', () => {
   it('removes advice, executable content, decoration, and document commentary at the shared interface', () => {

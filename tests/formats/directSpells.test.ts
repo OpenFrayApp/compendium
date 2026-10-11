@@ -2,10 +2,7 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import { describe, expect, it } from 'vitest'
-import {
-  mapDirectSpellBlock,
-  type DirectSpellBlock
-} from '../../../src/compendium/formats/directSpells.ts'
+import { mapDirectSpellBlock, type DirectSpellBlock } from '../../src/formats/directSpells.ts'
 
 /** Supply display metadata without inferred casting consequences. */
 function block(header: string): DirectSpellBlock {

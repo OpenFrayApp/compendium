@@ -7,8 +7,8 @@ Check [source status](./source-status.md) and the separate [reference publicatio
 
 | Responsibility                                            | Module                                                                                |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Shared HTML extraction and GM Binder candidate review     | [`formats/gmBinderSpells.ts`](../src/compendium/formats/gmBinderSpells.ts)            |
-| Shared display-field mapping                              | [`formats/directSpells.ts`](../src/compendium/formats/directSpells.ts)                |
+| Shared HTML extraction and GM Binder candidate review     | [`formats/gmBinderSpells.ts`](../src/formats/gmBinderSpells.ts)                       |
+| Shared display-field mapping                              | [`formats/directSpells.ts`](../src/formats/directSpells.ts)                           |
 | Spells That Don’t Suck credits, attribution, and identity | [`sources/spellsThatDontSuck.ts`](../src/compendium/sources/spellsThatDontSuck.ts)    |
 | So Many Spells credits, attribution, and identity         | [`sources/soManySpells.ts`](../src/compendium/sources/soManySpells.ts)                |
 | Kibbles v2.3 snapshot checks, credit chains, and findings | [`sources/kibblesV23Spells.ts`](../src/compendium/sources/kibblesV23Spells.ts)        |
@@ -50,13 +50,13 @@ Run the [public checks](./verification.md):
 ```sh
 npm run verify
 npm run verify:offline
-npx vitest run tests/compendium/formats tests/compendium/sources tests/scripts/prepareDirectSpells.test.ts
+npx vitest run tests/formats/gmBinderSpells.test.ts tests/formats/directSpells.test.ts tests/compendium/sources tests/scripts/prepareDirectSpells.test.ts
 ```
 
 | Previous coverage                                                                          | Retained interface and coverage                                                                                                                                                                                  |
 | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Four general parser cases in `spellsThatDontSuck.test.ts`                                  | [`formats/gmBinderSpells.test.ts`](../tests/compendium/formats/gmBinderSpells.test.ts): tables, advice, page breaks, exact-name attachments, and later spells nested beneath stat blocks                         |
-| Ritual mapping and cantrip assertions from those parser cases                              | [`formats/directSpells.test.ts`](../tests/compendium/formats/directSpells.test.ts): ritual display, cantrip level, concentration, materials, source identity, and explicit missing-class policy                  |
+| Four general parser cases in `spellsThatDontSuck.test.ts`                                  | [`formats/gmBinderSpells.test.ts`](../tests/formats/gmBinderSpells.test.ts): tables, advice, page breaks, exact-name attachments, and later spells nested beneath stat blocks                                    |
+| Ritual mapping and cantrip assertions from those parser cases                              | [`formats/directSpells.test.ts`](../tests/formats/directSpells.test.ts): ritual display, cantrip level, concentration, materials, source identity, and explicit missing-class policy                             |
 | Three repeated offline CLI scenarios                                                       | [`prepareDirectSpells.test.ts`](../tests/scripts/prepareDirectSpells.test.ts): each npm name, offline replay, source hashes, attribution, strict failure, retained candidates, findings, and byte parity         |
 | Spells That Don’t Suck mapping, replacement labels, and rejection cases                    | [`sources/spellsThatDontSuck.test.ts`](../tests/compendium/sources/spellsThatDontSuck.test.ts), with contributor-credit rejection for all required contributors                                                  |
 | So Many Spells specializations, custom classes, same-name independence, and reserved names | [`sources/soManySpells.test.ts`](../tests/compendium/sources/soManySpells.test.ts)                                                                                                                               |

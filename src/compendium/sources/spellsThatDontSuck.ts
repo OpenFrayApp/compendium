@@ -5,7 +5,7 @@ import {
   extractGmBinderSpells,
   prepareGmBinderSpells,
   type GmBinderSpellSource
-} from '../formats/gmBinderSpells.ts'
+} from '../../formats/gmBinderSpells.ts'
 export const STDS_URL = 'https://www.gmbinder.com/share/-NR0OWlW60yv2EfA3qQp'
 const CONFIG: GmBinderSpellSource = {
   source: 'somanyrobots-spells-that-dont-suck',

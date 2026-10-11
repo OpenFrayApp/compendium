@@ -3,7 +3,7 @@
 
 import { createHash } from 'node:crypto'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import type { prepareGmBinderSpells } from '../../src/compendium/formats/gmBinderSpells.ts'
+import type { prepareGmBinderSpells } from '../../src/formats/gmBinderSpells.ts'
 
 interface PreparationConfig {
   name: string

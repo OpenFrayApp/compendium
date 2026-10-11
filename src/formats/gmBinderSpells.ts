@@ -2,11 +2,11 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import { parse } from 'parse5'
-import type { Spell } from '../../schema/spell.ts'
+import type { Spell } from '../schema/spell.ts'
 import { DIRECT_SPELL_HEADER, mapDirectSpellBlock, type DirectSpellBlock } from './directSpells.ts'
 export type { DirectSpellBlock } from './directSpells.ts'
-import { validateSpellDataset } from '../validate.ts'
-import { reservedWotcName } from '../sourcePolicy.ts'
+import { validateSpellDataset } from '../compendium/validate.ts'
+import { reservedWotcName } from '../compendium/sourcePolicy.ts'
 
 export interface GmBinderSpellSource {
   source: string

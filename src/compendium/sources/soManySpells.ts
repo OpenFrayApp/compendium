@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import { prepareGmBinderSpells, type GmBinderSpellSource } from '../formats/gmBinderSpells.ts'
+import { prepareGmBinderSpells, type GmBinderSpellSource } from '../../formats/gmBinderSpells.ts'
 
 export const SO_MANY_SPELLS_URL = 'https://www.gmbinder.com/share/-NMZq9u_rDyV_XD5YTxf'
 const CONFIG: GmBinderSpellSource = {
