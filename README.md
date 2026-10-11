@@ -10,6 +10,13 @@ This repo is **build-time only** — the OpenFray app never runs it; it just con
 the JSON. Keeping the generators (and their toolchains, including a Python PDF
 parser) out of the app keeps the app lean and the data reproducible here.
 
+## Domain and documentation
+
+This repository owns one context: [compendium ingest](./CONTEXT.md).
+Read [Domain ownership and contracts](./docs/domain.md) for the console schema boundary,
+source review requirements, and publication handoff to the parent workspace.
+The [documentation index](./docs/README.md) groups source reviews and legal evidence.
+
 ## Sources
 
 | Command                                 | Source                                                             | Notes                                                                                       |
@@ -391,8 +398,8 @@ Add `--strict` to the preparation command to enforce the publishing gate.
 
 ## Publish reviewed reference spells
 
-Five pinned snapshots are approved for opt-in reference cards:
-Deep Magic 2020 (503), Kibbles v2.3 (295), Spells That Don’t Suck (181), So Many Spells (179), and Tome of Heroes (90).
+Six pinned snapshots are approved for opt-in reference cards:
+Deep Magic 2020 (503), Kibbles v2.3 (295), Spells That Don’t Suck (181), So Many Spells (179), Tome of Heroes (90), and Warlock Grimoire (35).
 Their [publication record](./docs/reference-spell-publication.md) documents the
 source hashes, source-specific decisions, attribution, and manual-only limits.
 Preparation reports keep their conservative gates for future snapshots.
@@ -402,8 +409,8 @@ npm run export:reference-spells -- ../console/public/compendium
 ```
 
 Export checks the pinned candidate hashes and standard validation before writing.
-The only accepted warning is Bile Beam’s missing material description.
-The console supplies independent manual verdicts and blocks same-name automation.
+Accepted material-component warnings are limited to Bile Beam and Zymurgic Aura.
+The console supplies source-specific casting verdicts and blocks same-name automation fallback.
 Other Open5e and creature candidates remain outside this publication approval.
 
 ## SRD 5.2.1 from the official PDF
