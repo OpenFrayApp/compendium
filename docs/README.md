@@ -10,12 +10,13 @@ Check [source status](./source-status.md) before selecting inputs or distributin
 | Task | Guide |
 | --- | --- |
 | Synchronize console-owned schema or check local drift offline | [Schema synchronization](./schema-sync.md) |
-| Extract and ingest SRD, Tome of Beasts, Khyberia, or Creature Codex | [Ingest](./guides/ingest.md) |
+| Extract and ingest SRD creatures and spells | [SRD ingestion](./srd-ingestion.md) |
+| Extract and ingest Tome of Beasts, Khyberia, or Creature Codex | [Ingest](./guides/ingest.md) |
 | Prepare or replay Open5e creature candidates | [Prepare creatures](./guides/prepare-creatures.md) |
 | Prepare or replay Open5e, GM Binder, or Kibbles spell candidates | [Prepare spells](./guides/prepare-spells.md) |
 | Review Tome of Heroes, Deep Magic 2020, or Warlock sources | [Review spells](./guides/review-spells.md) |
 | Author originals, validate datasets, compare fields, or estimate challenge ratings | [Original content and checks](./guides/original-content.md) |
-| Emit validated original datasets or reuse the emission contract | [Dataset emission](./dataset-emission.md) |
+| Emit validated datasets or reuse the emission contract | [Dataset emission](./dataset-emission.md) |
 | Export approved reference cards and hand off vetted datasets | [Publish](./guides/publish.md) |
 
 The [verification guide](./verification.md) covers `npm run verify`,
