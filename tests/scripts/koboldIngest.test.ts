@@ -65,6 +65,25 @@ function input(dir: string, records: unknown): string {
 }
 
 describe.each(['cached', 'live'])('Creature Codex %s evidence', (mode) => {
+  it.each(['', ' ', '\t\n', '\u00a0'])(
+    'rejects blank next %j with the same page-shape failure and preserves bytes',
+    (next) => {
+      const dir = workspace()
+      const snapshot = { ...structuredClone(codexSnapshot), next }
+      const destination = join(dir, 'existing.json')
+      const sentinel = Buffer.from('existing codex\n\x00do not replace')
+      writeFileSync(destination, sentinel)
+      const result =
+        mode === 'cached'
+          ? run(dir, 'creature-codex', [destination, input(dir, snapshot)])
+          : run(dir, 'creature-codex', [destination], { pages: [snapshot] })
+      expect(result.status).toBe(1)
+      expect(result.stderr).toContain('Invalid Open5e page')
+      expect(result.stdout).not.toContain('mapped ')
+      expect(readFileSync(destination)).toEqual(sentinel)
+    }
+  )
+
   it.each([
     [
       'ability-row fallback',

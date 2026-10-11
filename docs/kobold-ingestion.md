@@ -41,6 +41,7 @@ Preserve the source records; do not relabel a foreign record as Creature Codex.
 
 Cached and live input use the [shared Open5e paginator](../src/compendium/open5ePagination.ts).
 It checks response shape, count consistency, progress, endpoint and origin restrictions, and pagination cycles.
+Only `next: null` ends pagination; empty or whitespace-only continuation strings fail page-shape validation in both modes.
 Live retrieval follows `/v2/creatures/` pages with the required `document__key=ccdx` filter and existing User-Agent.
 An omitted continuation filter is restored.
 Every explicitly supplied filter value must equal `ccdx`, including duplicate parameters.
