@@ -1,0 +1,20 @@
+{
+  "revision": "5dc803bbd76b64ea69af41b63d5b08b13a7fd308",
+  "artifacts": {
+    "prepare:stds-spells": {
+      "candidate-spells.json": "bdd4efd288630d3b33f4b6283a31f6d0c3cd9be6d0b5511949aedc20391cef6e",
+      "blocks.json": "efcafdbae27c3634946f40050f00e2763c9f94d64bd6d9099a84c2cbf2b14255",
+      "report.json (without preparedAt)": "16e537133e026e289195a4a14a8a169a289ea069ec9c4e093a7fe6a4e600c9f9"
+    },
+    "prepare:so-many-spells": {
+      "candidate-spells.json": "faecb08630f342905b85c66efa64054defaf357d6013e41dcf21669ce4aeecd0",
+      "blocks.json": "efcafdbae27c3634946f40050f00e2763c9f94d64bd6d9099a84c2cbf2b14255",
+      "report.json (without preparedAt)": "4619f03db5aca8e5e111cc3e2a3b78b2968e4bf161523b01c81b7f589026f555"
+    },
+    "prepare:kibbles-v23-spells": {
+      "candidate-spells.json": "4850bbc61c33922c5432bc869b21d37eacd2adf9ece26f39cbcee49aa7cf69b1",
+      "snapshot.json": "1db585d9d60b82778f924148a6b9fb739e363ce21c35fb12d03f166c044794d7",
+      "report.json (without preparedAt)": "31fb7800b01356389e19a53a2efeeb874d36ac5b0405620528794d99341d1c3d"
+    }
+  }
+}
