@@ -4,8 +4,8 @@
 import {
   prepareSoManySpells,
   SO_MANY_SPELLS_URL,
-} from "../src/compendium/soManySpells.ts";
-import { prepareGmBinderLibrary } from "./lib/prepare-gmbinder-spells.ts";
+} from "../../src/compendium/sources/soManySpells.ts";
+import { prepareGmBinderLibrary } from "../lib/prepare-gmbinder-spells.ts";
 
 await prepareGmBinderLibrary({
   name: "So Many Spells",

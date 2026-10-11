@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import { mapDirectSpellBlock, type DirectSpellBlock } from "./directSpells.ts";
-import { reservedWotcName } from "./sourcePolicy.ts";
-import { validateSpellDataset } from "./validate.ts";
+import { mapDirectSpellBlock, type DirectSpellBlock } from "../formats/directSpells.ts";
+import { reservedWotcName } from "../sourcePolicy.ts";
+import { validateSpellDataset } from "../validate.ts";
 
 export const KIBBLES_V23_URL =
   "https://static1.squarespace.com/static/5e7eab9fcc76e2321541f8b3/t/67310012bfaa046721d850fb/1731264535758/SpellCompemdiumV2.3.pdf";

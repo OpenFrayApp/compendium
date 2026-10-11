@@ -10,7 +10,7 @@ import { describe, expect, it } from "vitest";
 import {
   prepareKibblesV23Spells,
   type KibblesV23Snapshot,
-} from "../../src/compendium/kibblesV23Spells.ts";
+} from "../../src/compendium/sources/kibblesV23Spells.ts";
 
 /** Build an extractor-shaped fixture with the verified newer mechanics and physical PDF provenance. */
 function snapshot(): KibblesV23Snapshot {
@@ -138,7 +138,7 @@ describe("Kibbles v2.3 full collection", () => {
       const input = join(dir, "snapshot.json");
       writeFileSync(input, JSON.stringify(snapshot()));
       const script = fileURLToPath(
-        new URL("../../scripts/prepare-kibbles-v23-spells.ts", import.meta.url),
+        new URL("../../scripts/prepare/kibbles-v23-spells.ts", import.meta.url),
       );
       const result = spawnSync(process.execPath, [script, input], {
         cwd: dir,

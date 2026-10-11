@@ -5,9 +5,9 @@ import {
   extractGmBinderSpells,
   prepareGmBinderSpells,
   type GmBinderSpellSource,
-} from "./gmBinderSpells.ts";
-import { mapDirectSpellBlock, type DirectSpellBlock } from "./directSpells.ts";
-export type { DirectSpellBlock } from "./directSpells.ts";
+} from "../formats/gmBinderSpells.ts";
+import { mapDirectSpellBlock, type DirectSpellBlock } from "../formats/directSpells.ts";
+export type { DirectSpellBlock } from "../formats/directSpells.ts";
 
 export const STDS_URL = "https://www.gmbinder.com/share/-NR0OWlW60yv2EfA3qQp";
 const CONFIG: GmBinderSpellSource = {

@@ -10,7 +10,7 @@ import { describe, expect, it } from "vitest";
 import {
   extractStdsSpells,
   prepareStdsSpells,
-} from "../../src/compendium/spellsThatDontSuck.ts";
+} from "../../src/compendium/sources/spellsThatDontSuck.ts";
 
 /** Build a compact page with licensing evidence and repeated names outside the spell section. */
 function page(body: string): string {
@@ -40,7 +40,7 @@ describe("direct Spells That Don’t Suck extraction", () => {
       writeFileSync(input, html);
       const script = fileURLToPath(
         new URL(
-          "../../scripts/prepare-spells-that-dont-suck.ts",
+          "../../scripts/prepare/spells-that-dont-suck.ts",
           import.meta.url,
         ),
       );

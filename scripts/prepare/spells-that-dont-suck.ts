@@ -4,8 +4,8 @@
 import {
   prepareStdsSpells,
   STDS_URL,
-} from "../src/compendium/spellsThatDontSuck.ts";
-import { prepareGmBinderLibrary } from "./lib/prepare-gmbinder-spells.ts";
+} from "../../src/compendium/sources/spellsThatDontSuck.ts";
+import { prepareGmBinderLibrary } from "../lib/prepare-gmbinder-spells.ts";
 
 await prepareGmBinderLibrary({
   name: "Spells That Don’t Suck",

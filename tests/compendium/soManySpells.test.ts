@@ -7,8 +7,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { prepareSoManySpells } from "../../src/compendium/soManySpells.ts";
-import { prepareStdsSpells } from "../../src/compendium/spellsThatDontSuck.ts";
+import { prepareSoManySpells } from "../../src/compendium/sources/soManySpells.ts";
+import { prepareStdsSpells } from "../../src/compendium/sources/spellsThatDontSuck.ts";
 
 /** Build creator-licensed source HTML with specialized schools and non-SRD classes. */
 function source(header = "4th-level necromancy (shadow magic)"): string {
@@ -78,7 +78,7 @@ describe("So Many Spells direct source", () => {
       const input = join(dir, "source.html");
       writeFileSync(input, source());
       const script = fileURLToPath(
-        new URL("../../scripts/prepare-so-many-spells.ts", import.meta.url),
+        new URL("../../scripts/prepare/so-many-spells.ts", import.meta.url),
       );
       const prepared = spawnSync(process.execPath, [script, input], {
         cwd: dir,

@@ -134,7 +134,7 @@ Overlapping spells in other libraries stay independent.
 ```bash
 # Setup installs the pinned PyMuPDF dependency from requirements.txt.
 # Save the linked PDF as output/kibbles-casting-v23-preparation/source.pdf, then:
-python scripts/extract-kibbles-v23-spells.py output/kibbles-casting-v23-preparation/source.pdf output/kibbles-casting-v23-preparation/snapshot.json
+python scripts/extract/kibbles-v23-spells.py output/kibbles-casting-v23-preparation/source.pdf output/kibbles-casting-v23-preparation/snapshot.json
 npm run prepare:kibbles-v23-spells -- output/kibbles-casting-v23-preparation/snapshot.json
 npm run validate -- --spells output/kibbles-casting-v23-preparation/candidate-spells.json
 python -m unittest discover -s tests/scripts -p 'test_extract_kibbles_v23_spells.py'

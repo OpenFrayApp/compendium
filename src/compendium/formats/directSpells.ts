@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import type { Spell } from "../schema/spell.ts";
-import { slug } from "./srd52.ts";
+import type { Spell } from "../../schema/spell.ts";
+import { slug } from "../srd52.ts";
 
 export interface DirectSpellBlock {
   name: string;

@@ -4,7 +4,7 @@
 import {
   prepareGmBinderSpells,
   type GmBinderSpellSource,
-} from "./gmBinderSpells.ts";
+} from "../formats/gmBinderSpells.ts";
 
 export const SO_MANY_SPELLS_URL =
   "https://www.gmbinder.com/share/-NMZq9u_rDyV_XD5YTxf";

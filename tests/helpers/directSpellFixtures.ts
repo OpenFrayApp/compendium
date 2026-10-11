@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import type { KibblesV23Snapshot } from '../../src/compendium/kibblesV23Spells.ts'
+import type { KibblesV23Snapshot } from '../../src/compendium/sources/kibblesV23Spells.ts'
 
 /** Build creator-licensed source HTML with specialized schools and non-SRD classes. */
 export function gmBinderHtml(header = '4th-level necromancy (shadow magic)'): string {

@@ -5,7 +5,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import {
   prepareKibblesV23Spells,
   type KibblesV23Snapshot,
-} from "../src/compendium/kibblesV23Spells.ts";
+} from "../../src/compendium/sources/kibblesV23Spells.ts";
 
 const args = process.argv.slice(2);
 const strict = args.includes("--strict");
