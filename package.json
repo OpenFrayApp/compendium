@@ -38,7 +38,8 @@
     "verify:offline": "node scripts/verify-offline.ts",
     "format": "node scripts/format.mjs",
     "format:check": "node scripts/format.mjs --check",
-    "check:prose": "node scripts/check-prose.mjs"
+    "check:prose": "node scripts/check-prose.mjs",
+    "check:docs": "node scripts/check-docs.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

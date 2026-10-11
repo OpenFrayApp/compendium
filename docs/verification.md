@@ -35,16 +35,17 @@ Use a separate checkout when checking installation isolation.
 
 Run commands from the repository root:
 
-| Command                        | Checks                                                                                     |
-| ------------------------------ | ------------------------------------------------------------------------------------------ |
-| `npm run verify`               | All Python suites, all TypeScript tests, and TypeScript typechecking                       |
-| `npm test`                     | TypeScript tests, including offline pipeline and baseline command tests                    |
-| `npm run test:python`          | Required Python dependencies and every `tests/scripts/test_*.py` suite                     |
-| `npm run typecheck`            | TypeScript source, scripts, and tests                                                      |
-| `npm run verify:offline`       | Original-content output bytes, counts, source identities, and publication approval records |
-| `npm run format:check`         | Formatting across the eligible scope, without writing                                      |
-| `npm run format -- <files...>` | Formatting only the explicitly selected eligible files                                     |
-| `npm run check:prose`          | Current documentation voice checks                                                         |
+| Command                        | Checks                                                                                                |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `npm run verify`               | All Python suites, all TypeScript tests, and TypeScript typechecking                                  |
+| `npm test`                     | TypeScript tests, including offline pipeline and baseline command tests                               |
+| `npm run test:python`          | Required Python dependencies and every `tests/scripts/test_*.py` suite                                |
+| `npm run typecheck`            | TypeScript source, scripts, and tests                                                                 |
+| `npm run verify:offline`       | Original-content output bytes, counts, source identities, and publication approval records            |
+| `npm run format:check`         | Formatting across the eligible scope, without writing                                                 |
+| `npm run format -- <files...>` | Formatting only the explicitly selected eligible files                                                |
+| `npm run check:prose`          | Current documentation voice checks                                                                    |
+| `npm run check:docs`           | Tracked public Markdown links, heading anchors, npm examples, command coverage, and Node runner paths |
 
 `verify` stops and exits nonzero when a required check fails.
 An unavailable Python interpreter or dependency stops verification with a failure.
@@ -64,7 +65,14 @@ The audit baseline is 397 TypeScript tests across 31 files, 34 Python tests, and
 The verification slice adds 11 TypeScript command tests: 408 tests across 35 files.
 All 34 Python tests remain.
 The four Khyberia extractor tests moved unchanged into `tests/scripts/test_extract_khyberia.py` for consistent discovery.
-No test requirement was removed or consolidated.
+Those counts describe the initial verification slice.
+Subsequent slice coverage and the final consistency results are recorded in the [migration audit](./migration-audit.md).
+`check:docs` requires a Git checkout and reads only tracked Markdown and `package.json`.
+It checks inline local links and ATX heading anchors, including duplicate headings.
+It rejects links to untracked local artifacts without opening them.
+External links remain references; no network requests run in this check.
+Every npm command must have a documented example, and every Node npm runner must be tracked.
+These checks also run in `npm test`; private inputs and live ingest commands remain outside verification.
 
 ## Offline example
 
