@@ -1,0 +1,31 @@
+{
+  "revision": "7004686",
+  "node": "v24.21.0",
+  "fixtures": "Synthetic original SRD-shaped records; no primary-source parity claim.",
+  "datasets": [
+    {
+      "command": "ingest:srd-2014",
+      "file": "srd-2014-creatures.json",
+      "count": 2,
+      "sha256": "ec19b2106fe901e4650e5f2fb80920bfcb36a8970d6256e5115fc70b4b7b1cb2"
+    },
+    {
+      "command": "ingest:srd-2014",
+      "file": "srd-2014-spells.json",
+      "count": 2,
+      "sha256": "30191a51b4c4371a74ec57cefc81e0dc693731519fc6f98c6ff3684bd538a6cb"
+    },
+    {
+      "command": "ingest:srd52-spells",
+      "file": "srd-spells.json",
+      "count": 2,
+      "sha256": "3d80b536c0ac80670b967ebe7f76361cf1751acfb1c3ce256f5c0bd942ba3fc4"
+    },
+    {
+      "command": "ingest:srd52",
+      "file": "srd-creatures.json",
+      "count": 2,
+      "sha256": "c026c9288c0194dffcb8d3755980b3961297c4ec089be41510fa281c5b96aba9"
+    }
+  ]
+}
