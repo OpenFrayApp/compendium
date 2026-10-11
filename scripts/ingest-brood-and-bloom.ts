@@ -21,7 +21,9 @@ const outPath = process.argv[2] ?? 'output/brood-and-bloom-creatures.json'
 const creatures = [...broodAndBloomCreatures].sort((a, b) => a.name.localeCompare(b.name))
 
 const report = validateDataset(creatures)
-console.log(`brood & bloom: ${report.count} creatures — errors: ${report.errors}, warnings: ${report.warns}`)
+console.log(
+  `brood & bloom: ${report.count} creatures — errors: ${report.errors}, warnings: ${report.warns}`
+)
 if (report.errors) {
   for (const [field, n] of Object.entries(report.errorsByField).sort((a, b) => b[1] - a[1]))
     console.error(`  ${String(n).padStart(4)}  ${field}`)

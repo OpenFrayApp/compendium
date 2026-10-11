@@ -21,8 +21,11 @@ const outPath = process.argv[2] ?? 'output/brood-and-bloom-spells.json'
 const spells = [...broodAndBloomSpells].sort((a, b) => a.name.localeCompare(b.name))
 
 const report = validateSpellDataset(spells)
-console.log(`brood & bloom spells: ${report.count} spells — errors: ${report.errors}, warnings: ${report.warns}`)
-for (const issue of report.issues) console.error(`  ${issue.severity}  ${issue.name}: ${issue.field} — ${issue.message}`)
+console.log(
+  `brood & bloom spells: ${report.count} spells — errors: ${report.errors}, warnings: ${report.warns}`
+)
+for (const issue of report.issues)
+  console.error(`  ${issue.severity}  ${issue.name}: ${issue.field} — ${issue.message}`)
 if (report.errors) process.exit(1)
 
 writeFileSync(outPath, JSON.stringify(spells, null, 0))

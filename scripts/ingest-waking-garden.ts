@@ -21,7 +21,9 @@ const outPath = process.argv[2] ?? 'output/waking-garden-creatures.json'
 const creatures = [...wakingGardenCreatures].sort((a, b) => a.name.localeCompare(b.name))
 
 const report = validateDataset(creatures)
-console.log(`waking garden: ${report.count} creatures — errors: ${report.errors}, warnings: ${report.warns}`)
+console.log(
+  `waking garden: ${report.count} creatures — errors: ${report.errors}, warnings: ${report.warns}`
+)
 if (report.errors) {
   for (const [field, n] of Object.entries(report.errorsByField).sort((a, b) => b[1] - a[1]))
     console.error(`  ${String(n).padStart(4)}  ${field}`)
