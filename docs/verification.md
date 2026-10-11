@@ -133,10 +133,11 @@ Code blocks, code spans, and glossary definitions receive the same handling as t
 Other writing rules still require review against the shared and local style guides.
 
 [The tooling debt inventory](../tests/fixtures/verification/tooling-debt.json) records existing debt at revision `5fc4624`.
-There are 82 formatting findings, 16 prose findings in `README.md`, and 10 soft rhetorical-contrast matches.
-These checks currently exit nonzero on that debt.
+That snapshot contains 82 formatting findings, 16 prose findings in `README.md`, and 10 soft rhetorical-contrast matches.
+The contributor-navigation README replaces the prose findings; `check:prose` now passes.
+Formatting debt remains in unchanged files; run the commands to see current findings.
 The inventory does not suppress findings or alter the protected records.
-Formatting and prose are separate commands; they do not block `verify` while this recorded debt remains.
+Formatting and prose are separate commands; they do not block `verify` while formatting debt remains.
 Run targeted formatting checks on changed eligible files:
 
 ```sh

@@ -132,7 +132,7 @@ Elemental-Touched is not imported.
 Overlapping spells in other libraries stay independent.
 
 ```bash
-python -m pip install pymupdf
+# Setup installs the pinned PyMuPDF dependency from requirements.txt.
 # Save the linked PDF as output/kibbles-casting-v23-preparation/source.pdf, then:
 python scripts/extract-kibbles-v23-spells.py output/kibbles-casting-v23-preparation/source.pdf output/kibbles-casting-v23-preparation/snapshot.json
 npm run prepare:kibbles-v23-spells -- output/kibbles-casting-v23-preparation/snapshot.json

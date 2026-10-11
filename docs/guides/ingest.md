@@ -17,7 +17,7 @@ mkdir -p output/khyberia
 .venv/bin/python scripts/extract-khyberia.py "/path/to/Khyberia SRD 2023-10.pdf" output/khyberia/blocks.json
 npm run ingest:khyberia
 npm run validate -- output/khyberia-creatures.json
-.venv/bin/python tests/compendium/khyberia_extractor_test.py
+python -m unittest discover -s tests/scripts -p 'test_extract_khyberia.py'
 ```
 
 The extractor retains the PDF digest and legal page. The mapper accepts only the
@@ -39,7 +39,7 @@ Keep their two-column extraction rules independent of the book-specific PyMuPDF 
 Create `output/` first; these extractors and mappers write to the supplied file paths:
 
 ```bash
-python -m pip install pdfplumber            # one-time, in the Python environment
+# Setup installs the pinned pdfplumber dependency from requirements.txt.
 mkdir -p output
 # download the CC-BY PDF (not committed): https://www.dndbeyond.com/srd
 

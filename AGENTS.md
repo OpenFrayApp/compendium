@@ -21,10 +21,13 @@ Build-time ingest tooling: it parses SRD and third-party sources into OpenFray's
 [console](https://github.com/OpenFrayApp/console) ships in its `public/compendium/`.
 The app never runs this code; it only consumes the JSON.
 
+Follow the [verification guide](./docs/verification.md#install) for supported runtimes
+and pinned Python dependencies, then run:
+
 ```bash
-npm install
-npm test           # mapper/harness unit tests
-npm run typecheck
+npm ci
+npm run verify
+npm run verify:offline
 ```
 
 ## Branching

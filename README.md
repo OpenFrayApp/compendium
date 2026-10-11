@@ -15,16 +15,16 @@ The console consumes generated JSON; it does not run these tools.
 
 ## Setup
 
-Use Node.js with native TypeScript support (22.18 or later) and npm.
+Use Node 24, npm, and Python 3.14 on macOS or Linux.
+The version files declare the supported runtime lines.
 The scripts run `.ts` files directly through Node; no build step is required.
-Python 3.10 or later is needed for PDF extraction and extractor tests, including synthetic fixtures.
 The original-content example below needs only Node and npm.
 
 ```sh
 npm ci
 python3 -m venv .venv
 . .venv/bin/activate
-python -m pip install pymupdf==1.26.7 pdfplumber
+python -m pip install -r requirements.txt
 ```
 
 Keep the Python environment active when following the guides’ `python` commands.
@@ -42,23 +42,22 @@ Generated JSON and private review evidence stay under ignored `output/`.
 
 ## Verification
 
-Run the current checks separately:
+With the Python environment active, run the combined public checks:
 
 ```sh
-npm test
-npm run typecheck
-python -m unittest discover -s tests/scripts -p 'test_*.py'
-python tests/compendium/khyberia_extractor_test.py
+npm run verify
+npm run verify:offline
 ```
 
-The Python commands cover both extractor-test locations.
-They use synthetic fixtures and need no purchased PDF.
+`verify` runs all Python suites, TypeScript tests, and typechecking.
+`verify:offline` compares original-content output bytes and publication approval metadata.
+Neither command needs purchased PDFs or network access after installation.
 Run the dataset validator after each ingest or preparation; passing tests does not
 approve a source for publication.
 
-The [verification guide](./docs/verification.md) is being added in issue #18.
-That cross-lane link will resolve at integration. Until then, use the commands above.
-Do not assume `npm run verify` or formatting/prose commands exist before that lane lands.
+The [verification guide](./docs/verification.md) covers individual checks,
+`npm run format:check`, explicit-file `npm run format -- <files...>`,
+`npm run check:prose`, and missing full-source parity inputs.
 
 ## Try an offline original-content ingest
 
@@ -79,15 +78,15 @@ spell commands, comparisons, and challenge-rating options.
 
 ## Choose a task
 
-| Task | Guide |
-| --- | --- |
-| Extract SRD, Tome of Beasts, or Khyberia; ingest Creature Codex | [Ingest](./docs/guides/ingest.md) |
-| Fetch or replay provisional Open5e creatures | [Prepare creatures](./docs/guides/prepare-creatures.md) |
-| Fetch or replay Open5e, GM Binder, or Kibbles spell candidates | [Prepare spells](./docs/guides/prepare-spells.md) |
-| Review Tome of Heroes, Deep Magic 2020, or Warlock evidence | [Review spells](./docs/guides/review-spells.md) |
+| Task                                                                   | Guide                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Extract SRD, Tome of Beasts, or Khyberia; ingest Creature Codex        | [Ingest](./docs/guides/ingest.md)                                |
+| Fetch or replay provisional Open5e creatures                           | [Prepare creatures](./docs/guides/prepare-creatures.md)          |
+| Fetch or replay Open5e, GM Binder, or Kibbles spell candidates         | [Prepare spells](./docs/guides/prepare-spells.md)                |
+| Review Tome of Heroes, Deep Magic 2020, or Warlock evidence            | [Review spells](./docs/guides/review-spells.md)                  |
 | Edit typed originals, validate, compare, or estimate challenge ratings | [Original content and checks](./docs/guides/original-content.md) |
-| Export approved reference cards or hand off vetted datasets | [Publish](./docs/guides/publish.md) |
-| Find current decisions, transcripts, or historical source searches | [Documentation index](./docs/README.md) |
+| Export approved reference cards or hand off vetted datasets            | [Publish](./docs/guides/publish.md)                              |
+| Find current decisions, transcripts, or historical source searches     | [Documentation index](./docs/README.md)                          |
 
 All existing npm command names remain supported.
 Commands without npm aliases, including the Tome of Beasts and Creature Codex runners,

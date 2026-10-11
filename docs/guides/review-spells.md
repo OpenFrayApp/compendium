@@ -37,7 +37,7 @@ located entries, unresolved drafts, corrections, and publication gates.
 The book-specific `scripts/toh.py` uses PyMuPDF and the column-reading approach from `tob3.py`. It retains source lines with physical page, font, size, and position evidence. It does not filter Product Identity or emit publishable cards. OCR snapshots identify their fonts as synthetic, not publisher font evidence. `--spell-columns` clips the spell descriptions into separate text columns before OCR and excludes the illustrated outer border and footer.
 
 ```bash
-python -m pip install pymupdf==1.26.7
+# Setup installs the pinned PyMuPDF dependency from requirements.txt.
 python scripts/toh.py /path/to/Tome-of-Heroes.pdf output/tome-of-heroes-review/pages.json
 # For an image-only PDF, supply Tesseract's English traineddata directory:
 python scripts/toh.py /path/to/Tome-of-Heroes.pdf output/tome-of-heroes-review/ocr-pages.json --ocr --tessdata /path/to/tessdata --pages 3 4 320

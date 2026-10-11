@@ -16,8 +16,9 @@ Check [source status](./source-status.md) before selecting inputs or distributin
 | Author originals, validate datasets, compare fields, or estimate challenge ratings | [Original content and checks](./guides/original-content.md) |
 | Export approved reference cards and hand off vetted datasets | [Publish](./guides/publish.md) |
 
-The [verification guide](./verification.md) is pending issue #18 integration.
-Current test commands remain available in the [README](../README.md#verification).
+The [verification guide](./verification.md) covers `npm run verify`,
+`npm run verify:offline`, individual checks, formatting, prose, and parity limits.
+Start with the [README checks](../README.md#verification).
 
 ## Current publication records and source evidence
 
