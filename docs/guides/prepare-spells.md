@@ -69,6 +69,8 @@ Console registration, shipped JSON, and credits remain a separate change.
 
 ## Spells That Don’t Suck from GM Binder
 
+The [direct-source implementation map](../direct-spells.md) locates shared formats, source adapters, commands, and behavioral tests.
+
 This separate pipeline uses the [creators’ GM Binder document](https://www.gmbinder.com/share/-NR0OWlW60yv2EfA3qQp).
 Its credits section licenses the document under CC-BY-4.0.
 Credit Omega Ankh and somanyrobots, plus KibblesTasty for the contributed spells.

@@ -12,6 +12,7 @@ Check [source status](./source-status.md) before selecting inputs or distributin
 | Extract and ingest SRD, Tome of Beasts, Khyberia, or Creature Codex | [Ingest](./guides/ingest.md) |
 | Prepare or replay Open5e creature candidates | [Prepare creatures](./guides/prepare-creatures.md) |
 | Prepare or replay Open5e, GM Binder, or Kibbles spell candidates | [Prepare spells](./guides/prepare-spells.md) |
+| Change GM Binder or Kibbles extraction, mapping, or replay tests | [Direct-source implementation map](./direct-spells.md) |
 | Review Tome of Heroes, Deep Magic 2020, or Warlock sources | [Review spells](./guides/review-spells.md) |
 | Author originals, validate datasets, compare fields, or estimate challenge ratings | [Original content and checks](./guides/original-content.md) |
 | Export approved reference cards and hand off vetted datasets | [Publish](./guides/publish.md) |
