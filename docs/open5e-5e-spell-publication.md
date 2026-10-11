@@ -2,20 +2,20 @@
 
 ## Scope
 
-Select third-party `5e-2014` and `5e-2024` spell documents. Exclude core WotC SRDs, A5E, and unsupported rulesets. Spells That Don’t Suck uses the existing direct-publisher pipeline.
+Select supported third-party `5e-2014` and `5e-2024` spell documents. Exclude core WotC SRDs, A5E, and unsupported rulesets. Spells That Don’t Suck uses the existing direct-publisher pipeline.
+
+Kobold Press Compilation (`kp`) and Open5e Originals (`open5e`, `open5e-2024`, legacy `o5e`) are excluded by project policy. They are not fetched, mapped, prepared, or considered for publication; preparation removes their stale generated directories.
 
 Keep source-specific IDs and manual reference status. Same-name cards from different books remain separate. API license labels do not approve publication.
 
 ## Inventory
 
-The live API audit and preparation contain 746 spell records:
+The historical API audit contains 713 records across the retained nonempty feeds:
 
 | Document                   | API key  | Records |
 | -------------------------- | -------- | ------: |
 | Deep Magic for 5th Edition | `deepm`  |     515 |
 | Deep Magic Extended        | `deepmx` |      64 |
-| Kobold Press Compilation   | `kp`     |      31 |
-| Open5e Originals           | `open5e` |       2 |
 | Tome of Heroes             | `toh`    |      91 |
 | Warlock Zine               | `wz`     |      43 |
 | Vault of Magic             | `vom`    |       0 |
@@ -23,7 +23,7 @@ The live API audit and preparation contain 746 spell records:
 
 Vault of Magic and Black Flag also return zero spells from v1. Black Flag’s v1 document slug is `blackflag`, not `bfrd`.
 
-Creature Codex, Tal’dorei, all listed Tome of Beasts editions, and Open5e Originals 2024 return zero v2 spells. The generated index retains every selected source, including empty feeds.
+Creature Codex, Tal’dorei, and all listed Tome of Beasts editions return zero v2 spells. The generated index retains every selected source, including empty feeds.
 
 Replay with `npm run prepare:open5e-spells -- all output/open5e-spell-preparation/discovery.json`. Snapshots, candidates, and reports remain ignored build artifacts.
 
@@ -99,9 +99,9 @@ withheld. The corrected 503-card snapshot is approved for optional manual refere
 
 ## Recovered import provenance
 
-[Open5e import PR #178](https://github.com/open5e/open5e-api/pull/178) identifies Extended, Compilation, and Warlock as a Foundry-module import. Its discussion records uncertainty about the underlying publications. Contributors subsequently added class and school metadata using a community wiki.
+[Open5e import PR #178](https://github.com/open5e/open5e-api/pull/178) identifies Extended and Warlock as a Foundry-module import. Its discussion records uncertainty about the underlying publications. Contributors subsequently added class and school metadata using a community wiki.
 
-The [original spell files](https://github.com/open5e/open5e-api/tree/34b88208ba629bb152508fd5ba9d27a510918889/data) retain per-spell `source` codes. Their titles match all current candidates in these three feeds: 64 Extended, 31 Compilation, and 43 Warlock records. Matching titles establish a provenance lead only. They do not establish identical rules text or publication permission.
+The [original spell files](https://github.com/open5e/open5e-api/tree/34b88208ba629bb152508fd5ba9d27a510918889/data) retain per-spell `source` codes. Their titles match the retained candidates in these two feeds: 64 Extended and 43 Warlock records. Matching titles establish a provenance lead only. They do not establish identical rules text or publication permission.
 
 The original source-code counts are:
 
@@ -114,17 +114,13 @@ The original source-code counts are:
 | Extended    | `DM:B&D MWB`                                                                                  |       3 |
 | Extended    | `DM:Cw`, `HH DM:EH`, `DM:M`, `HH DM:Cw`                                                       |  2 each |
 | Extended    | `HH DM:Ri`, `DM:B&D`, `DM:T`, `HH DM:LL`, `HH DM:B`, `HH DM:H`, `HH DM:I`, `DM:CD`, `HH DM:E` |  1 each |
-| Compilation | `DC&SS`                                                                                       |      16 |
-| Compilation | `ToOM:PH`, `MWB`                                                                              |  6 each |
-| Compilation | `HH MWB`                                                                                      |       2 |
-| Compilation | `HH`                                                                                          |       1 |
 | Warlock     | `W:LM`                                                                                        |      13 |
 | Warlock     | `W22`, `W:SR`, `W12`                                                                          |  4 each |
 | Warlock     | `W23`, `WG W10`, `WG W8`, `WG W3`                                                             |  3 each |
 | Warlock     | `W21`                                                                                         |       2 |
 | Warlock     | `WG W6`, `WL24`, `W19`, `W14`                                                                 |  1 each |
 
-Keep these codes literal until publisher evidence establishes their meanings and editions. Extended and Compilation are mixed-source buckets, not verified standalone book titles.
+Keep these codes literal until publisher evidence establishes their meanings and editions. Extended is a mixed-source bucket, not a verified standalone book title.
 
 The [original Deep Magic import](https://github.com/open5e/open5e-api/blob/9ec5bb06a8550aca1b3dd9254591b974c83f7367/data/deep_magic/document.json) includes `ogl-lines`. Those lines describe a community wiki and contain a broad multi-book Section 15 list. The [Extended import](https://github.com/open5e/open5e-api/blob/34b88208ba629bb152508fd5ba9d27a510918889/data/deep_magic_extended/document.json) also retains that list. Neither establishes the exact publisher declaration or complete chain for each imported book.
 
@@ -147,12 +143,12 @@ Keep supplied PDFs outside Git. A local folder path is sufficient; contributors 
 
 Deep Magic 2020 has its edition-specific declaration and complete license page. Its 35-notice attribution transcript is verified. The matched Open5e selection is the accepted provenance basis. The 17 targeted licensing flags are reviewed under that basis. The corrected 503-card snapshot has hash-pinned manual-reference approval. Tome of Heroes has its declaration and complete chain. Its source-specific preparation withholds Deadly Salvo and applies book metadata and publisher errata. Reference approval, console attribution, and publication integration remain separate gates.
 
-Deep Magic Extended, Warlock, and the Kobold compilation require their underlying book or issue identities, declarations, and chains. Their Community Use Policy descriptions do not establish an independent OGL grant.
+Deep Magic Extended and Warlock require their underlying book or issue identities, declarations, and chains. Their Community Use Policy descriptions do not establish an independent OGL grant.
 
-Open5e Originals requires its own content grant and required notices. Black Flag’s v1 ORC label and v2 CC-BY label require publisher verification if spell records become available.
+Black Flag’s v1 ORC label and v2 CC-BY label require publisher verification if spell records become available.
 
 Raw API preparation has no duration errors. Moon Trap, Iron Gut, Stone Aegis, and Mind Maze have conditional durations without Concentration in both API versions. The validator accepts those durations without changing the source flags. The Tome of Heroes book confirms Concentration for Iron Gut; its source-specific preparation corrects that API omission.
 
-Complete v1 snapshots recover 533 absent class lists when source aliases, stable IDs, names, and prose match. Existing v2 assignments remain unchanged. Each report records recovered classes and the legacy snapshot hash.
+Complete v1 snapshots recover absent class lists when source aliases, stable IDs, names, and prose match. Existing v2 assignments remain unchanged. Each report records recovered classes and the legacy snapshot hash.
 
-The five Kobold feeds retain 121 component warnings. Both API versions lack the corresponding material descriptions or carry a non-material casting note. Do not invent missing materials. Passing dataset validation does not resolve the licensing gates.
+The retained Kobold feeds have component warnings. Both API versions lack the corresponding material descriptions or carry a non-material casting note. Do not invent missing materials. Passing dataset validation does not resolve the licensing gates.
