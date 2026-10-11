@@ -40,25 +40,28 @@ function approvalFor(content: string): ReferenceSpellApproval {
 }
 
 describe("reference-only publication approvals", () => {
-  it("limits publication to five explicitly reviewed snapshots", () => {
+  it("limits publication to six explicitly reviewed snapshots", () => {
     expect(REFERENCE_SPELL_APPROVALS.map((approval) => approval.count)).toEqual(
-      [503, 295, 181, 179, 90],
+      [35, 503, 295, 181, 179, 90],
     );
     expect(
       new Set(REFERENCE_SPELL_APPROVALS.map((approval) => approval.source))
         .size,
-    ).toBe(5);
+    ).toBe(6);
     expect(
       REFERENCE_SPELL_APPROVALS.flatMap(
         (approval) => approval.acceptedWarningIds,
       ),
-    ).toEqual(["kibblestasty-casting-compendium-v2.3:bile-beam"]);
+    ).toEqual([
+      "kobold-press-wz:zymurgic-aura",
+      "kibblestasty-casting-compendium-v2.3:bile-beam",
+    ]);
   });
 
   it("selects only an approved source and rejects unknown or empty selections", () => {
     expect(referenceSpellApprovalsFor()).toBe(REFERENCE_SPELL_APPROVALS);
     expect(referenceSpellApprovalsFor("kobold-press-deepm")).toEqual([
-      REFERENCE_SPELL_APPROVALS[0],
+      REFERENCE_SPELL_APPROVALS[1],
     ]);
     expect(() => referenceSpellApprovalsFor("unreviewed")).toThrow(
       "No reference spell approval",

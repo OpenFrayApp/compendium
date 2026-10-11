@@ -6,15 +6,16 @@ The [combined content-boundary review](./warlock-content-boundaries.md) adds the
 supplied Liminal Magic guide, licensing preparation, and explicit exclusions.
 This document retains the four-Grimoire audit’s original scope.
 The console credits now contain the relevant OGL and copyright chains.
-No spell publication or combat implementation is approved.
+The combined pipeline selects 35 corrected references with source-specific casting verdicts.
+The extraction audit itself grants no publication or combat approval.
 
 The supplied RTF identifies _Warlock Grimoire_, © 2019 Open Design LLC.
 The back cover gives ISBN `978-1-936781-15-7`. The second supplied volume is
 _Warlock Grimoire 2_, © 2020 Open Design LLC, ISBN `978-1-936781-44-7`.
 The third is _Warlock Grimoire 3_, © 2022 Open Design LLC,
 ISBN `978-1-950789-27-6`. The fourth is _Warlock Grimoire 4_, © 2023
-Open Design LLC, ISBN `978-1-950789-64-1`. This review concerns the 43 local Warlock draft spells. None are approved for
-publication or combat implementation.
+Open Design LLC, ISBN `978-1-950789-64-1`. This extraction review concerns the 43 preserved Warlock draft spells.
+Its reports preserve the original drafts and grant no approval.
 
 Ten drafts have actual spell entries in the first volume. Six more are located
 in the second, and nine more in the third. In total, 25 are located and 18
@@ -275,12 +276,14 @@ The draft SHA-256 is
    against a lawfully obtained visual source.
 2. Resolve header and body differences, class assignments, Product Identity,
    supporting rules, and OGC scope. Add no conditional advantage or build automation.
-3. Obtain actual source evidence for the 18 unresolved drafts. Review each source
-   independently; these books’ grants do not cover other Warlock issues.
+3. Keep the four-book scope separate from other sources. The combined review
+   locates 13 additional entries in Liminal Magic and excludes five unsupplied imports.
+   Each source retains its own declaration and copyright chain.
 4. Preserve full OGL 1.0a, the verified verbatim Section 15 chain, and OpenFray’s
    OGC designation in console credits before publishing.
 5. Prepare vetted typed sources or generators, run the ingest and dataset validator,
    and review attribution before copying any approved JSON into the console.
 
-All candidate records remain unchanged. No console credits, shipped libraries,
-or combat profiles are added by this audit.
+The 43 preserved drafts remain unchanged. This extraction audit produces no
+publication approval. The combined pipeline prepares a separate 35-card selection
+and its source-specific console profiles.

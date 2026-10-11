@@ -188,7 +188,7 @@ export function validateSpell(s: Spell): Issue[] {
 
   // The card prints "Concentration, " ahead of the duration, so a concentration
   // spell's own duration reads "up to 1 minute" and never repeats the word.
-  if (s.concentration && !/^up to /.test(s.duration))
+  if (s.concentration && !/^up to |^special(?:$| \()/i.test(s.duration))
     add('duration', 'error', `concentration duration should read "up to …", got "${s.duration}"`)
   if (s.concentration && /concentration/i.test(s.duration))
     add('duration', 'error', 'duration repeats "Concentration"')

@@ -156,7 +156,18 @@ vetted datasets require separate work.
 The [content-boundary review](./docs/warlock-content-boundaries.md) records
 source-specific licensing decisions for the located drafts and excludes unsupplied imports.
 The [copyright transcripts](./docs/warlock-section-15.md) preserve the relevant notices.
-These reviews produce no publication or combat approval.
+The extraction reviews produce no publication or combat approval.
+The source-corrected 35-card selection is authored in `src/compendium/warlockGrimoireSpells.ts`.
+Prepare, validate, and export only that reviewed subset:
+
+```sh
+npm run prepare:warlock-grimoire-spells
+npm run validate -- --spells output/warlock-grimoire-preparation/candidate-spells.json
+npm run export:reference-spells -- ../console/public/compendium --source kobold-press-wz
+```
+
+Its console profiles use existing saves, attacks, conditions, and reminders.
+Unsupported mechanics remain prose. Three located entries and five unsupplied imports remain excluded.
 
 `npm run review:warlock-grimoire -- "$WARLOCK_DRAFT" "$WARLOCK_RTF"` compares
 pinned local drafts with the supplied 2019 book. Add
