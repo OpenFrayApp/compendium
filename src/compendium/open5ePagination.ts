@@ -29,8 +29,8 @@ export async function fetchOpen5ePages<T>(
     }
     url.searchParams.set('format', 'json')
     if (documentFilter) {
-      const filter = url.searchParams.get(documentFilter.parameter)
-      if (filter && filter !== documentFilter.value)
+      const filters = url.searchParams.getAll(documentFilter.parameter)
+      if (filters.some((filter) => filter !== documentFilter.value))
         throw new Error('Document filter changed during pagination')
       url.searchParams.set(documentFilter.parameter, documentFilter.value)
     }

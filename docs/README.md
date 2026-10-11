@@ -11,7 +11,7 @@ Check [source status](./source-status.md) before selecting inputs or distributin
 | --- | --- |
 | Synchronize console-owned schema or check local drift offline | [Schema synchronization](./schema-sync.md) |
 | Extract and ingest SRD creatures and spells | [SRD ingestion](./srd-ingestion.md) |
-| Extract and ingest Tome of Beasts, Khyberia, or Creature Codex | [Ingest](./guides/ingest.md) |
+| Extract and ingest Tome of Beasts, Khyberia, or Creature Codex | [Ingest](./guides/ingest.md), [Kobold checks and parity](./kobold-ingestion.md) |
 | Prepare or replay Open5e creature candidates | [Prepare creatures](./guides/prepare-creatures.md) |
 | Prepare or replay Open5e, GM Binder, or Kibbles spell candidates | [Prepare spells](./guides/prepare-spells.md) |
 | Change GM Binder or Kibbles extraction, mapping, or replay tests | [Direct-source implementation map](./direct-spells.md) |

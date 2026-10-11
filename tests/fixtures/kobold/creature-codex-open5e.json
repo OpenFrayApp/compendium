@@ -1,0 +1,176 @@
+{
+  "count": 5,
+  "next": null,
+  "results": [
+    {
+      "key": "ccdx_synthetic-0",
+      "name": "Test Codex Sentinel",
+      "document": {
+        "key": "ccdx"
+      },
+      "size": {
+        "name": "Medium"
+      },
+      "type": {
+        "name": "Construct"
+      },
+      "alignment": "unaligned",
+      "armor_class": 12,
+      "hit_points": 9,
+      "hit_dice": "2d8",
+      "challenge_rating": 1,
+      "experience_points": 200,
+      "passive_perception": 10,
+      "ability_scores": {
+        "strength": 10,
+        "dexterity": 10,
+        "constitution": 10,
+        "intelligence": 10,
+        "wisdom": 10,
+        "charisma": 10
+      },
+      "speed": {
+        "walk": 30,
+        "unit": "feet"
+      },
+      "traits": [],
+      "actions": []
+    },
+    {
+      "key": "ccdx_synthetic-1",
+      "name": "Ankou Soul Seeker",
+      "document": {
+        "key": "ccdx"
+      },
+      "size": {
+        "name": "Medium"
+      },
+      "type": {
+        "name": "Construct"
+      },
+      "alignment": "unaligned",
+      "armor_class": 12,
+      "hit_points": 9,
+      "hit_dice": "2d8",
+      "challenge_rating": 1,
+      "experience_points": 200,
+      "passive_perception": 10,
+      "ability_scores": {
+        "strength": 10,
+        "dexterity": 10,
+        "constitution": 10,
+        "intelligence": 10,
+        "wisdom": 10,
+        "charisma": 10
+      },
+      "speed": {
+        "walk": 30,
+        "unit": "feet"
+      },
+      "traits": [],
+      "actions": []
+    },
+    {
+      "key": "ccdx_synthetic-2",
+      "name": "Monkey King",
+      "document": {
+        "key": "ccdx"
+      },
+      "size": {
+        "name": "Medium"
+      },
+      "type": {
+        "name": "Construct"
+      },
+      "alignment": "unaligned",
+      "armor_class": 12,
+      "hit_points": 9,
+      "hit_dice": "2d8",
+      "challenge_rating": 1,
+      "experience_points": 200,
+      "passive_perception": 10,
+      "ability_scores": {
+        "strength": 10,
+        "dexterity": 10,
+        "constitution": 10,
+        "intelligence": 10,
+        "wisdom": 10,
+        "charisma": 10
+      },
+      "speed": {
+        "walk": 30,
+        "unit": "feet"
+      },
+      "traits": [],
+      "actions": []
+    },
+    {
+      "key": "ccdx_synthetic-3",
+      "name": "Avatar of Shoth",
+      "document": {
+        "key": "ccdx"
+      },
+      "size": {
+        "name": "Medium"
+      },
+      "type": {
+        "name": "Construct"
+      },
+      "alignment": "unaligned",
+      "armor_class": 12,
+      "hit_points": 9,
+      "hit_dice": "2d8",
+      "challenge_rating": 1,
+      "experience_points": 200,
+      "passive_perception": 10,
+      "ability_scores": {
+        "strength": 10,
+        "dexterity": 10,
+        "constitution": 10,
+        "intelligence": 10,
+        "wisdom": 10,
+        "charisma": 10
+      },
+      "speed": {
+        "walk": 30,
+        "unit": "feet"
+      },
+      "traits": [],
+      "actions": []
+    },
+    {
+      "key": "ccdx_synthetic-4",
+      "name": "Ankou Soul Herald",
+      "document": {
+        "key": "ccdx"
+      },
+      "size": {
+        "name": "Medium"
+      },
+      "type": {
+        "name": "Construct"
+      },
+      "alignment": "unaligned",
+      "armor_class": 12,
+      "hit_points": 9,
+      "hit_dice": "2d8",
+      "challenge_rating": 1,
+      "experience_points": 200,
+      "passive_perception": 10,
+      "ability_scores": {
+        "strength": 10,
+        "dexterity": 10,
+        "constitution": 10,
+        "intelligence": 10,
+        "wisdom": 10,
+        "charisma": 10
+      },
+      "speed": {
+        "walk": 30,
+        "unit": "feet"
+      },
+      "traits": [],
+      "actions": []
+    }
+  ]
+}

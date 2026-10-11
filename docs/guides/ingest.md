@@ -49,6 +49,8 @@ See the [failure and parity limits](../srd-ingestion.md#findings-and-preservatio
 
 Each book has its own PyMuPDF extractor. All three use the shared [`map2014StatBlock(block, source)` mapper](../formats.md).
 These are 2014 libraries; cast spells link to the SRD 5.1 library.
+The runners validate before replacing output and create missing destination directories on success.
+See [Kobold ingestion](../kobold-ingestion.md) for failure behavior, unchanged contracts, and parity limits.
 Supply the reviewed PDFs lawfully and keep them outside Git.
 The corresponding observed datasets have 384, 389, and 395 OGC creatures.
 These counts describe the reviewed inputs, not a completeness guarantee for another printing.
@@ -96,7 +98,8 @@ npm run validate -- output/creature-codex-creatures.json
 ```
 
 The cached JSON is the response object with a `results` array, not a mapped dataset.
-Check source identity, completeness, and exclusion counts before distribution.
+The runner checks cached and live completeness, record shape, source identity, and exact exclusion presence before validation and replacement.
+See [Kobold ingestion](../kobold-ingestion.md#creature-codex-snapshots) for the complete cache contract and drift failures.
 The [console credits](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md#creature-codex-kobold-press)
 record the source-specific designation, exclusions, and attribution chain.
 

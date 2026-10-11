@@ -11,8 +11,11 @@
  * the OGL 1.0a — see CREDITS.md for the full license text and Section 15 copyright chain.
  */
 
-import { readFileSync, writeFileSync } from 'node:fs'
-import { map2014StatBlock, type StatBlock2014 } from '../src/formats/statBlock2014.ts'
+import { readFileSync } from 'node:fs'
+import { emitValidatedDataset } from '../src/compendium/datasetEmission.ts'
+import { validateDataset } from '../src/compendium/validate.ts'
+import { mapTomeBlocks, reportKoboldValidation } from '../src/compendium/koboldIngestion.ts'
+import type { StatBlock2014 } from '../src/formats/statBlock2014.ts'
 
 const [inPath, outPath = 'output/tob1-creatures.json'] = process.argv.slice(2)
 if (!inPath) {
@@ -21,6 +24,10 @@ if (!inPath) {
 }
 
 const blocks: StatBlock2014[] = JSON.parse(readFileSync(inPath, 'utf8'))
-const creatures = blocks.map((b) => map2014StatBlock(b, 'kobold-press-tob')).sort((a, b) => a.name.localeCompare(b.name))
-writeFileSync(outPath, JSON.stringify(creatures, null, 0))
+const creatures = mapTomeBlocks(blocks, 'kobold-press-tob')
+const report = emitValidatedDataset(creatures, outPath, {
+  validate: validateDataset,
+  report: (report) => reportKoboldValidation('kobold-press-tob', report)
+})
+if (report.errors) process.exit(1)
 console.log(`mapped ${creatures.length} ToB 1 creatures → ${outPath}`)
