@@ -6,12 +6,14 @@ The supplied RTF identifies *Warlock Grimoire*, © 2019 Open Design LLC.
 The back cover gives ISBN `978-1-936781-15-7`. The second supplied volume is
 *Warlock Grimoire 2*, © 2020 Open Design LLC, ISBN `978-1-936781-44-7`.
 The third is *Warlock Grimoire 3*, © 2022 Open Design LLC,
-ISBN `978-1-950789-27-6`. This review concerns the 43 local Warlock draft spells. None are approved for
+ISBN `978-1-950789-27-6`. The fourth is *Warlock Grimoire 4*, © 2023
+Open Design LLC, ISBN `978-1-950789-64-1`. This review concerns the 43 local Warlock draft spells. None are approved for
 publication or combat implementation.
 
 Ten drafts have actual spell entries in the first volume. Six more are located
 in the second, and nine more in the third. In total, 25 are located and 18
-require their actual sources and declarations. An unresolved source is not a finding that its
+require their actual sources and declarations. The fourth volume adds no located
+entries for this corpus. An unresolved source is not a finding that its
 content is unlicensed. Narrative references, creature spell lists, and similar
 words do not establish spell-entry provenance.
 
@@ -197,6 +199,45 @@ These titles do not replace the full verbatim notices. The third-volume RTF
 SHA-256 is
 `2f997c4f6d93c704cc0c73b4d04dca74e2431185c52ebd1da3961a7df9da30d4`.
 
+## Fourth-volume negative inventory and declaration
+
+The supplied volume contains no matching spell-entry headings for any of the
+43 drafts. Checks preserve full title boundaries and inspect heading metadata,
+including case and typography variants. Narrative references and similar words
+cannot establish an entry. The draft totals remain 25 located and 18 unresolved.
+
+Printed page 204 references Door of the Far Traveler and points to Tome of
+Heroes. That reference does not supply its spell text or establish a fourth-volume
+source identity. Do not create duplicate cards or transfer another source’s approval.
+
+Printed page 3 designates spells, adventuring gear, feats, magic items, monsters,
+and weapons as Open Game Content. This is a category-level grant under OGL 1.0a.
+The inspected declaration does not offer ORC. It retains the Product Identity
+exclusions and expressly reserves other material, including background and fiction.
+A licensing route does not establish a match or approve an entry.
+
+The back cover identifies issues 29–37 plus new material. Printed page 288
+supplies OGL 1.0a and 13 Section 15 notices, including the license notice:
+
+1. Open Game License v 1.0a
+2. System Reference Document 5.0
+3. Beyond Damage Dice 2
+4. Warlock 29: Planar Bestiary
+5. Warlock 30: Zobeck
+6. Warlock 31: Void Magic
+7. Warlock 32: Elves
+8. Warlock 33: Ankeshel
+9. Warlock 34: Baba Yaga
+10. Warlock 35: Priesthood
+11. Warlock 36: Kobolds
+12. Warlock 37: Elemental Planes
+13. Warlock Grimoire 4
+
+These titles do not replace the full verbatim chain. The fourth-volume RTF
+SHA-256 is
+`15043956bbb1a3581827243254a874701ea2fe69bc8acdba865a6916ada32760`.
+Its other spells are outside the current 43-draft audit.
+
 ## Reproduce the private audit
 
 Set `WARLOCK_DRAFT` to the local candidate JSON and `WARLOCK_RTF` to the supplied
@@ -205,10 +246,11 @@ book. Run:
 ```sh
 npm run review:warlock-grimoire -- "$WARLOCK_DRAFT" "$WARLOCK_RTF" \
   --grimoire-2 "$WARLOCK_GRIMOIRE_2_RTF" \
-  --grimoire-3 "$WARLOCK_GRIMOIRE_3_RTF"
+  --grimoire-3 "$WARLOCK_GRIMOIRE_3_RTF" \
+  --grimoire-4 "$WARLOCK_GRIMOIRE_4_RTF"
 ```
 
-Each additional-volume option is independent. Omit both for the first-volume-only audit.
+Each additional-volume option is independent. Omit them for the first-volume-only audit.
 
 The command requires macOS `textutil`. It checks pinned artifact hashes, exact
 entry headings, page continuations, and boundaries before comparing headers and

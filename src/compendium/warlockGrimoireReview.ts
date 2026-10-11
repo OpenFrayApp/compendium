@@ -18,6 +18,10 @@ export const WARLOCK_GRIMOIRE_3_RTF_SHA256 =
   "2f997c4f6d93c704cc0c73b4d04dca74e2431185c52ebd1da3961a7df9da30d4";
 export const WARLOCK_GRIMOIRE_3_TEXT_SHA256 =
   "db1c76ba641c9794f3c23b467e9736a329276ea2806dc328466013708eda1c7c";
+export const WARLOCK_GRIMOIRE_4_RTF_SHA256 =
+  "15043956bbb1a3581827243254a874701ea2fe69bc8acdba865a6916ada32760";
+export const WARLOCK_GRIMOIRE_4_TEXT_SHA256 =
+  "55721fa523e9205c4afc616d69cb190fba3a78bf8a869421230b2037a2bb548c";
 
 type GrimoireEntry = {
   key: string;
@@ -268,6 +272,37 @@ function display(value: string): string {
   ).join(" ");
 }
 
+/** Index numbered source paragraphs without accepting duplicate printed pages. */
+function printedPages(transcription: string): Map<number, string> {
+  const pages = new Map<number, string>();
+  for (const match of transcription.matchAll(
+    /(?:^|\n)(\d+) ([\s\S]*?)(?=\n\s*\n\d+ |\s*$)/g,
+  )) {
+    const page = Number(match[1]);
+    if (pages.has(page)) throw new Error(`Duplicate printed page: ${page}`);
+    pages.set(page, match[2]);
+  }
+  return pages;
+}
+
+/** Find exact named spell headers without accepting narrative mentions or substrings. */
+export function findWarlockGrimoireHeadings(
+  name: string,
+  transcription: string,
+): number[] {
+  const normalized = name.normalize("NFKC").replace(/[’‘]/g, "'");
+  const title = literal(normalized).replace(/\s+/g, "\\s+");
+  const heading = new RegExp(
+    `(?<![a-z0-9])${title}\\s+(?:\\d+(?:st|nd|rd|th)[\\s–-]*level|[a-z]+\\s+cantrip)`,
+    "i",
+  );
+  return [...printedPages(transcription)]
+    .filter(([, text]) =>
+      heading.test(text.normalize("NFKC").replace(/[’‘]/g, "'")),
+    )
+    .map(([page]) => page);
+}
+
 /** Compare one located draft against its bounded printed entry without changing it. */
 export function compareWarlockGrimoireSpell(
   spell: Spell,
@@ -278,14 +313,7 @@ export function compareWarlockGrimoireSpell(
     book === 1 ? entries : book === 2 ? secondEntries : thirdEntries
   ).find((entry) => spell.id === `kobold-press-wz:${entry.key}`);
   if (!entry) throw new Error(`No reviewed Grimoire entry: ${spell.id}`);
-  const pages = new Map<number, string>();
-  for (const match of transcription.matchAll(
-    /(?:^|\n)(\d+) ([\s\S]*?)(?=\n\s*\n\d+ |\s*$)/g,
-  )) {
-    const page = Number(match[1]);
-    if (pages.has(page)) throw new Error(`Duplicate printed page: ${page}`);
-    pages.set(page, match[2]);
-  }
+  const pages = printedPages(transcription);
   const content = entry.pages
     .map((page) => {
       const text = pages.get(page);
@@ -467,6 +495,7 @@ export function reviewWarlockGrimoire(
   rtf: Uint8Array,
   second?: { transcription: string; rtf: Uint8Array },
   third?: { transcription: string; rtf: Uint8Array },
+  fourth?: { transcription: string; rtf: Uint8Array },
 ) {
   const artifacts: [string, string | Uint8Array, string][] = [
     ["Draft", drafts, WARLOCK_DRAFT_SHA256],
@@ -491,6 +520,15 @@ export function reviewWarlockGrimoire(
       ],
       ["Grimoire 3 RTF", third.rtf, WARLOCK_GRIMOIRE_3_RTF_SHA256],
     );
+  if (fourth)
+    artifacts.push(
+      [
+        "Grimoire 4 source",
+        fourth.transcription,
+        WARLOCK_GRIMOIRE_4_TEXT_SHA256,
+      ],
+      ["Grimoire 4 RTF", fourth.rtf, WARLOCK_GRIMOIRE_4_RTF_SHA256],
+    );
   for (const [label, content, expected] of artifacts) {
     if (createHash("sha256").update(content).digest("hex") !== expected)
       throw new Error(`${label} snapshot changed; renew Warlock source review`);
@@ -507,6 +545,17 @@ export function reviewWarlockGrimoire(
     )
   )
     throw new Error("Warlock draft scope changed");
+  if (
+    fourth &&
+    spells.some(
+      (spell) =>
+        findWarlockGrimoireHeadings(
+          spell.name.replace("Panopy", "Panoply"),
+          fourth.transcription,
+        ).length,
+    )
+  )
+    throw new Error("Grimoire 4 entry inventory changed; renew source review");
   const sources: {
     book: 1 | 2 | 3;
     entries: readonly GrimoireEntry[];
@@ -559,6 +608,7 @@ export function reviewWarlockGrimoire(
       "Warlock Grimoire (2019)",
       ...(second ? ["Warlock Grimoire 2 (2020)"] : []),
       ...(third ? ["Warlock Grimoire 3 (2022)"] : []),
+      ...(fourth ? ["Warlock Grimoire 4 (2023)"] : []),
     ].join("; "),
     evidence: {
       rtfSha256: WARLOCK_GRIMOIRE_RTF_SHA256,
@@ -576,7 +626,22 @@ export function reviewWarlockGrimoire(
             sourceSha256: WARLOCK_GRIMOIRE_3_TEXT_SHA256,
           }
         : undefined,
+      grimoire4: fourth
+        ? {
+            rtfSha256: WARLOCK_GRIMOIRE_4_RTF_SHA256,
+            sourceSha256: WARLOCK_GRIMOIRE_4_TEXT_SHA256,
+          }
+        : undefined,
     },
+    additionalVolumeReview: fourth
+      ? {
+          grimoire: 4,
+          checkedDrafts: spells.length,
+          locatedCount: 0,
+          reason:
+            "No matching spell-entry headings; narrative references and creature spell lists are not definitions.",
+        }
+      : undefined,
     inputCount: spells.length,
     locatedCount: activeEntries.length,
     located: spells

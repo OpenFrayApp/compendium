@@ -30,6 +30,7 @@ const { positionals, values } = parseArgs({
   options: {
     "grimoire-2": { type: "string" },
     "grimoire-3": { type: "string" },
+    "grimoire-4": { type: "string" },
     output: { type: "string" },
   },
 });
@@ -41,7 +42,7 @@ if (
   (legacyDirectory && values.output)
 )
   throw new Error(
-    "Usage: review:warlock-grimoire -- <draft-json> <source-rtf> [--grimoire-2 <source-rtf>] [--grimoire-3 <source-rtf>] [--output <ignored-directory>]",
+    "Usage: review:warlock-grimoire -- <draft-json> <source-rtf> [--grimoire-2 <source-rtf>] [--grimoire-3 <source-rtf>] [--grimoire-4 <source-rtf>] [--output <ignored-directory>]",
   );
 const output = resolve(
   values.output ?? legacyDirectory ?? "output/warlock-grimoire-review",
@@ -55,6 +56,9 @@ const second = values["grimoire-2"]
   ? readBook(values["grimoire-2"])
   : undefined;
 const third = values["grimoire-3"] ? readBook(values["grimoire-3"]) : undefined;
+const fourth = values["grimoire-4"]
+  ? readBook(values["grimoire-4"])
+  : undefined;
 const report = {
   ...reviewWarlockGrimoire(
     drafts,
@@ -62,6 +66,7 @@ const report = {
     first.rtf,
     second,
     third,
+    fourth,
   ),
   existingDraftValidation: validateSpellDataset(JSON.parse(drafts)),
 };

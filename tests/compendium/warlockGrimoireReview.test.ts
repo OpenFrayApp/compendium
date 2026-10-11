@@ -5,6 +5,7 @@ import { expect, it } from "vitest";
 import type { Spell } from "../../src/schema/spell.ts";
 import {
   compareWarlockGrimoireSpell,
+  findWarlockGrimoireHeadings,
   reviewWarlockGrimoire,
 } from "../../src/compendium/warlockGrimoireReview.ts";
 
@@ -369,6 +370,42 @@ it("does not transfer second-volume named coverage to the third", () => {
       3,
     ),
   ).toThrow("No reviewed Grimoire entry");
+});
+
+it.each([
+  ["Rive", "3 The River is mentioned. Riven 4th-level evocation."],
+  ["Bardo", "3 A bard, or another performer, is present. Spells known: Bardo."],
+  [
+    "Door of the Far Traveler",
+    "204 The deity grants Door of the Far Traveler (see another book).",
+  ],
+])(
+  "does not treat narrative mentions or substrings as %s spell entries",
+  (name, source) => {
+    expect(findWarlockGrimoireHeadings(name, source)).toEqual([]);
+  },
+);
+
+it.each([
+  ["Rive", "3 RIVE 4th-level evocation Casting Time: 1 action", [3]],
+  ["Rive", "4 Rive 4th-Level Evocation | Wizard Casting Time: 1 action", [4]],
+  [
+    "Test's Spell",
+    "5 TEST’S\nSPELL 2nd-level conjuration Casting Time: 1 action",
+    [5],
+  ],
+  ["Test Spark", "6 Test Spark Evocation cantrip Casting Time: 1 action", [6]],
+])(
+  "recognizes exact header typography without approving %s",
+  (name, source, pages) => {
+    expect(findWarlockGrimoireHeadings(name, source)).toEqual(pages);
+  },
+);
+
+it("rejects duplicate printed pages in negative-match inventory evidence", () => {
+  expect(() =>
+    findWarlockGrimoireHeadings("Rive", "3 Narrative\n\n3 More narrative"),
+  ).toThrow("Duplicate printed page");
 });
 
 it("fails closed for changed artifacts instead of extending an old approval", () => {
