@@ -4,8 +4,9 @@
 
 The 43 preserved drafts contain 38 located names and five excluded imports.
 The source-boundary ledger reviews the three Grimoires and Liminal Magic separately.
-Thirty-five source-corrected references are selected for the console.
+The [publication decision](./reference-spell-publication.md#warlock-grimoire) approves 35 source-corrected reference cards for the console.
 Their source-specific profiles use the existing casting and effect helpers.
+Boundary preparation’s `publicationApproved: false` does not revoke that separate pinned approval.
 
 The combined library label is **Warlock Grimoire**.
 Liminal Magic remains a distinct attributed source within that display grouping.

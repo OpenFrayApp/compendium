@@ -1,4 +1,13 @@
-# Open5e D&D 5e spell publication
+# Open5e DnD 5e spell publication
+
+## Current status
+
+Raw Open5e spell preparation remains provisional.
+The [publication record](./reference-spell-publication.md) separately approves corrected,
+hash-pinned selections: Deep Magic 2020 (503), Tome of Heroes (90), and Warlock Grimoire (35).
+The raw 515-, 91-, and 43-record feeds below are historical inputs, not those approved outputs.
+Deep Magic Extended remains unapproved; Vault of Magic and Black Flag had no inspected spell records.
+Use [source status](./source-status.md) for the direct-source approvals and excluded catalogs.
 
 ## Scope
 
@@ -47,7 +56,9 @@ A supplied spell transcription identifies Deadly Salvo as 5th-level **Evocation*
 
 A second supplied screenshot contains OGL 1.0a sections 1 through 15 and the complete chain ending in _Tome of Heroes_. Its SHA-256 is `8da2cf2da30a4e90adc93a2d13769a53d2ac1766a413d4334f4e58c769a2df98`. The [Section 15 transcript](./tome-of-heroes-section-15.md) preserves its 23 notices. The license-page evidence requirement is satisfied for this source.
 
-A prose review of all 91 prepared candidates found no additional obvious references to the named exclusions or setting-specific characters and places. This review does not verify their missing metadata against the publisher spell pages. No publication approval has been added.
+The initial prose screen of 91 raw candidates found no additional obvious named exclusions or setting-specific references.
+That screen did not verify missing metadata and granted no approval.
+Subsequent publisher-page checks and corrections support the separate [90-card publication decision](./reference-spell-publication.md#tome-of-heroes).
 
 The raw candidates have 36 missing-material-description warnings, including Deadly Salvo. The source-specific generator restores the other 35 descriptions and withholds Deadly Salvo. Class lists are checked against physical pages 270–272. The book spells the class name `Sorcerer` and assigns **Immolating Gibbet** to that class; the API omits that assignment.
 
@@ -126,9 +137,10 @@ The [original Deep Magic import](https://github.com/open5e/open5e-api/blob/9ec5b
 
 The publisher’s [Community Use Policy](https://koboldpress.com/kobold-press-community-use-policy/) grants specified non-commercial permissions. It covers listed assets, descriptions, blog material, and descriptive references. It does not supply a blanket grant to republish spell collections. Its notice cannot replace each source’s OGL requirements.
 
-## Publisher material needed
+## Evidence needed for changed or unresolved selections
 
-Start with legally obtained publisher PDFs for the 2020 _Deep Magic for 5th Edition_ compilation and _Tome of Heroes_. For each, review:
+The pinned Deep Magic 2020 and Tome of Heroes decisions already have supplied publisher evidence.
+For a changed selection, obtain the applicable publisher PDF lawfully and repeat the required review:
 
 1. The title, edition, and copyright pages.
 2. The Open Game Content and Product Identity declarations.
@@ -141,9 +153,18 @@ Keep supplied PDFs outside Git. A local folder path is sufficient; contributors 
 
 ## Publication gates
 
-Deep Magic 2020 has its edition-specific declaration and complete license page. Its 35-notice attribution transcript is verified. The matched Open5e selection is the accepted provenance basis. The 17 targeted licensing flags are reviewed under that basis. The corrected 503-card snapshot has hash-pinned manual-reference approval. Tome of Heroes has its declaration and complete chain. Its source-specific preparation withholds Deadly Salvo and applies book metadata and publisher errata. Reference approval, console attribution, and publication integration remain separate gates.
+Deep Magic 2020 has a verified declaration, complete license page, and 35-notice transcript.
+The matched Open5e selection is the accepted provenance basis; all 17 targeted licensing flags were reviewed under that basis.
+Its corrected 503-card snapshot has [pinned reference approval](./reference-spell-publication.md#deep-magic-2020).
+Tome of Heroes has a verified declaration and complete chain.
+Its corrected 90-card snapshot withholds Deadly Salvo and applies book metadata and publisher errata.
+The [Tome of Heroes decision](./reference-spell-publication.md#tome-of-heroes) records approval and console attribution for that snapshot.
 
-Deep Magic Extended and Warlock require their underlying book or issue identities, declarations, and chains. Their Community Use Policy descriptions do not establish an independent OGL grant.
+Deep Magic Extended still requires underlying book identities, declarations, and chains.
+The raw Warlock feed is not approved wholesale.
+A separate source-boundary review supports the [35-card Warlock Grimoire decision](./reference-spell-publication.md#warlock-grimoire).
+Three located entries and five unsupplied imports remain excluded.
+Community Use Policy descriptions do not establish an independent OGL grant.
 
 Black Flag’s v1 ORC label and v2 CC-BY label require publisher verification if spell records become available.
 
