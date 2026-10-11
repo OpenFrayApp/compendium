@@ -1,0 +1,142 @@
+# Ingest reviewed creature and SRD data
+
+Run commands from the repository root after [setup](../../README.md#setup).
+Check the [source status](../source-status.md) before choosing inputs or distributing results.
+
+## Khyberia SRD from a supplied PDF
+
+The October 2023 Khyberia SRD contains 21 standard 5e-compatible creature blocks.
+This is the expanded 14-page document, not the older seven-page online version.
+Its CC-BY-4.0 notice covers the whole SRD and retains SRD 5.1 and A5ESRD credits.
+The imported creatures use conventional 5e statistics; their unusual effects are
+defined in the blocks. No A5E library or separate A5E rules implementation is added.
+
+```bash
+# Use the Python environment from setup, with PyMuPDF installed.
+mkdir -p output/khyberia
+.venv/bin/python scripts/extract-khyberia.py "/path/to/Khyberia SRD 2023-10.pdf" output/khyberia/blocks.json
+npm run ingest:khyberia
+npm run validate -- output/khyberia-creatures.json
+.venv/bin/python tests/compendium/khyberia_extractor_test.py
+```
+
+The extractor retains the PDF digest and legal page. The mapper accepts only the
+reviewed revision and all 21 blocks. Output includes `khyberia-creatures.json`,
+`khyberia/validation.json`, and `khyberia/ATTRIBUTION.md`. Ship the required
+attribution and adaptation notice with the data; the PDF itself is not committed.
+
+Published values stay unchanged. Conditional damage choices and unsupported
+rest-based recovery remain in prose rather than receiving invented automation.
+The review records the Hunter’s passive Perception mismatch, Wodyanoi’s tusk
+average discrepancy, and its omitted Gyre save DC.
+See [the Khyberia source review](../khyberia-review.md).
+
+## SRD 5.2.1 from the official PDF
+
+The official **SRD 5.2.1** PDF is the authoritative CC-BY source.
+The existing extractors use **pdfplumber**, an explicit exception to the PyMuPDF convention.
+Keep their two-column extraction rules independent of the book-specific PyMuPDF pipelines.
+Create `output/` first; these extractors and mappers write to the supplied file paths:
+
+```bash
+python -m pip install pdfplumber            # one-time, in the Python environment
+mkdir -p output
+# download the CC-BY PDF (not committed): https://www.dndbeyond.com/srd
+
+# Spells first (creatures hover-link cast spell names against them):
+python scripts/extract-srd52-spells-pdf.py SRD_CC_v5.2.1.pdf output/srd52-spell-blocks.json
+npm run ingest:srd52-spells -- output/srd52-spell-blocks.json output/srd-spells.json
+
+# Then creatures (3rd arg = the spells JSON, for prose spell-links):
+python scripts/extract-srd52-pdf.py SRD_CC_v5.2.1.pdf output/srd52-blocks.json
+npm run ingest:srd52 -- output/srd52-blocks.json output/srd-creatures.json output/srd-spells.json
+npm run validate -- --spells output/srd-spells.json
+npm run validate -- output/srd-creatures.json
+```
+
+The creature extractor takes each section’s verbatim text from `extract_text()`.
+It uses a font pass to order entry names, then splits the section on those names.
+This avoids row-bucketing artifacts that reorder bold names within prose.
+The spell extractor uses `extract_text(use_text_flow=True)` for content-stream reading order.
+It segments on the `Level N <School>` or `<School> Cantrip` header following each spell name.
+Both extractors stay within their PDF sections.
+Known WotC typos, including the Archmage’s XP, use the errata map in `src/compendium/srd52.ts`.
+
+## SRD 5.1 from dnd5eapi
+
+This network-only runner obtains SRD 5.1 creatures and spells from
+[dnd5eapi.co](https://www.dnd5eapi.co), including structured 2014 spellcasting and slots.
+OpenFray elects CC-BY-4.0 for SRD 5.1; see the
+[console’s attribution record](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md).
+
+```sh
+npm run ingest:srd-2014
+npm run validate -- --spells output/srd-2014-spells.json
+npm run validate -- output/srd-2014-creatures.json
+```
+
+The runner has no cached-input argument and writes into this repository’s `output/`.
+Check its mapping counts and failures before treating output as complete.
+The current runner can write a successful subset after mapping failures.
+Validator success alone does not prove that no entries were omitted.
+
+## Tome of Beasts 1–3 from supplied PDFs
+
+Each book has its own PyMuPDF extractor. All three use the shared `mapTob3(block, source)` mapper.
+These are 2014 libraries; cast spells link to the SRD 5.1 library.
+Supply the reviewed PDFs lawfully and keep them outside Git.
+The corresponding observed datasets have 384, 389, and 395 OGC creatures.
+These counts describe the reviewed inputs, not a completeness guarantee for another printing.
+
+```sh
+mkdir -p output
+python scripts/tob1.py "/path/to/Tome of Beasts.pdf" output/tob1-blocks.json
+node scripts/ingest-tob1.ts output/tob1-blocks.json output/tob1-creatures.json
+npm run validate -- output/tob1-creatures.json
+
+python scripts/tob2.py "/path/to/Tome of Beasts 2.pdf" output/tob2-blocks.json
+node scripts/ingest-tob2.ts output/tob2-blocks.json output/tob2-creatures.json
+npm run validate -- output/tob2-creatures.json
+
+python scripts/tob3.py "/path/to/Tome of Beasts 3.pdf" output/tob3-blocks.json
+node scripts/ingest-tob3.ts output/tob3-blocks.json output/tob3-creatures.json
+npm run validate -- output/tob3-creatures.json
+```
+
+ToB 2 stat labels use SegoeUI-Semibold; ToB 3 uses SegoeUI-Bold.
+ToB 1 uses HelveticaNeue-BlackCond/-Bold for names, CovingtonCond for section headers, and SegoeUI for body text.
+Its named deluxe creatures have scattered Covington-SC700 drop-cap banners.
+The extractor recovers those names from PDF bookmarks using letter-set matching.
+Do not reuse another book’s font filter or replace its PDF library.
+
+ToB 1 retains known gaps in nonstandard variant or inset blocks:
+Hulking Whelp, Clockwork Beetle Swarm, Alseid Grovekeeper, Vampire Warlock variant,
+Bandit Lord, Nkosi War Ostrich, and the split Baba Yaga Horsemen.
+The [console credits](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md) record OGL 1.0a,
+OGC-only scope, and the required Section 15 chains for all three libraries.
+
+## Creature Codex from Open5e
+
+Use the 2018 OGC-only library, not the closed 2024 revision.
+The runner uses Open5e because the reviewed input has no text-layer PDF for extraction.
+Reserved Product Identity individuals are excluded by the adapter.
+
+```sh
+mkdir -p output
+# Fetch live records:
+node scripts/ingest-creature-codex.ts output/creature-codex-creatures.json
+# Replay a complete saved Open5e response without network access:
+node scripts/ingest-creature-codex.ts output/creature-codex-creatures.json /path/to/cached-open5e.json
+npm run validate -- output/creature-codex-creatures.json
+```
+
+The cached JSON is the response object with a `results` array, not a mapped dataset.
+Check source identity, completeness, and exclusion counts before distribution.
+The [console credits](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md#creature-codex-kobold-press)
+record the source-specific designation, exclusions, and attribution chain.
+
+## Handoff
+
+Run validation after every ingest, including runners that do not validate internally.
+Inspect reported omissions and findings against the source review before copying any dataset.
+Use the [publication guide](./publish.md) for the console handoff and required credits.

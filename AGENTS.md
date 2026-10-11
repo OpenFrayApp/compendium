@@ -3,8 +3,9 @@ cross-repo agreements (code style, writing style, committing, content licensing)
 live in the
 [openfray repo's AGENTS.md](https://github.com/OpenFrayApp/openfray/blob/main/AGENTS.md).
 **Read it before working here.** The authored text follows this repo's
-[STYLE.md](./STYLE.md) (the data voice). The [README](./README.md) documents every
-pipeline and command; this file carries the rules.
+[STYLE.md](./STYLE.md) (the data voice). The [README](./README.md) covers setup;
+[task guides](./docs/README.md#task-guides) document pipelines and commands.
+This file carries the rules.
 
 ## Domain documentation
 
@@ -35,10 +36,12 @@ Retain `develop` after each promotion.
 
 ## The rules
 
-- **Consistent tooling.** The PDF extractors use **pymupdf (`import fitz`)**, one
-  extractor per book, because each book's fonts differ and a filter tuned to one
-  breaks the others. Ingesting a new Kobold book starts as a faithful copy of
-  `tob3.py`. Never swap PDF libraries or reimplement extraction inline.
+- **Consistent tooling.** Book-specific PDF extractors use **PyMuPDF (`import fitz`)**,
+  because each book’s fonts need independent filters. The existing SRD 5.2.1
+  extractors use **pdfplumber**, an explicit exception documented in the
+  [ingest guide](./docs/guides/ingest.md#srd-521-from-the-official-pdf).
+  Ingesting a new Kobold book starts as a faithful copy of `tob3.py`.
+  Never swap PDF libraries or reimplement extraction inline.
 - **Edit the `.ts`, never the JSON.** Original content (the Waking Garden,
   Brood & Bloom, Strong Waters) is authored as typed `Creature[]`/`Spell[]` sources
   in `src/compendium/`; the JSON in `output/` is a build artifact.
