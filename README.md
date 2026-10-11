@@ -153,6 +153,11 @@ vetted datasets require separate work.
 
 ## Warlock Grimoire source review
 
+The [content-boundary review](./docs/warlock-content-boundaries.md) records
+source-specific licensing decisions for the located drafts and excludes unsupplied imports.
+The [copyright transcripts](./docs/warlock-section-15.md) preserve the relevant notices.
+These reviews produce no publication or combat approval.
+
 `npm run review:warlock-grimoire -- "$WARLOCK_DRAFT" "$WARLOCK_RTF"` compares
 pinned local drafts with the supplied 2019 book. Add
 `--grimoire-2 "$WARLOCK_GRIMOIRE_2_RTF"` to include the 2020 volume, and

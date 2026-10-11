@@ -2,11 +2,17 @@
 
 ## Scope and status
 
-The supplied RTF identifies *Warlock Grimoire*, © 2019 Open Design LLC.
+The [combined content-boundary review](./warlock-content-boundaries.md) adds the
+supplied Liminal Magic guide, licensing preparation, and explicit exclusions.
+This document retains the four-Grimoire audit’s original scope.
+The console credits now contain the relevant OGL and copyright chains.
+No spell publication or combat implementation is approved.
+
+The supplied RTF identifies _Warlock Grimoire_, © 2019 Open Design LLC.
 The back cover gives ISBN `978-1-936781-15-7`. The second supplied volume is
-*Warlock Grimoire 2*, © 2020 Open Design LLC, ISBN `978-1-936781-44-7`.
-The third is *Warlock Grimoire 3*, © 2022 Open Design LLC,
-ISBN `978-1-950789-27-6`. The fourth is *Warlock Grimoire 4*, © 2023
+_Warlock Grimoire 2_, © 2020 Open Design LLC, ISBN `978-1-936781-44-7`.
+The third is _Warlock Grimoire 3_, © 2022 Open Design LLC,
+ISBN `978-1-950789-27-6`. The fourth is _Warlock Grimoire 4_, © 2023
 Open Design LLC, ISBN `978-1-950789-64-1`. This review concerns the 43 local Warlock draft spells. None are approved for
 publication or combat implementation.
 
@@ -24,18 +30,18 @@ are separate counts. Additional book spells are outside this audit.
 
 ## First-volume entries
 
-| Draft | Printed pages | Required correction or review |
-| --- | --- | --- |
-| Avert Evil Eye | 247 | Material description; contextual class evidence |
-| Commander’s Pavilion | 201 | Material description; contextual class evidence |
-| Eternal Echo | 63 | Concentration; unspecified upper duration bound; contextual class evidence |
-| Order of Revenge | 228 | Material description; contextual class evidence |
-| Reassemble | 63–64 | Material description; omitted Bless restriction; setting references and ley-line dependency |
-| Revenge’s Eye | 228–229 | Concentration; material description; missing rules text |
-| Skull Road | 64 | Concentration; material description; named locations and setting dependencies |
-| Vagrant’s Nondescript Cloak | 229 | Material description; missing warding rules |
-| Vengeful Panopy of the Ley Line Ignited | 233 | Printed title is “Panoply”; Concentration; Sorcerer class spelling; metadata contamination, setting prose, and ley-line dependency |
-| Who Goes There? | 202 | Concentration; material description; contextual class evidence |
+| Draft                                   | Printed pages | Required correction or review                                                                                                      |
+| --------------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Avert Evil Eye                          | 247           | Material description; contextual class evidence                                                                                    |
+| Commander’s Pavilion                    | 201           | Material description; contextual class evidence                                                                                    |
+| Eternal Echo                            | 63            | Concentration; unspecified upper duration bound; contextual class evidence                                                         |
+| Order of Revenge                        | 228           | Material description; contextual class evidence                                                                                    |
+| Reassemble                              | 63–64         | Material description; omitted Bless restriction; setting references and ley-line dependency                                        |
+| Revenge’s Eye                           | 228–229       | Concentration; material description; missing rules text                                                                            |
+| Skull Road                              | 64            | Concentration; material description; named locations and setting dependencies                                                      |
+| Vagrant’s Nondescript Cloak             | 229           | Material description; missing warding rules                                                                                        |
+| Vengeful Panopy of the Ley Line Ignited | 233           | Printed title is “Panoply”; Concentration; Sorcerer class spelling; metadata contamination, setting prose, and ley-line dependency |
+| Who Goes There?                         | 202           | Concentration; material description; contextual class evidence                                                                     |
 
 Five Concentration flags are absent from the drafts. Eight material descriptions
 are absent. Six bodies match after typography normalization. Four bodies require
@@ -97,14 +103,14 @@ list. The declaration also names the Circle of the Evergyre subclass and
 clockwork beast monster. Confirm the abbreviated spell designation’s relationship
 to Summon Clockwork Beast before approving that entry.
 
-| Draft | Printed pages | Required correction or review |
-| --- | --- | --- |
-| Battle Chant | 176–177 | Concentration; material description; contextual class evidence |
-| Hedgehog Dozen | 177 | Conditional Advantage and duplicate/d8 consistency; contextual class evidence |
-| March of the Dead | 177 | Material description; minor wording difference; setting prose; Instantaneous header and 24-hour control period |
-| Remove Insulation | 165 | Printed Fortitude saving throw; contextual class evidence |
-| Storm of Axes | 178 | Concentration; material description; imported metadata prefix; Concentration plus 1 round duration |
-| Summon Clockwork Beast | 20–21 | Material description; truncated draft body; interleaved source columns; abbreviated designation; subclass and summoned-creature boundaries |
+| Draft                  | Printed pages | Required correction or review                                                                                                              |
+| ---------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Battle Chant           | 176–177       | Concentration; material description; contextual class evidence                                                                             |
+| Hedgehog Dozen         | 177           | Conditional Advantage and duplicate/d8 consistency; contextual class evidence                                                              |
+| March of the Dead      | 177           | Material description; minor wording difference; setting prose; Instantaneous header and 24-hour control period                             |
+| Remove Insulation      | 165           | Printed Fortitude saving throw; contextual class evidence                                                                                  |
+| Storm of Axes          | 178           | Concentration; material description; imported metadata prefix; Concentration plus 1 round duration                                         |
+| Summon Clockwork Beast | 20–21         | Material description; truncated draft body; interleaved source columns; abbreviated designation; subclass and summoned-creature boundaries |
 
 Two additional Concentration flags and four material descriptions are missing.
 Three second-volume bodies match after typography normalization. Two show text
@@ -149,17 +155,17 @@ The back cover identifies issues 20–28 plus Warlock Guide to the Planes.
 Its 42 spells, invocations, and runes are a combined marketing inventory.
 They are separate from the nine-spell designation.
 
-| Draft | Printed pages | Required correction or review |
-| --- | --- | --- |
-| Abrupt Hug | 201 | Reaction notation; body wording variant |
-| Bombardment of Stings | 202 | Cone range; material description; Sorcerer spelling; body variant |
-| Charming Aesthetics | 57 | Material description; preserve conditional consequences in prose |
-| Exchanged Knowledge | 120 | Concentration; consumed material description; named library and body variant; no proficiency/build automation |
-| Inconspicuous Facade | 120 | Material description; Sorcerer spelling |
-| Rise of the Green | 59 | Concentration; material description; separate treant and terrain scope review |
-| Suppress Regeneration | 204 | Extra Concentration in draft; material description; Sorcerer spelling; major body variant and printed Fortitude save |
-| Toxic Pollen | 57 | Material description; year-long preparation and later one-minute Poisoned effect are separate |
-| Zymurgic Aura | 264 | Printed Material component has no specified description; no description may be invented |
+| Draft                 | Printed pages | Required correction or review                                                                                        |
+| --------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Abrupt Hug            | 201           | Reaction notation; body wording variant                                                                              |
+| Bombardment of Stings | 202           | Cone range; material description; Sorcerer spelling; body variant                                                    |
+| Charming Aesthetics   | 57            | Material description; preserve conditional consequences in prose                                                     |
+| Exchanged Knowledge   | 120           | Concentration; consumed material description; named library and body variant; no proficiency/build automation        |
+| Inconspicuous Facade  | 120           | Material description; Sorcerer spelling                                                                              |
+| Rise of the Green     | 59            | Concentration; material description; separate treant and terrain scope review                                        |
+| Suppress Regeneration | 204           | Extra Concentration in draft; material description; Sorcerer spelling; major body variant and printed Fortitude save |
+| Toxic Pollen          | 57            | Material description; year-long preparation and later one-minute Poisoned effect are separate                        |
+| Zymurgic Aura         | 264           | Printed Material component has no specified description; no description may be invented                              |
 
 Two Concentration flags are missing; Suppress Regeneration has an extra flag.
 Seven material descriptions are missing from these drafts. Five bodies match
