@@ -3,7 +3,6 @@
 
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
-import { createHash } from 'node:crypto'
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -11,16 +10,12 @@ import {
   REFERENCE_SPELL_APPROVALS,
   type ReferenceSpellApproval
 } from '../src/compendium/referenceSpellPublication.ts'
+import { sha256 } from './lib/sha256.ts'
 
 interface OfflineBaseline {
   datasets: { command: string; count: number; sources: string[]; sha256: string }[]
   approvalModule: { path: string; sha256: string }
   referenceSpellApprovals: ReferenceSpellApproval[]
-}
-
-/** Hash the exact serialized bytes used by output and approval comparisons. */
-function sha256(bytes: Buffer): string {
-  return createHash('sha256').update(bytes).digest('hex')
 }
 
 const baseline: OfflineBaseline = JSON.parse(

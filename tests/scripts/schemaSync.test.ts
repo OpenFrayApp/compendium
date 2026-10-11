@@ -182,6 +182,30 @@ describe('schema drift command', () => {
     expect(result.stderr).toContain('Schema drift: missing src/compendium/libraries.ts')
   })
 
+  it('hashes raw binary bytes and preserves exact expected/found drift diagnostics', () => {
+    const root = checkout()
+    const expected = 'b49c931f68247e438f39b1fb1cd68e54e1c60ca467f8b11e8228317dd85f71bd'
+    writeFileSync(join(root, 'src/schema/action.ts'), Buffer.from([0, 255, 13, 10, 195, 169]))
+    writeFileSync(
+      join(root, 'schema-provenance.json'),
+      JSON.stringify({
+        ...provenance,
+        files: provenance.files.map((file) =>
+          file.path === 'src/schema/action.ts' ? { ...file, sha256: expected } : file
+        )
+      })
+    )
+    const matched = check(root)
+    expect(matched.status, matched.stderr).toBe(0)
+    expect(matched.stderr).toBe('')
+    writeFileSync(join(root, 'src/schema/action.ts'), Buffer.from([0, 255, 10, 195, 169]))
+    const drift = check(root)
+    expect(drift.status).toBe(1)
+    expect(drift.stderr).toBe(
+      `Schema drift: src/schema/action.ts at ${provenance.revision}: expected ${expected}, found 32a1158bafa01ee93126afa9ea3c44c287421da2e909bc7fe025afd8d7f901e2\n`
+    )
+  })
+
   it('rejects changed schema bytes and identifies the file and pinned revision', () => {
     const root = checkout()
     writeFileSync(join(root, 'src/schema/action.ts'), 'controlled drift\n')
