@@ -9,6 +9,7 @@ Check [source status](./source-status.md) before selecting inputs or distributin
 
 | Task | Guide |
 | --- | --- |
+| Synchronize console-owned schema or check local drift offline | [Schema synchronization](./schema-sync.md) |
 | Extract and ingest SRD, Tome of Beasts, Khyberia, or Creature Codex | [Ingest](./guides/ingest.md) |
 | Prepare or replay Open5e creature candidates | [Prepare creatures](./guides/prepare-creatures.md) |
 | Prepare or replay Open5e, GM Binder, or Kibbles spell candidates | [Prepare spells](./guides/prepare-spells.md) |
