@@ -2,6 +2,7 @@
 
 Run commands from the repository root after [setup](../../README.md#setup).
 Check the [source status](../source-status.md) before choosing inputs or distributing results.
+See [reviewed spell preparation](../reviewed-spell-preparation.md) for correction ownership, reconciliation, and test coverage.
 
 ## Warlock Grimoire source review
 
