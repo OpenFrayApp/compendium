@@ -198,6 +198,11 @@ export function toBlock(r: Open5eCreature): StatBlock2014 {
   } as StatBlock2014
 }
 
+/** Reject signs and fractions unsupported by unsigned 2014 integer fields. */
+function isUnsignedStatInteger(value: unknown): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 0
+}
+
 /** Reject missing source identity or malformed consumed fields before defaults can mask omissions. */
 function checkCreatureCodexRecord(record: Open5eRecord, index: number): void {
   /** Identify the source record and field that needs corrected evidence. */
@@ -216,8 +221,8 @@ function checkCreatureCodexRecord(record: Open5eRecord, index: number): void {
   }
   if (!/^(Tiny|Small|Medium(?: or Small)?|Large|Huge|Gargantuan)$/i.test(record.size!.name!))
     fail('size.name (unsupported by the 2014 mapper)')
-  if (!Number.isFinite(record.armor_class)) fail('armor_class')
-  if (!Number.isFinite(record.hit_points)) fail('hit_points')
+  if (!isUnsignedStatInteger(record.armor_class)) fail('armor_class')
+  if (!isUnsignedStatInteger(record.hit_points)) fail('hit_points')
   if (
     !record.speed ||
     typeof record.speed !== 'object' ||
@@ -274,7 +279,7 @@ function checkCreatureCodexRecord(record: Open5eRecord, index: number): void {
   )
     fail('resistances_and_immunities')
   for (const ability of ABILITY_ORDER) {
-    if (!Number.isFinite(record.ability_scores?.[ability])) fail(`ability_scores.${ability}`)
+    if (!isUnsignedStatInteger(record.ability_scores?.[ability])) fail(`ability_scores.${ability}`)
   }
   for (const field of ['traits', 'actions'] as const) {
     const entries = record[field]

@@ -65,6 +65,68 @@ function input(dir: string, records: unknown): string {
 }
 
 describe.each(['cached', 'live'])('Creature Codex %s evidence', (mode) => {
+  it.each([
+    [
+      'ability-row fallback',
+      'ability_scores.wisdom',
+      (record: any) => {
+        record.ability_scores.strength = 18
+        record.ability_scores.wisdom = -1
+      }
+    ],
+    [
+      'negative AC',
+      'armor_class',
+      (record: any) => {
+        record.armor_class = -12
+      }
+    ],
+    [
+      'negative HP',
+      'hit_points',
+      (record: any) => {
+        record.hit_points = -9
+      }
+    ],
+    [
+      'decimal AC',
+      'armor_class',
+      (record: any) => {
+        record.armor_class = 12.5
+      }
+    ],
+    [
+      'decimal HP',
+      'hit_points',
+      (record: any) => {
+        record.hit_points = 9.5
+      }
+    ],
+    [
+      'decimal ability',
+      'ability_scores.wisdom',
+      (record: any) => {
+        record.ability_scores.wisdom = 10.5
+      }
+    ]
+  ])('rejects %s without numeric corruption or replacing bytes', (_label, field, mutate) => {
+    const dir = workspace()
+    const snapshot = structuredClone(codexSnapshot)
+    mutate(snapshot.results[1])
+    const destination = join(dir, 'existing.json')
+    const sentinel = Buffer.from('existing codex\n\x00do not replace')
+    writeFileSync(destination, sentinel)
+    const result =
+      mode === 'cached'
+        ? run(dir, 'creature-codex', [destination, input(dir, snapshot)])
+        : run(dir, 'creature-codex', [destination], { pages: [snapshot] })
+    expect(result.status).toBe(1)
+    expect(result.stderr).toContain('Creature Codex record 2 (Ankou Soul Seeker)')
+    expect(result.stderr).toContain(field)
+    expect(result.stdout).not.toContain('mapped ')
+    expect(readFileSync(destination)).toEqual(sentinel)
+  })
+
   it('preserves arithmetic findings before replacement and leaves new directories absent', () => {
     const dir = workspace()
     const snapshot = structuredClone(codexSnapshot)
