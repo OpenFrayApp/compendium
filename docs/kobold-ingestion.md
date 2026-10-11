@@ -51,12 +51,23 @@ The JSON format parameter is restored on every request.
 All records must carry `document.key: "ccdx"`, a nonblank name, and a unique nonblank upstream key.
 The adapter checks identity before exclusion, including the excluded individuals.
 It rejects missing or malformed armor class, hit points, size, type, speed, and any of the six ability scores.
-A speed map must contain at least one numeric movement value; zero remains valid.
+A speed map must contain at least one nonnegative integer movement value; zero remains valid.
+Explicit speed units must be `feet`; an absent unit retains the existing feet assumption.
+Other units fail without conversion.
 Sizes and action sections must be supported by the existing 2014 adapter.
 Supplied optional numeric values, dice text, languages, defenses, bonus maps, traits, and actions must have the consumed field shapes.
 CR, XP, dice text, senses, and absent optional collections retain their existing omission behavior.
 Supplied trait and action entries require names and description strings.
 Omission still passes through the unchanged mapper and validator; it is not an exemption from validation errors.
+
+Armor class, hit points, ability scores, movement, XP, passive Perception, and sense ranges require nonnegative integers.
+Signed integer saving throws and skill bonuses remain supported.
+Every retained record’s consumed numeric values must equal their mapped values before emission.
+This catches sign loss, decimal truncation, exponential rendering loss, unsupported movement or bonus labels, and unsupported fractional CR values.
+CR `0`, `1/8`, `1/4`, `1/2`, and representable integer CR values retain the existing mapping.
+Zero movement and XP remain represented; zero sense ranges retain the existing absent-sense convention.
+Action ordering remains a finite sorting value and does not pass through the integer stat-line grammar.
+No new source maxima are imposed; existing validator checks still apply.
 
 The exact, case-insensitive exclusion names remain:
 

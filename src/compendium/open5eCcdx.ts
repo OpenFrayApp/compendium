@@ -46,6 +46,12 @@ const ABILITY_ORDER = [
   'wisdom',
   'charisma'
 ]
+const SENSE_RANGES = [
+  'darkvision_range',
+  'blindsight_range',
+  'tremorsense_range',
+  'truesight_range'
+] as const
 const SHORT: Record<string, string> = {
   strength: 'Str',
   dexterity: 'Dex',
@@ -227,24 +233,21 @@ function checkCreatureCodexRecord(record: Open5eRecord, index: number): void {
     !record.speed ||
     typeof record.speed !== 'object' ||
     Array.isArray(record.speed) ||
-    !Object.entries(record.speed).some(
-      ([key, value]) => key !== 'unit' && Number.isFinite(value)
-    ) ||
-    Object.entries(record.speed).some(([key, value]) =>
-      key === 'unit' ? typeof value !== 'string' : !Number.isFinite(value)
-    )
+    !Object.keys(record.speed).some((key) => key !== 'unit')
   )
     fail('speed')
-  for (const field of [
-    'challenge_rating',
-    'experience_points',
-    'passive_perception',
-    'darkvision_range',
-    'blindsight_range',
-    'tremorsense_range',
-    'truesight_range'
-  ] as const) {
-    if (record[field] != null && !Number.isFinite(record[field])) fail(field)
+  for (const [mode, value] of Object.entries(record.speed!)) {
+    if (mode === 'unit') {
+      if (value !== 'feet') fail('speed.unit (expected feet)')
+    } else if (!isUnsignedStatInteger(value)) fail(`speed.${mode}`)
+  }
+  if (
+    record.challenge_rating != null &&
+    (!Number.isFinite(record.challenge_rating) || record.challenge_rating < 0)
+  )
+    fail('challenge_rating')
+  for (const field of ['experience_points', 'passive_perception', ...SENSE_RANGES] as const) {
+    if (record[field] != null && !isUnsignedStatInteger(record[field])) fail(field)
   }
   if (record.hit_dice != null && typeof record.hit_dice !== 'string') fail('hit_dice')
   if (record.alignment != null && typeof record.alignment !== 'string') fail('alignment')
@@ -257,13 +260,10 @@ function checkCreatureCodexRecord(record: Open5eRecord, index: number): void {
     fail('languages')
   for (const field of ['saving_throws', 'skill_bonuses'] as const) {
     const bonuses = record[field]
-    if (
-      bonuses != null &&
-      (typeof bonuses !== 'object' ||
-        Array.isArray(bonuses) ||
-        Object.values(bonuses).some((value) => !Number.isFinite(value)))
-    )
-      fail(field)
+    if (bonuses != null && (typeof bonuses !== 'object' || Array.isArray(bonuses))) fail(field)
+    for (const [key, value] of Object.entries(bonuses ?? {})) {
+      if (!Number.isInteger(value)) fail(`${field}.${key}`)
+    }
   }
   const defenses = record.resistances_and_immunities
   if (
@@ -303,6 +303,50 @@ function checkCreatureCodexRecord(record: Open5eRecord, index: number): void {
   }
 }
 
+/** Reject numeric rendering loss before a mapped Creature Codex record reaches emission. */
+function checkCreatureCodexNumericMapping(record: Open5eRecord, creature: Creature): void {
+  /** Identify the source field that the unchanged mapper cannot preserve. */
+  const check = (field: string, original: unknown, mapped: unknown): void => {
+    if (original !== mapped)
+      throw new Error(
+        `Creature Codex record ${record.key} (${record.name}): ${field} cannot round-trip through the 2014 mapper`
+      )
+  }
+  check('armor_class', record.armor_class, creature.ac)
+  check('hit_points', record.hit_points, creature.maxHp)
+  for (const ability of ABILITY_ORDER) {
+    const key = SHORT[ability].toLowerCase() as keyof Creature['abilities']
+    check(`ability_scores.${ability}`, record.ability_scores![ability], creature.abilities[key])
+  }
+  for (const [mode, value] of Object.entries(record.speed!)) {
+    if (mode !== 'unit')
+      check(`speed.${mode}`, value, creature.speed[mode.toLowerCase() as keyof Creature['speed']])
+  }
+  if (record.challenge_rating != null)
+    check('challenge_rating', record.challenge_rating, creature.cr)
+  if (record.experience_points != null)
+    check('experience_points', record.experience_points, creature.xp)
+  if (record.passive_perception != null)
+    check('passive_perception', record.passive_perception, creature.senses.passivePerception)
+  for (const field of SENSE_RANGES) {
+    // Zero ranges retain the adapter's existing absent-sense convention.
+    if (record[field])
+      check(field, record[field], creature.senses[field.slice(0, -6) as keyof Creature['senses']])
+  }
+  for (const [ability, value] of Object.entries(record.saving_throws ?? {})) {
+    const key = (SHORT[ability] ?? ability).toLowerCase() as keyof NonNullable<Creature['saves']>
+    check(`saving_throws.${ability}`, value, creature.saves?.[key])
+  }
+  for (const [skill, value] of Object.entries(record.skill_bonuses ?? {})) {
+    const key = skillLabel(skill)
+      .toLowerCase()
+      .replace(/\s+(\w)/g, (_, letter: string) => letter.toUpperCase()) as keyof NonNullable<
+      Creature['skills']
+    >
+    check(`skill_bonuses.${skill}`, value, creature.skills?.[key])
+  }
+}
+
 /** Check the complete Creature Codex selection before excluding or mapping any record. */
 export function mapCreatureCodexRecords(records: Open5eRecord[]): Creature[] {
   const keys = new Set<string>()
@@ -326,13 +370,16 @@ export function mapCreatureCodexRecords(records: Open5eRecord[]): Creature[] {
   return records
     .filter((record) => !isReservedIndividual(record.name))
     .map((record) => {
+      let creature: Creature
       try {
-        return mapOpen5eCcdx(record)
+        creature = mapOpen5eCcdx(record)
       } catch (cause) {
         throw new Error(`Creature Codex record ${record.key} (${record.name}): mapping failed`, {
           cause
         })
       }
+      checkCreatureCodexNumericMapping(record, creature)
+      return creature
     })
     .sort((a, b) => a.name.localeCompare(b.name))
 }

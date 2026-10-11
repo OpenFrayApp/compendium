@@ -127,6 +127,147 @@ describe.each(['cached', 'live'])('Creature Codex %s evidence', (mode) => {
     expect(readFileSync(destination)).toEqual(sentinel)
   })
 
+  it.each([
+    [
+      'exponential AC rendering',
+      'armor_class',
+      (record: any) => {
+        record.armor_class = 1e21
+      }
+    ],
+    [
+      'negative movement',
+      'speed.walk',
+      (record: any) => {
+        record.speed.walk = -30
+      }
+    ],
+    [
+      'decimal movement',
+      'speed.walk',
+      (record: any) => {
+        record.speed.walk = 30.5
+      }
+    ],
+    [
+      'unknown movement',
+      'speed.teleport',
+      (record: any) => {
+        record.speed.teleport = 60
+      }
+    ],
+    [
+      'unsupported movement unit',
+      'speed',
+      (record: any) => {
+        record.speed.unit = 'meters'
+      }
+    ],
+    [
+      'negative sense',
+      'darkvision_range',
+      (record: any) => {
+        record.darkvision_range = -60
+      }
+    ],
+    [
+      'decimal sense',
+      'darkvision_range',
+      (record: any) => {
+        record.darkvision_range = 60.5
+      }
+    ],
+    [
+      'negative passive Perception',
+      'passive_perception',
+      (record: any) => {
+        record.passive_perception = -10
+      }
+    ],
+    [
+      'decimal passive Perception',
+      'passive_perception',
+      (record: any) => {
+        record.passive_perception = 10.5
+      }
+    ],
+    [
+      'negative CR',
+      'challenge_rating',
+      (record: any) => {
+        record.challenge_rating = -1
+      }
+    ],
+    [
+      'unrepresentable fractional CR',
+      'challenge_rating',
+      (record: any) => {
+        record.challenge_rating = 0.75
+      }
+    ],
+    [
+      'negative XP',
+      'experience_points',
+      (record: any) => {
+        record.experience_points = -200
+      }
+    ],
+    [
+      'decimal XP',
+      'experience_points',
+      (record: any) => {
+        record.experience_points = 200.5
+      }
+    ],
+    [
+      'decimal save',
+      'saving_throws.wisdom',
+      (record: any) => {
+        record.saving_throws = { wisdom: 2.5 }
+      }
+    ],
+    [
+      'unknown save label',
+      'saving_throws.unknown',
+      (record: any) => {
+        record.saving_throws = { unknown: 2 }
+      }
+    ],
+    [
+      'decimal skill',
+      'skill_bonuses.perception',
+      (record: any) => {
+        record.skill_bonuses = { perception: 0.5 }
+      }
+    ],
+    [
+      'unknown skill label',
+      'skill_bonuses.unknown',
+      (record: any) => {
+        record.skill_bonuses = { unknown: 0 }
+      }
+    ]
+  ])(
+    'rejects %s before emission when source numbers cannot round-trip',
+    (_label, field, mutate) => {
+      const dir = workspace()
+      const snapshot = structuredClone(codexSnapshot)
+      mutate(snapshot.results[1])
+      const destination = join(dir, 'existing.json')
+      const sentinel = Buffer.from('existing codex\n\x00do not replace')
+      writeFileSync(destination, sentinel)
+      const result =
+        mode === 'cached'
+          ? run(dir, 'creature-codex', [destination, input(dir, snapshot)])
+          : run(dir, 'creature-codex', [destination], { pages: [snapshot] })
+      expect(result.status).toBe(1)
+      expect(result.stderr).toContain('Ankou Soul Seeker')
+      expect(result.stderr).toContain(field)
+      expect(result.stdout).not.toContain('mapped ')
+      expect(readFileSync(destination)).toEqual(sentinel)
+    }
+  )
+
   it('preserves arithmetic findings before replacement and leaves new directories absent', () => {
     const dir = workspace()
     const snapshot = structuredClone(codexSnapshot)
@@ -193,6 +334,67 @@ describe.each(['cached', 'live'])('Creature Codex %s evidence', (mode) => {
     expect(creatures[0].cr).toBeUndefined()
     expect(creatures[0].xp).toBeUndefined()
     expect(creatures[0].senses.passivePerception).toBe(12)
+  })
+
+  it.each([
+    [0.125, 25],
+    [0.25, 50],
+    [0.5, 100]
+  ])('preserves representable CR %s and signed integer bonuses', (cr, xp) => {
+    const dir = workspace()
+    const snapshot = structuredClone(codexSnapshot)
+    const record = snapshot.results[1]
+    record.challenge_rating = cr
+    record.experience_points = xp
+    record.ability_scores.wisdom = 2
+    record.saving_throws = { wisdom: -2, strength: 2 }
+    record.skill_bonuses = { perception: -4, animal_handling: 0 }
+    record.passive_perception = 6
+    record.darkvision_range = 0
+    record.speed = { walk: 0, fly: 0 }
+    record.actions = [
+      { name: 'Test', desc: 'Synthetic action.', action_type: 'ACTION', order_in_statblock: -0.5 }
+    ]
+    const destination = join(dir, 'codex.json')
+    const result =
+      mode === 'cached'
+        ? run(dir, 'creature-codex', [destination, input(dir, snapshot)])
+        : run(dir, 'creature-codex', [destination], { pages: [snapshot] })
+    expect(result.status, result.stderr).toBe(0)
+    const creatures = JSON.parse(readFileSync(destination, 'utf8'))
+    expect(creatures[0]).toMatchObject({
+      cr,
+      xp,
+      abilities: { wis: 2 },
+      saves: { wis: -2, str: 2 },
+      skills: { perception: -4, animalHandling: 0 },
+      senses: { passivePerception: 6 },
+      speed: { walk: 0, fly: 0 }
+    })
+    expect(creatures[0].senses.darkvision).toBeUndefined()
+  })
+
+  it('preserves large representable unsigned values without imposing new source maxima', () => {
+    const dir = workspace()
+    const snapshot = structuredClone(codexSnapshot)
+    const record = snapshot.results[1]
+    delete record.challenge_rating
+    record.experience_points = 1e20
+    record.speed.walk = 1e20
+    record.ability_scores.strength = 18
+    const destination = join(dir, 'codex.json')
+    const result =
+      mode === 'cached'
+        ? run(dir, 'creature-codex', [destination, input(dir, snapshot)])
+        : run(dir, 'creature-codex', [destination], { pages: [snapshot] })
+    expect(result.status, result.stderr).toBe(0)
+    const creatures = JSON.parse(readFileSync(destination, 'utf8'))
+    expect(creatures[0]).toMatchObject({
+      xp: 1e20,
+      speed: { walk: 1e20 },
+      abilities: { str: 18, wis: 10 }
+    })
+    expect(creatures[0].cr).toBeUndefined()
   })
 
   it('rejects duplicate upstream keys even when mapped names differ', () => {
