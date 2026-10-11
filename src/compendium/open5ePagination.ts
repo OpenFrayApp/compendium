@@ -46,7 +46,7 @@ export async function fetchOpen5ePages<T>(
       !Number.isInteger(page.count) ||
       page.count < 0 ||
       !Array.isArray(page.results) ||
-      !(page.next === null || typeof page.next === 'string')
+      !(page.next === null || (typeof page.next === 'string' && page.next.trim().length > 0))
     )
       throw new Error('Invalid Open5e page')
     if (count !== undefined && count !== page.count)

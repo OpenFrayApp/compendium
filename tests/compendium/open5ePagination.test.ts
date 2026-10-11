@@ -113,6 +113,17 @@ it.each([
   )
 })
 
+it.each(['', ' ', '\t\n', '\u00a0'])(
+  'rejects blank continuation %j as invalid page shape before another fetch',
+  async (next) => {
+    const fetchJson = vi.fn().mockResolvedValue({ count: 1, next, results: ['first'] })
+    await expect(fetchOpen5ePages(initial, path, fetchJson, filter)).rejects.toThrow(
+      'Invalid Open5e page'
+    )
+    expect(fetchJson).toHaveBeenCalledTimes(1)
+  }
+)
+
 it('rejects incomplete snapshots', async () => {
   await expect(
     fetchOpen5ePages(initial, path, async () => ({ count: 2, next: null, results: ['first'] }))
