@@ -11,15 +11,18 @@
  * (see docs/content-licensing.md). The app never calls the API live.
  */
 
-import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   mapDndApiMonster,
   mapDndApiSpell,
   type DndApiMonster,
-  type DndApiSpell,
+  type DndApiSpell
 } from '../src/compendium/dnd5eapi.ts'
+
+import { emitValidatedDataset } from '../src/compendium/datasetEmission.ts'
+import { validateDataset, validateSpellDataset } from '../src/compendium/validate.ts'
+import { reportSrdValidation } from './lib/srdValidation.ts'
 
 const BASE = 'https://www.dnd5eapi.co/api/2014'
 
@@ -46,8 +49,12 @@ async function fetchAll(endpoint: string): Promise<any[]> {
   return out
 }
 
-/** Map items through fn, keeping successes; failures are counted and the first five logged. */
-function mapAll<R, T>(items: R[], fn: (r: R) => T, label: string): T[] {
+/** Map every entry and report all unexpected omissions with their API identity. */
+function mapAll<R extends { name: string; index: string }, T>(
+  items: R[],
+  fn: (r: R) => T,
+  label: string
+): { records: T[]; errors: number } {
   const ok: T[] = []
   let errors = 0
   for (const item of items) {
@@ -55,24 +62,49 @@ function mapAll<R, T>(items: R[], fn: (r: R) => T, label: string): T[] {
       ok.push(fn(item))
     } catch (e) {
       errors += 1
-      if (errors <= 5) console.warn(`  ! ${label}:`, (item as any)?.name, String(e).slice(0, 90))
+      console.error(`  ! ${label}: ${item?.name} [${item?.index}]: ${String(e)}`)
     }
   }
   console.log(`  ${label}: mapped ${ok.length}/${items.length} (${errors} errors)`)
-  return ok
+  return { records: ok, errors }
 }
 
 const outDir = resolve(dirname(fileURLToPath(import.meta.url)), '../output')
-mkdirSync(outDir, { recursive: true })
 
 console.log('Fetching SRD 5.1 spells…')
 const spells = mapAll((await fetchAll('spells')) as DndApiSpell[], mapDndApiSpell, 'spells')
 
 console.log('Fetching SRD 5.1 monsters…')
-const creatures = mapAll((await fetchAll('monsters')) as DndApiMonster[], mapDndApiMonster, 'monsters')
+const creatures = mapAll(
+  (await fetchAll('monsters')) as DndApiMonster[],
+  mapDndApiMonster,
+  'monsters'
+)
 
-writeFileSync(resolve(outDir, 'srd-2014-creatures.json'), JSON.stringify(creatures))
-writeFileSync(resolve(outDir, 'srd-2014-spells.json'), JSON.stringify(spells))
+if (spells.errors || creatures.errors) {
+  console.error('SRD 2014 mapping failed; no datasets replaced.')
+  process.exit(1)
+}
+const spellReport = validateSpellDataset(spells.records)
+const creatureReport = validateDataset(creatures.records)
+if (spellReport.errors || creatureReport.errors) {
+  reportSrdValidation('spells', spellReport)
+  reportSrdValidation('creatures', creatureReport)
+  console.error('SRD 2014 validation failed; no datasets replaced.')
+  process.exit(1)
+}
 
-console.log(`\nDone: ${creatures.length} creatures, ${spells.length} spells → output/`)
+// Both datasets must pass before the first emitter can replace a destination.
+emitValidatedDataset(creatures.records, resolve(outDir, 'srd-2014-creatures.json'), {
+  validate: () => creatureReport,
+  report: (report) => reportSrdValidation('creatures', report)
+})
+emitValidatedDataset(spells.records, resolve(outDir, 'srd-2014-spells.json'), {
+  validate: () => spellReport,
+  report: (report) => reportSrdValidation('spells', report)
+})
+
+console.log(
+  `\nDone: ${creatures.records.length} creatures, ${spells.records.length} spells → output/`
+)
 console.log('Source: dnd5eapi.co (SRD 5.1, used under CC-BY-4.0). Fill CREDITS.md 5.1 attribution.')
