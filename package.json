@@ -5,6 +5,9 @@
   "type": "module",
   "description": "Compendium data-generation tooling for OpenFray — ingests SRD and third-party sources into OpenFray's Creature schema, validates the output, and emits the JSON the app ships.",
   "license": "AGPL-3.0-or-later",
+  "engines": {
+    "node": ">=24 <25"
+  },
   "scripts": {
     "ingest:srd-2014": "node scripts/ingest-srd-2014.ts",
     "ingest:srd52": "node scripts/ingest-srd52.ts",
@@ -27,11 +30,18 @@
     "validate": "node scripts/validate-compendium.ts",
     "estimate:cr": "node scripts/estimate-cr.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:python": "node scripts/verify.mjs --python-only",
+    "verify": "node scripts/verify.mjs",
+    "verify:offline": "node scripts/verify-offline.ts",
+    "format": "node scripts/format.mjs",
+    "format:check": "node scripts/format.mjs --check",
+    "check:prose": "node scripts/check-prose.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "parse5": "^8.0.1",
+    "prettier": "3.9.10",
     "typescript": "~5.7.2",
     "vitest": "^3.0.0"
   }
