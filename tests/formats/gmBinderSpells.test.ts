@@ -64,6 +64,16 @@ describe('GM Binder spell extraction', () => {
       <section><h3>Actions</h3><p>Stat block action.</p><section>${heading('Later')}<p>Later spell rules.</p></section></section></section></blockquote></section>`)
     const result = extractGmBinderSpells(html, [])
     expect(result.blocks).toHaveLength(2)
+    for (const block of result.blocks) {
+      expect(block.header).toBe('2nd-level evocation')
+      expect(block.fields).toEqual({
+        Classes: 'Sorcerer, Wizard',
+        'Casting Time': '1 action',
+        Range: '60 feet',
+        Components: 'V, S, M (a pearl (worth 100 gp))',
+        Duration: 'Concentration, 1 minute'
+      })
+    }
     expect(result.blocks.find((spell) => spell.name === 'First')!.text).toContain(
       'Stat block action.'
     )

@@ -139,7 +139,12 @@ describe.each(libraries)('$command offline contract', (library) => {
   it('retains withheld source findings during strict replay', () => {
     let input: string
     if (library.input === 'source.html') {
-      input = gmBinderHtml().replace('<li><strong>Range:</strong> 60 feet</li>', '')
+      input = gmBinderHtml()
+        .replace('<li><strong>Range:</strong> 60 feet</li>', '')
+        .replace(
+          '</p></section>',
+          '</p><blockquote><h2>Unattached Spirit</h2><p><em>Medium Beast</em></p><p>Armor Class 12. Hit Points 20.</p></blockquote></section>'
+        )
     } else {
       const snapshot = kibblesSnapshot()
       snapshot.blocks[0].extractionIssues = ['Unresolved source boundary']
@@ -159,8 +164,7 @@ describe.each(libraries)('$command offline contract', (library) => {
               : 'Unresolved source boundary'
         }
       ])
-      if (library.input !== 'source.html')
-        expect(report.unattachedStatBlocks).toEqual(['Unattached Spirit'])
+      expect(report.unattachedStatBlocks).toEqual(['Unattached Spirit'])
     })
   })
 })
