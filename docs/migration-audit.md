@@ -72,6 +72,12 @@ All rows retain 34 Python tests; #19 ran TypeScript, typecheck, and Python comma
 | Kobold review fixes, integrated at `295779c` | `95dfb60`                   | 689/48                 |
 
 Public guides retain the owning behavioral and parity evidence.
+The final consistency run passes 693 TypeScript tests across 49 files, 34 Python tests, and typechecking.
+`schema:check`, `verify:offline`, and `check:docs` pass after merging the latest local integration.
+A fresh public-only Git clone installs locked npm and pinned Python dependencies successfully.
+With all networking denied by macOS `sandbox-exec`, that clone passes every verification gate and the Waking Garden ingest/validate example.
+The example emits 67 creatures with no findings; no repository `output/` directory is created.
+The first consistency commit’s public documentation check also passes independently.
 Independent acceptance review of the final consistency slice remains required.
 
 ## Available parity and deliberate failure changes
@@ -128,7 +134,13 @@ Keep any actual inventory outside Git under access controls appropriate to its l
 
 [Tooling debt](../tests/fixtures/verification/tooling-debt.json) remains a historical baseline, not a suppression list.
 No mass formatting or protected legal/history rewording is included.
-Existing npm advisories, PyMuPDF’s `fitz` deprecation, formatting debt, and nonfatal prose matches remain separate work.
-Public documentation checking covers inline links and ATX headings; external availability and unsupported Markdown constructs require manual review.
+Installation still reports seven npm advisories: one low, one moderate, three high, and two critical.
+Full `format:check` reports 56 inherited file findings and exits nonzero; no files are rewritten.
+Changed eligible files pass targeted formatting; scoped prose checking passes with four existing nonfatal contrast matches.
+PyMuPDF’s `fitz` deprecation remains separate work.
+Public documentation checking covers inline links and ATX headings; unsupported Markdown constructs require manual review.
+All 16 unique contributor-navigation external URLs return HTTP 200 in the manual network check.
+Historical publisher and investigation URLs are retained as evidence and are not exhaustively re-fetched.
+All 26 documented direct Node/Python runner references resolve to tracked files.
 Network-disabled verification is exercised on macOS; Linux and Windows are not independently exercised here.
 Sibling repositories, deployment, and parent issue #17 remain unchanged.
