@@ -13,22 +13,25 @@
  * a bad edit can't reach the app. Original content, not OGL/CC-BY — see CREDITS.md.
  */
 
-import { writeFileSync } from 'node:fs'
+import { emitValidatedDataset } from '../src/compendium/datasetEmission.ts'
 import { validateDataset } from '../src/compendium/validate.ts'
 import { wakingGardenCreatures } from '../src/compendium/waking-garden.ts'
 
 const outPath = process.argv[2] ?? 'output/waking-garden-creatures.json'
 const creatures = [...wakingGardenCreatures].sort((a, b) => a.name.localeCompare(b.name))
 
-const report = validateDataset(creatures)
-console.log(
-  `waking garden: ${report.count} creatures — errors: ${report.errors}, warnings: ${report.warns}`
-)
-if (report.errors) {
-  for (const [field, n] of Object.entries(report.errorsByField).sort((a, b) => b[1] - a[1]))
-    console.error(`  ${String(n).padStart(4)}  ${field}`)
-  process.exit(1)
-}
+const report = emitValidatedDataset(creatures, outPath, {
+  validate: validateDataset,
+  report: (report) => {
+    console.log(
+      `waking garden: ${report.count} creatures — errors: ${report.errors}, warnings: ${report.warns}`
+    )
+    if (report.errors) {
+      for (const [field, n] of Object.entries(report.errorsByField).sort((a, b) => b[1] - a[1]))
+        console.error(`  ${String(n).padStart(4)}  ${field}`)
+    }
+  }
+})
+if (report.errors) process.exit(1)
 
-writeFileSync(outPath, JSON.stringify(creatures, null, 0))
 console.log(`mapped ${creatures.length} Waking Garden creatures → ${outPath}`)
