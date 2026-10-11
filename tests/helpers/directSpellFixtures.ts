@@ -44,3 +44,18 @@ export function kibblesSnapshot(): KibblesV23Snapshot {
     }))
   }
 }
+
+/** Build a compact page with licensing evidence and repeated names outside the spell section. */
+export function stdsHtml(body: string): string {
+  return `<html><body><script>Never execute this source</script>${body}<h2>Changelog</h2><p>Not spell rules.</p>
+    <h4>Test</h4><p><em>Replaced With: Other</em></p><p>Design commentary.</p>
+    <section><h2>Credits &amp; References</h2><p>Omega Ankh &amp; somanyrobots. Creative Commons Attribution 4.0 International. Includes KibblesTasty spells.</p></section></body></html>`
+}
+
+/** Build a spell heading and metadata in the publisher's rendered structure. */
+export function spellHeading(name: string, header = '2nd-level evocation', extra = ''): string {
+  return `<h4>${name}</h4><p><em>${header}</em></p><hr><ul>
+    <li><strong>Classes:</strong> Sorcerer, Wizard</li><li><strong>Casting Time:</strong> 1 action</li>
+    <li><strong>Range:</strong> 60 feet</li><li><strong>Components:</strong> V, S, M (a pearl (worth 100 gp))</li>
+    <li><strong>Duration:</strong> Concentration, 1 minute</li>${extra}</ul><hr>`
+}
