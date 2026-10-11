@@ -1,10 +1,17 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
+import type { LegacyRecord, Open5eRecord } from '../src/compendium/open5eTypes.ts'
+import { OPEN5E_CANDIDATES } from '../src/compendium/open5eSources.ts'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import {
-  assertRecords, candidateKey, fetchOpen5eRecords, fetchLegacyRecords, OPEN5E_CANDIDATES, preparationKeys, prepareOpen5e, withLegacy,
-  type LegacyRecord, type PreparationRecord,
+  assertRecords,
+  candidateKey,
+  fetchOpen5eRecords,
+  fetchLegacyRecords,
+  preparationKeys,
+  prepareOpen5e,
+  withLegacy
 } from '../src/compendium/open5ePreparation.ts'
 
 /** Fetch JSON explicitly; Open5e otherwise returns its browsable HTML interface. */
@@ -21,7 +28,7 @@ async function fetchJson(url: string): Promise<unknown> {
 async function prepare(key: string, cachePath?: string): Promise<void> {
   const selected = candidateKey(key)
   const dir = `output/open5e-preparation/${selected}`
-  let snapshot: { document: { key: string }; records: PreparationRecord[]; legacy?: LegacyRecord[]; fetchedAt: string }
+  let snapshot: { document: { key: string }; records: Open5eRecord[]; legacy?: LegacyRecord[]; fetchedAt: string }
   if (cachePath) {
     snapshot = JSON.parse(readFileSync(cachePath, 'utf8'))
     if (snapshot.document?.key !== selected) throw new Error('Cache document does not match candidate')

@@ -16,6 +16,7 @@
  * and a fix to one book fixes all four.
  */
 
+import type { Open5eCreature } from './open5eTypes.ts'
 import type { Creature } from '../schema/creature.ts'
 import { map2014StatBlock, type StatBlock2014 } from '../formats/statBlock2014.ts'
 
@@ -35,33 +36,6 @@ export const RESERVED_INDIVIDUALS = ['Monkey King', 'Avatar of Shoth', 'Ankou So
 export function isReservedIndividual(name: string): boolean {
   const n = name.trim().toLowerCase()
   return RESERVED_INDIVIDUALS.some((r) => r.toLowerCase() === n)
-}
-
-/** The Open5e v2 fields we read. Everything else on the record is ignored. */
-export interface Open5eCreature {
-  key: string
-  name: string
-  size?: { name?: string }
-  type?: { name?: string }
-  alignment?: string
-  armor_class?: number
-  hit_points?: number
-  hit_dice?: string
-  challenge_rating?: number
-  experience_points?: number
-  passive_perception?: number
-  darkvision_range?: number | null
-  blindsight_range?: number | null
-  tremorsense_range?: number | null
-  truesight_range?: number | null
-  languages?: { as_string?: string }
-  ability_scores?: Record<string, number>
-  speed?: Record<string, number | string>
-  saving_throws?: Record<string, number>
-  skill_bonuses?: Record<string, number>
-  resistances_and_immunities?: Record<string, unknown>
-  traits?: { name?: string; desc?: string }[]
-  actions?: { name?: string; desc?: string; action_type?: string; order_in_statblock?: number }[]
 }
 
 const ABILITY_ORDER = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma']
