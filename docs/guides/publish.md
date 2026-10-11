@@ -15,7 +15,8 @@ Preparation reports keep their conservative gates for future snapshots.
 npm run export:reference-spells -- ../console/public/compendium
 ```
 
-Export checks the pinned candidate hashes and standard validation before writing.
+Export checks every selected candidate’s pinned hash and standard validation before writing any dataset.
+See [reviewed spell preparation](../reviewed-spell-preparation.md#preparation-approval-and-casting) for the selection-preflight guarantee.
 Accepted material-component warnings are limited to Bile Beam and Zymurgic Aura.
 The console supplies source-specific casting verdicts and blocks same-name automation fallback.
 Other Open5e and creature candidates remain outside this publication approval.

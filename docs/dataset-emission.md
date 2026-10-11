@@ -1,8 +1,9 @@
 # Validated dataset emission
 
-The four original-content ingest commands and four [Kobold creature runners](./kobold-ingestion.md) share
+The four original-content, three SRD, and four [Kobold creature runners](./kobold-ingestion.md) share
 [`emitValidatedDataset`](../src/compendium/datasetEmission.ts).
-The original-content commands need no source snapshots or network access.
+Original-content commands need no source snapshots or network access.
+[SRD ingestion](./srd-ingestion.md) documents source inputs and the combined API validation gate.
 See [installation](./verification.md#install) and
 [original-content authoring](./guides/original-content.md).
 
@@ -72,6 +73,8 @@ Source fidelity, licensing, completeness, exclusions, and attribution remain sou
 [Approved reference publication](./reference-spell-publication.md) retains its independent candidate hashes,
 counts, editions, mechanics limits, and accepted-warning checks.
 The emission interface does not replace those gates or register a console library.
+SRD runners reuse it after their source-specific mapping checks.
+The combined SRD 2014 runner validates both datasets before emitting either, using precomputed reports in its validator callbacks.
 Kobold runners apply their own source-specific checks before using this interface.
 Their [ingestion contract](./kobold-ingestion.md) records stricter failures and source-comparison limits.
 
@@ -90,7 +93,7 @@ Failure fixtures mutate only child-process memory; authored files stay unchanged
 
 [`datasetEmission.test.ts`](../tests/compendium/datasetEmission.test.ts) checks reusable indentation,
 input order, and returned reporting.
-[`originalLibraries.test.ts`](../tests/compendium/originalLibraries.test.ts) consolidates repeated
+[`originalLibraries.test.ts`](../tests/originals/originalLibraries.test.ts) consolidates repeated
 counts, uniqueness, validation, identity, and edition checks.
 Collection suites retain lore, cross-spell references, Lazaret consistency, and Strong Waters promises.
 The [offline baseline](./verification.md#output-baselines) pins all four datasets and the six publication approval records.

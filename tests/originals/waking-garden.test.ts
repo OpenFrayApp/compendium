@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import { describe, expect, it } from 'vitest'
-import { wakingGardenCreatures as creatures } from '../../src/compendium/waking-garden.ts'
+import { wakingGardenCreatures as creatures } from '../../src/originals/waking-garden.ts'
 
 describe('The Waking Garden dataset', () => {
   it('gives every creature its lore layer — the description is part of the library', () => {

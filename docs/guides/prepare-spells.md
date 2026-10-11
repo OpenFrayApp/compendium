@@ -72,6 +72,8 @@ Console registration, shipped JSON, and credits remain a separate change.
 
 ## Spells That Don’t Suck from GM Binder
 
+The [direct-source implementation map](../direct-spells.md) locates shared formats, source adapters, commands, and behavioral tests.
+
 This separate pipeline uses the [creators’ GM Binder document](https://www.gmbinder.com/share/-NR0OWlW60yv2EfA3qQp).
 Its credits section licenses the document under CC-BY-4.0.
 Credit Omega Ankh and somanyrobots, plus KibblesTasty for the contributed spells.
@@ -137,7 +139,7 @@ Overlapping spells in other libraries stay independent.
 ```bash
 # Setup installs the pinned PyMuPDF dependency from requirements.txt.
 # Save the linked PDF as output/kibbles-casting-v23-preparation/source.pdf, then:
-python scripts/extract-kibbles-v23-spells.py output/kibbles-casting-v23-preparation/source.pdf output/kibbles-casting-v23-preparation/snapshot.json
+python scripts/extract/kibbles-v23-spells.py output/kibbles-casting-v23-preparation/source.pdf output/kibbles-casting-v23-preparation/snapshot.json
 npm run prepare:kibbles-v23-spells -- output/kibbles-casting-v23-preparation/snapshot.json
 npm run validate -- --spells output/kibbles-casting-v23-preparation/candidate-spells.json
 python -m unittest discover -s tests/scripts -p 'test_extract_kibbles_v23_spells.py'
