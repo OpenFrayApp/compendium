@@ -5,7 +5,7 @@ import type { Action, Recharge } from '../schema/action.ts'
 import type { Ability, Size } from '../schema/primitives.ts'
 import type { Creature } from '../schema/creature.ts'
 import { flattenMarkdown, toBlock, type Open5eCreature } from './open5eCcdx.ts'
-import { mapTob3 } from './tob3.ts'
+import { map2014StatBlock } from '../formats/statBlock2014.ts'
 import type { LegacyRecord } from './open5ePreparation.ts'
 
 export const OPEN5E_SIZES: readonly Size[] = ['Tiny', 'Small', 'Medium or Small', 'Medium', 'Large', 'Huge', 'Gargantuan']
@@ -91,7 +91,7 @@ export function mapOpen5e(record: Open5eRecord, source: string): Creature {
   const block = toBlock(normalized)
   // The shared mapper removes Spellcasting actions even when parsing fails.
   const casting = block.sections.Actions?.filter((a) => /^Spellcasting$/i.test(a.name)) ?? []
-  const creature = mapTob3(block, source)
+  const creature = map2014StatBlock(block, source)
   creature.name = record.name
   creature.size = record.size!.name as Size
   creature.type = record.type!.name!.toLowerCase()

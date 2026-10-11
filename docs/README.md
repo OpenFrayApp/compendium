@@ -20,6 +20,7 @@ Check [source status](./source-status.md) before selecting inputs or distributin
 The [verification guide](./verification.md) covers `npm run verify`,
 `npm run verify:offline`, individual checks, formatting, prose, and parity limits.
 Start with the [README checks](../README.md#verification).
+The [shared formats guide](./formats.md) records parser ownership, consumers, grammar boundaries, and representative byte parity.
 
 ## Current publication records and source evidence
 
