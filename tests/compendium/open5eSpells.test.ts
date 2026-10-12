@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
+import type { Open5eSpellDocument, Open5eSpellRecord, Open5eSpellSnapshot } from "../../src/compendium/open5eTypes.ts";
+
 import { describe, expect, it, vi } from "vitest";
 import {
   assertSpellSnapshot,
@@ -8,10 +10,7 @@ import {
   mapOpen5eSpell,
   prepareOpen5eSpells,
   spellDocument,
-  thirdPartySpellDocuments,
-  type Open5eSpellDocument,
-  type Open5eSpellRecord,
-  type Open5eSpellSnapshot,
+  thirdPartySpellDocuments
 } from "../../src/compendium/open5eSpells.ts";
 
 /** Build API metadata for a third-party source. */
@@ -60,6 +59,21 @@ function snapshot(records = [record()]): Open5eSpellSnapshot {
 }
 
 describe("Open5e spell mapping", () => {
+  it.each(["kp", "open5e", "open5e-2024", "o5e"])(
+    "rejects direct mapping and preparation for excluded source %s",
+    (key) => {
+      const source = document(key);
+      const spell = record({ key: `${key}_fire`, document: { key } });
+      const cache = { ...snapshot([spell]), documents: [source] };
+      expect(() => mapOpen5eSpell(spell, source)).toThrow(
+        "Unsupported spell source",
+      );
+      expect(() => prepareOpen5eSpells(cache, key)).toThrow(
+        "Unsupported spell source",
+      );
+    },
+  );
+
   it("uses namespaced stable API keys, preserves prose, and does not guess mechanics", () => {
     const original = record();
     const before = JSON.stringify(original);
@@ -223,18 +237,10 @@ describe("Open5e spell snapshots", () => {
   });
 
   it("selects all third-party 5e books, including Black Flag, but excludes A5E and core SRDs", () => {
-    const keys = [
-      "deepm",
-      "deepmx",
-      "vom",
-      "wz",
-      "bfrd",
-      "toh",
-      "kp",
-      "open5e",
-    ];
+    const keys = ["deepm", "deepmx", "vom", "wz", "bfrd", "toh"];
     const documents = [
       ...keys.map((key) => document(key)),
+      ...["kp", "open5e", "open5e-2024", "o5e"].map((key) => document(key)),
       document("srd-2014"),
       {
         ...document("srd-2024"),
@@ -301,8 +307,9 @@ describe("Open5e spell snapshots", () => {
       });
     const result = await fetchSpellSnapshot(fetchJson, "test");
     expect(result.records).toHaveLength(2);
-    expect(fetchJson.mock.calls[1][0]).toContain("document__key=test");
-    expect(fetchJson.mock.calls[2][0]).toContain("format=json");
+    expect(fetchJson.mock.calls[0][0]).toBe("https://api.open5e.com/v2/documents/?format=json&limit=100");
+    expect(fetchJson.mock.calls[1][0]).toBe("https://api.open5e.com/v2/spells/?format=json&limit=100&document__key=test");
+    expect(fetchJson.mock.calls[2][0]).toBe("https://api.open5e.com/v2/spells/?page=2&format=json&document__key=test");
   });
 
   it("never requests or caches excluded sources, even when downloading all sources", async () => {
@@ -310,11 +317,14 @@ describe("Open5e spell snapshots", () => {
       const parsed = new URL(url);
       if (parsed.pathname === "/v2/documents/")
         return {
-          count: 7,
+          count: 11,
           next: null,
           results: [
             document(),
             document("second"),
+            ...["kp", "open5e", "open5e-2024", "o5e"].map((key) =>
+              document(key),
+            ),
             document("srd-2014"),
             document("srd-2024"),
             document("spells-that-dont-suck"),
@@ -342,18 +352,23 @@ describe("Open5e spell snapshots", () => {
     expect(fetchJson).toHaveBeenCalledTimes(3);
   });
 
-  it.each(["srd-2014", "srd-2024", "spells-that-dont-suck"])(
-    "refuses %s before making any spell request",
-    async (key) => {
-      const fetchJson = vi
-        .fn()
-        .mockResolvedValue({ count: 1, next: null, results: [document(key)] });
-      await expect(fetchSpellSnapshot(fetchJson, key)).rejects.toThrow(
-        "Unsupported spell source",
-      );
-      expect(fetchJson).toHaveBeenCalledTimes(1);
-    },
-  );
+  it.each([
+    "srd-2014",
+    "srd-2024",
+    "spells-that-dont-suck",
+    "kp",
+    "open5e",
+    "open5e-2024",
+    "o5e",
+  ])("refuses %s before making any spell request", async (key) => {
+    const fetchJson = vi
+      .fn()
+      .mockResolvedValue({ count: 1, next: null, results: [document(key)] });
+    await expect(fetchSpellSnapshot(fetchJson, key)).rejects.toThrow(
+      "Unsupported spell source",
+    );
+    expect(fetchJson).toHaveBeenCalledTimes(1);
+  });
 
   it("rejects pagination that changes the document filter or responses from another source", async () => {
     const changed = vi
@@ -381,43 +396,11 @@ describe("Open5e spell snapshots", () => {
     );
   });
 
-  it("rejects foreign pagination, cycles, incomplete counts, and count drift", async () => {
-    for (const next of ["https://example.com/v2/spells/", "/v2/creatures/"]) {
-      const fetchJson = vi
-        .fn()
-        .mockResolvedValueOnce({ count: 1, next: null, results: [document()] })
-        .mockResolvedValueOnce({ count: 2, next, results: [record()] });
-      await expect(fetchSpellSnapshot(fetchJson)).rejects.toThrow(
-        "Unexpected pagination",
-      );
-    }
-    const cycle = vi
-      .fn()
-      .mockResolvedValueOnce({ count: 1, next: null, results: [document()] })
-      .mockImplementation(async (url) => ({
-        count: 2,
-        next: url,
-        results: [record()],
-      }));
-    await expect(fetchSpellSnapshot(cycle)).rejects.toThrow("cycle");
-    const incomplete = vi
-      .fn()
-      .mockResolvedValueOnce({ count: 1, next: null, results: [document()] })
-      .mockResolvedValueOnce({ count: 2, next: null, results: [record()] });
-    await expect(fetchSpellSnapshot(incomplete)).rejects.toThrow("Incomplete");
-    const drift = vi
-      .fn()
-      .mockResolvedValueOnce({ count: 1, next: null, results: [document()] })
-      .mockResolvedValueOnce({
-        count: 2,
-        next: "/v2/spells/?page=2",
-        results: [record()],
-      })
-      .mockResolvedValueOnce({
-        count: 3,
-        next: null,
-        results: [record({ key: "test_second" })],
-      });
-    await expect(fetchSpellSnapshot(drift)).rejects.toThrow("Count changed");
+  it.each(["documents", "spells"])("restricts %s pagination to its own endpoint", async (endpoint) => {
+    const fetchJson = vi.fn();
+    if (endpoint === "spells") fetchJson.mockResolvedValueOnce({ count: 1, next: null, results: [document()] });
+    fetchJson.mockResolvedValueOnce({ count: 2, next: "/v2/creatures/", results: endpoint === "spells" ? [record()] : [document()] });
+    await expect(fetchSpellSnapshot(fetchJson)).rejects.toThrow("Unexpected pagination URL");
+    expect(fetchJson).toHaveBeenCalledTimes(endpoint === "spells" ? 2 : 1);
   });
 });

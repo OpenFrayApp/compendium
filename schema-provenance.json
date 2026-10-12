@@ -1,0 +1,30 @@
+{
+  "repository": "https://github.com/OpenFrayApp/console",
+  "revision": "11447715099b3ef4049bc32dc241d0076f019346",
+  "files": [
+    {
+      "path": "src/schema/action.ts",
+      "sha256": "fae82dc4e8efc5ae8de123159c4d94059124372e2243b0b2f657d35dfbd8075c"
+    },
+    {
+      "path": "src/schema/creature.ts",
+      "sha256": "44b76ffe61c2a5ec6cac2f00ab652c280a69b8f124143aa115045f3fcaffb1c3"
+    },
+    {
+      "path": "src/schema/primitives.ts",
+      "sha256": "e7a543e7f2ed291a52c610a95288ace405ea0e5fbae613dafd6c0a08d2f1d2a6"
+    },
+    {
+      "path": "src/schema/spell.ts",
+      "sha256": "7a61dfd004f04ce8fc0cc4d408b9768e9a94db4e465872a575b9bbd494b3c573"
+    },
+    {
+      "path": "src/schema/license.ts",
+      "sha256": "a6ad4490d68ac57c0affbf605e8099d9611b3d8c5b1cbd77d6ab87a34bc35b1c"
+    },
+    {
+      "path": "src/compendium/libraries.ts",
+      "sha256": "3b501ff75fec3c3915eb95896c2146517e1596d21269da5b74e158ffd6ace936"
+    }
+  ]
+}

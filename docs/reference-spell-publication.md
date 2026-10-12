@@ -1,9 +1,13 @@
 # Reference spell publication
 
-Five snapshots are approved for opt-in reference libraries. Their spell cards have no
-structured attacks, damage, saves, or scaling. The console also blocks same-name
-spell automation for these source IDs. Each spell has a source-specific manual
-verdict in the console’s coverage tests.
+Six snapshots are approved for opt-in reference libraries. Their spell cards have no
+embedded attacks, damage, saves, or scaling. The console supplies source-specific
+casting profiles for supported board consequences and blocks same-name fallback.
+Unsupported rules remain prose.
+
+See [Domain ownership and contracts](./domain.md) for the distinction between validation,
+publication approval, and console casting verdicts. The [review index](./README.md)
+links the source evidence and legal transcripts.
 
 ## Approved snapshots
 
@@ -20,7 +24,8 @@ Export validates every selected library before writing any file. The optional `-
 | Tome of Heroes                   |    90 | `de2d8b5bbe6f92cb2ee31df68192c042883bfe965aa52ab6d91be374d882c38c` |
 
 Kibbles’ and Tome of Heroes’ hashes identify their PDFs. The other hashes identify the cached
-GM Binder HTML. Source URLs and replay commands are in the README.
+GM Binder HTML. Source URLs and replay commands are in the
+[spell preparation](./guides/prepare-spells.md) and [spell review](./guides/review-spells.md) guides.
 
 The source review checks detected headers, independent IDs, metadata boundaries,
 tables, summon attachments, chapter cutoffs, and removed advice or art paratext.
@@ -32,7 +37,7 @@ These checks support reference publication; they do not establish rollable fidel
 
 Kibbles includes every spell section, including psionics and blood magic.
 Bile Beam remains V, S, M without an invented material description.
-Its material-component warning is the only accepted validation finding.
+Its material-component warning is the only accepted validation finding for the three CC-BY selections.
 Physical PDF page numbers are retained and documented in console credits.
 Wall of Blood retains the separate So Many Spells credit.
 
@@ -90,9 +95,23 @@ Eleven custom-ritual spells remain withheld; Anchoring Rope’s duplicate is con
 Supporting systems and summoned-creature stat blocks stay outside the library.
 Printed ambiguities remain unchanged. Every card has its own manual coverage verdict.
 
+### Warlock Grimoire
+
+The [content-boundary review](./warlock-content-boundaries.md) selects 35 corrected cards.
+Three located entries and five unsupplied imports remain withheld.
+The console credits contain all four relevant copyright chains and the complete OGL.
+Zymurgic Aura’s unspecified material component is an explicitly accepted warning.
+No material description or contextual class assignment is invented.
+
+The approved candidate SHA-256 is
+`b4998d3f06a869cb81861c52bc863e5da090a1bfbe745b76870656d83fa3cd6f`.
+Every exported card has an exact source, edition, and name-bound casting verdict.
+Ordinary saves, attacks, conditions, and reminders use existing console helpers.
+Unusual saves, conditional riders, summons, terrain, and source subsystems remain manual.
+
 ## Export
 
-Prepare the pinned candidates using the README’s offline replay commands, then run:
+Prepare the pinned candidates using the guides’ [offline replay commands](./guides/publish.md#publish-reviewed-reference-spells), then run:
 
 ```bash
 npm run export:reference-spells -- ../console/public/compendium

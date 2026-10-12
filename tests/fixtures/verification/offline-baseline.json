@@ -1,0 +1,90 @@
+{
+  "sourceRevision": "5fc4624",
+  "node": "24.21.0",
+  "datasets": [
+    {
+      "command": "ingest:waking-garden",
+      "count": 67,
+      "sources": ["openfray-waking-garden"],
+      "sha256": "efaef2f39c1f13a877fa3aee26c35082233da3d56b143580e0d459d74ccd24da"
+    },
+    {
+      "command": "ingest:brood-and-bloom",
+      "count": 67,
+      "sources": ["openfray-brood-and-bloom"],
+      "sha256": "c4554c962f5bd0344450fdfd3730d71cdd15463e086d5edcaba8113e03331e8a"
+    },
+    {
+      "command": "ingest:brood-and-bloom-spells",
+      "count": 23,
+      "sources": ["openfray-brood-and-bloom"],
+      "sha256": "9f7884a9519e308dc7e18849d6251e90f714f173af08ccf177ed8441c485048e"
+    },
+    {
+      "command": "ingest:strong-waters-spells",
+      "count": 11,
+      "sources": ["openfray-strong-waters"],
+      "sha256": "b04b3d479c562894f22931e9ab8b71f2791c3b6df29d253e76f687150d2936fa"
+    }
+  ],
+  "approvalModule": {
+    "path": "src/compendium/referenceSpellPublication.ts",
+    "sha256": "df7fa338c7bc5bd32b10c8246d6c9630703c13b78881db00ecddf8dd3c7aaea9"
+  },
+  "referenceSpellApprovals": [
+    {
+      "source": "kobold-press-wz",
+      "preparation": "warlock-grimoire-preparation",
+      "file": "warlock-grimoire-spells.json",
+      "count": 35,
+      "edition": "5.0",
+      "sha256": "b4998d3f06a869cb81861c52bc863e5da090a1bfbe745b76870656d83fa3cd6f",
+      "acceptedWarningIds": ["kobold-press-wz:zymurgic-aura"]
+    },
+    {
+      "source": "kobold-press-deepm",
+      "preparation": "deep-magic-2020-preparation",
+      "file": "deep-magic-2020-spells.json",
+      "count": 503,
+      "edition": "5.0",
+      "sha256": "12b17d8c76deb0d6169b5ae5d46c5a7f98f205870ba64df464f85efc1bd9d0c7",
+      "acceptedWarningIds": []
+    },
+    {
+      "source": "kibblestasty-casting-compendium-v2.3",
+      "preparation": "kibbles-casting-v23-preparation",
+      "file": "kibbles-casting-v23-spells.json",
+      "count": 295,
+      "edition": "5.0",
+      "sha256": "337409cc7078f3a425bc8ddaf25af2cf0f3f325d2ed13f55c9dabf673d93ea3a",
+      "acceptedWarningIds": ["kibblestasty-casting-compendium-v2.3:bile-beam"]
+    },
+    {
+      "source": "somanyrobots-spells-that-dont-suck",
+      "preparation": "spells-that-dont-suck-preparation",
+      "file": "spells-that-dont-suck-spells.json",
+      "count": 181,
+      "edition": "5.0",
+      "sha256": "2ca2be2cd64557ef02bdc0fc7137b87553a0bcd4f35c8db465530a7ef5f290ec",
+      "acceptedWarningIds": []
+    },
+    {
+      "source": "somanyrobots-so-many-spells",
+      "preparation": "so-many-spells-preparation",
+      "file": "so-many-spells-spells.json",
+      "count": 179,
+      "edition": "5.0",
+      "sha256": "69cbebe97a86cf16e001d2367ed71f2ab5664904e823c23cec5efa94c6e8e2cd",
+      "acceptedWarningIds": []
+    },
+    {
+      "source": "kobold-press-toh",
+      "preparation": "tome-of-heroes-preparation",
+      "file": "tome-of-heroes-spells.json",
+      "count": 90,
+      "edition": "5.0",
+      "sha256": "193349583d5f5a6e28d4396a32a3e19784c56f0046d6f5a2ada7b4749ce1176f",
+      "acceptedWarningIds": []
+    }
+  ]
+}

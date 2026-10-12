@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import type { Open5eSpellRecord } from "./open5eSpells.ts";
+import type { Open5eSpellRecord } from "./open5eTypes.ts";
 
 export interface LegacySpellClassRecord {
   slug: string;
@@ -21,7 +21,6 @@ const aliases = new Map([
   ["deepm", "dmag"],
   ["deepmx", "dmag-e"],
   ["wz", "warlock"],
-  ["open5e", "o5e"],
 ]);
 
 /** Resolve the explicit v1 document alias without inferring a source from a spell name. */

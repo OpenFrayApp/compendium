@@ -85,7 +85,7 @@ findings outside the current invariant validator’s checks.
 
 ## Reproduction and checks
 
-Run the commands in the [README](../README.md#khyberia-srd-from-a-supplied-pdf).
+Run the commands in the [ingest guide](./guides/ingest.md#khyberia-srd-from-a-supplied-pdf).
 The per-book PyMuPDF extractor records the legal page and source digest. The
 mapper rejects other revisions and incomplete creature lists. The generated
 library has **21 creatures, zero invariant errors, and one warning**.

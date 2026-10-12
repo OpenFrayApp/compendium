@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
+import type { Open5eSpellRecord } from "../../src/compendium/open5eTypes.ts";
+
 import { describe, expect, it } from "vitest";
 import {
   legacySpellDocument,
   recoverLegacySpellClasses,
   type LegacySpellClassSnapshot,
 } from "../../src/compendium/open5eSpellClasses.ts";
-import type { Open5eSpellRecord } from "../../src/compendium/open5eSpells.ts";
 
 /** Build the fields read by class recovery, independently of spell projection. */
 function record(over: Partial<Open5eSpellRecord> = {}): Open5eSpellRecord {
@@ -43,7 +44,6 @@ describe("legacy spell class recovery", () => {
     expect(legacySpellDocument("deepm")).toBe("dmag");
     expect(legacySpellDocument("deepmx")).toBe("dmag-e");
     expect(legacySpellDocument("wz")).toBe("warlock");
-    expect(legacySpellDocument("open5e")).toBe("o5e");
     expect(legacySpellDocument("toh")).toBe("toh");
   });
 

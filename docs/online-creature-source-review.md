@@ -1,5 +1,9 @@
 # Additional online creature sources
 
+Status: historical investigation only. These observations grant no publication approval.
+See the [investigation index](./investigations/README.md) for per-source lead statuses and
+[source status](./source-status.md) for current reviewed selections.
+
 ## Confirmed reuse-license leads
 
 ### Lazy GM’s 5e Monster Builder Resource Document
@@ -132,7 +136,7 @@ covering the relevant rights and distribution outside the platform.
 ## Open5e availability check
 
 The live v2 creature endpoint returned `count: 0` for each of these document keys:
-`kp`, `wz`, `deepm`, `deepmx`, `vom`, `open5e`, and `open5e-2024`.
+`wz`, `deepm`, `deepmx`, and `vom`.
 Document registration and OGL metadata therefore do not supply additional creature
 feeds for those sources. Counts can change upstream.
 

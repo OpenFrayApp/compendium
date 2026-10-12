@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
+import { fetchOpen5ePages, type JsonFetcher } from "./open5ePagination.ts";
+import type { Open5eSpellDocument, Open5eSpellRecord, Open5eSpellSnapshot } from "./open5eTypes.ts";
 import type { Spell } from "../schema/spell.ts";
 import { validateSpellDataset } from "./validate.ts";
 import { reservedWotcName } from "./sourcePolicy.ts";
@@ -9,109 +11,17 @@ import {
   type LegacySpellClassSnapshot,
 } from "./open5eSpellClasses.ts";
 
-export interface Open5eSpellDocument {
-  key: string;
-  name: string;
-  type: string;
-  publisher: { key: string; name: string };
-  gamesystem: { key: string; name: string };
-  licenses: { key: string; name: string }[];
-  permalink?: string;
-}
-
-export interface Open5eSpellRecord {
-  key: string;
-  document: { key: string };
-  name: string;
-  level: number;
-  school: { name: string };
-  classes: { name: string }[];
-  casting_time: string;
-  reaction_condition?: string | null;
-  range_text: string;
-  duration: string;
-  concentration: boolean;
-  ritual: boolean;
-  verbal: boolean;
-  somatic: boolean;
-  material: boolean;
-  material_specified?: string | null;
-  desc: string;
-  higher_level?: string | null;
-  casting_options?: unknown[];
-}
-
-export interface Open5eSpellSnapshot {
-  documents: Open5eSpellDocument[];
-  records: Open5eSpellRecord[];
-  fetchedAt: string;
-}
-
-export type SpellJsonFetcher = (url: string) => Promise<unknown>;
 const API = "https://api.open5e.com/v2/";
 const KEY = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 export const EXCLUDED_OPEN5E_SPELL_SOURCES = new Set([
   "srd-2024",
   "srd-2014",
   "spells-that-dont-suck",
+  "kp",
+  "open5e",
+  "open5e-2024",
+  "o5e",
 ]);
-
-/** Read complete API pages while rejecting count drift, foreign URLs, and pagination cycles. */
-async function pages<T>(
-  initial: string,
-  path: string,
-  fetchJson: SpellJsonFetcher,
-  documentKey?: string,
-): Promise<T[]> {
-  let next: string | null = initial;
-  let count: number | undefined;
-  const seen = new Set<string>();
-  const results: T[] = [];
-  while (next) {
-    const url = new URL(next, API);
-    if (
-      url.origin !== new URL(API).origin ||
-      url.pathname !== path ||
-      url.username ||
-      url.password ||
-      url.hash
-    ) {
-      throw new Error("Unexpected pagination URL");
-    }
-    url.searchParams.set("format", "json");
-    if (documentKey) {
-      const filter = url.searchParams.get("document__key");
-      if (filter && filter !== documentKey)
-        throw new Error("Document filter changed during pagination");
-      url.searchParams.set("document__key", documentKey);
-    }
-    if (seen.has(url.href)) throw new Error("Pagination cycle");
-    seen.add(url.href);
-    const page = (await fetchJson(url.href)) as {
-      count: number;
-      next: string | null;
-      results: T[];
-    };
-    if (
-      !page ||
-      !Number.isInteger(page.count) ||
-      page.count < 0 ||
-      !Array.isArray(page.results) ||
-      !(page.next === null || typeof page.next === "string")
-    )
-      throw new Error("Invalid Open5e page");
-    if (count !== undefined && count !== page.count)
-      throw new Error("Count changed during pagination");
-    count = page.count;
-    results.push(...page.results);
-    if (results.length > count || (page.next && !page.results.length))
-      throw new Error("Invalid pagination progress");
-    next = page.next;
-  }
-  if (results.length !== count)
-    throw new Error(`Incomplete snapshot: got ${results.length} of ${count}`);
-  return results;
-}
 
 /** Validate snapshot identity without dropping malformed spell fields from the raw cache. */
 export function assertSpellSnapshot(snapshot: Open5eSpellSnapshot): void {
@@ -189,10 +99,10 @@ export function spellDocument(
 
 /** Fetch source metadata and document-filtered third-party spells without downloading SRD records. */
 export async function fetchSpellSnapshot(
-  fetchJson: SpellJsonFetcher,
+  fetchJson: JsonFetcher,
   key?: string,
 ): Promise<Open5eSpellSnapshot> {
-  const documents = await pages<Open5eSpellDocument>(
+  const documents = await fetchOpen5ePages<Open5eSpellDocument>(
     `${API}documents/?format=json&limit=100`,
     "/v2/documents/",
     fetchJson,
@@ -210,11 +120,11 @@ export async function fetchSpellSnapshot(
   for (const document of selected) {
     const url = new URL("spells/?format=json&limit=100", API);
     url.searchParams.set("document__key", document.key);
-    const records = await pages<Open5eSpellRecord>(
+    const records = await fetchOpen5ePages<Open5eSpellRecord>(
       url.href,
       "/v2/spells/",
       fetchJson,
-      document.key,
+      { parameter: "document__key", value: document.key },
     );
     if (records.some((record) => record.document?.key !== document.key))
       throw new Error("Mixed spell documents in filtered response");
@@ -271,6 +181,8 @@ export function mapOpen5eSpell(
   record: Open5eSpellRecord,
   document: Open5eSpellDocument,
 ): Spell {
+  if (EXCLUDED_OPEN5E_SPELL_SOURCES.has(document.key))
+    throw new Error(`Unsupported spell source: ${document.key}`);
   if (record.document.key !== document.key)
     throw new Error("Spell document mismatch");
   const missing = missingFields(record);
