@@ -14,6 +14,12 @@ Ingest fixes that leave every emitted field identical (a rewritten extractor, a 
 parser) do not belong here. A corrected number, a reworded trait, a creature added or
 removed does.
 
+## 2026-10-10
+
+### Uncatalogued Beasts (working title)
+
+- Add 120 provisional DnD 5.5 (2024 rules) Basic Fantasy adaptations with source attack choices, distinct lizard species, and seven-age dragon families; console publication remains pending.
+
 ## 2026-08-17
 
 ### Brood & Bloom

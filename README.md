@@ -405,6 +405,27 @@ true reading order) and segments on the `Level N <School>` / `<School> Cantrip` 
 that follows each spell name. Both are bounded to their PDF sections; known WotC typos
 (e.g. the Archmage's XP) are corrected via an errata map in `src/compendium/srd52.ts`.
 
+## Basic Fantasy adaptations
+
+**Uncatalogued Beasts** is a temporary title for 120 custom DnD 5.5 (2024 rules) creature blocks.
+The [source and review record](./docs/basic-fantasy-adaptations.md) documents each counterpart decision, size variant, source correction, and license obligation.
+The input is a pinned saved copy of the Basic Fantasy fourth-edition monster chapter.
+The older GitLab core is optional comparison evidence.
+
+```bash
+npm run ingest:basic-fantasy -- /path/to/monstersAll.html ../console/public/compendium
+npm run validate -- output/basic-fantasy-creatures.json
+npm run estimate:cr -- output/basic-fantasy-creatures.json
+```
+
+The audit skips 148 source columns with reviewed 2024 counterparts.
+It converts 101 columns into 120 blocks, including distinct lizard species and all seven ages of three dragon families.
+2014-only counterparts do not exclude a conversion.
+Three reserved-IP-risk columns are permanently excluded from this collection.
+The report records one explicitly reviewed CR-estimator discrepancy and 12 skill-default dragon initiative warnings.
+The adaptations use CC-BY-SA-4.0, including ShareAlike.
+Publication remains pending console registration, credits, and source-license confirmation.
+
 ## Original content (Brood & Bloom, The Waking Garden)
 
 OpenFray's own creatures — not SRD or third-party OGL — so there's no PDF to extract and no
