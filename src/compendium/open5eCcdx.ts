@@ -10,14 +10,15 @@
  * one license-clean route to it.
  *
  * The mapping is an adapter, not a second parser. Open5e hands back structured fields;
- * this file renders them into the 2014 stat-block lines `mapTob3` already reads, then
+ * this file renders them into the 2014 stat-block lines `map2014StatBlock` already reads, then
  * hands the block over. Every parser the three Tomes use — speeds, senses, skills,
  * attacks, saves, recharge, slot and innate spellcasting — is therefore the same code,
  * and a fix to one book fixes all four.
  */
 
+import type { Open5eCreature, Open5eRecord } from './open5eTypes.ts'
 import type { Creature } from '../schema/creature.ts'
-import { mapTob3, type Tob3Block } from './tob3.ts'
+import { map2014StatBlock, type StatBlock2014 } from '../formats/statBlock2014.ts'
 
 /**
  * Named individuals the book reserves as Product Identity, excluded wholesale.
@@ -37,41 +38,27 @@ export function isReservedIndividual(name: string): boolean {
   return RESERVED_INDIVIDUALS.some((r) => r.toLowerCase() === n)
 }
 
-/** The Open5e v2 fields we read. Everything else on the record is ignored. */
-export interface Open5eCreature {
-  key: string
-  name: string
-  size?: { name?: string }
-  type?: { name?: string }
-  alignment?: string
-  armor_class?: number
-  hit_points?: number
-  hit_dice?: string
-  challenge_rating?: number
-  experience_points?: number
-  passive_perception?: number
-  darkvision_range?: number | null
-  blindsight_range?: number | null
-  tremorsense_range?: number | null
-  truesight_range?: number | null
-  languages?: { as_string?: string }
-  ability_scores?: Record<string, number>
-  speed?: Record<string, number | string>
-  saving_throws?: Record<string, number>
-  skill_bonuses?: Record<string, number>
-  resistances_and_immunities?: Record<string, unknown>
-  traits?: { name?: string; desc?: string }[]
-  actions?: { name?: string; desc?: string; action_type?: string; order_in_statblock?: number }[]
-}
-
-const ABILITY_ORDER = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma']
+const ABILITY_ORDER = [
+  'strength',
+  'dexterity',
+  'constitution',
+  'intelligence',
+  'wisdom',
+  'charisma'
+]
+const SENSE_RANGES = [
+  'darkvision_range',
+  'blindsight_range',
+  'tremorsense_range',
+  'truesight_range'
+] as const
 const SHORT: Record<string, string> = {
   strength: 'Str',
   dexterity: 'Dex',
   constitution: 'Con',
   intelligence: 'Int',
   wisdom: 'Wis',
-  charisma: 'Cha',
+  charisma: 'Cha'
 }
 
 /**
@@ -155,7 +142,7 @@ function header(r: Open5eCreature): string[] {
       const v = scores[k] ?? 10
       const mod = Math.floor((v - 10) / 2)
       return `${v} (${mod >= 0 ? '+' : ''}${mod})`
-    }).join(' '),
+    }).join(' ')
   ]
   const saves = bonusList(r.saving_throws, (k) => SHORT[k] ?? k)
   if (saves) lines.push(`Saving Throws ${saves}`)
@@ -174,7 +161,8 @@ function header(r: Open5eCreature): string[] {
   const senses = sensesLine(r)
   if (senses) lines.push(`Senses ${senses}`)
   if (r.languages?.as_string) lines.push(`Languages ${r.languages.as_string}`)
-  const xp = r.experience_points != null ? ` (${r.experience_points.toLocaleString('en-US')} XP)` : ''
+  const xp =
+    r.experience_points != null ? ` (${r.experience_points.toLocaleString('en-US')} XP)` : ''
   lines.push(`Challenge ${crText(r.challenge_rating)}${xp}`)
   return lines
 }
@@ -186,21 +174,21 @@ const SECTION: Record<string, string> = {
   REACTION: 'Reactions',
   LEGENDARY_ACTION: 'Legendary Actions',
   LAIR_ACTION: 'Lair Actions',
-  MYTHIC_ACTION: 'Mythic Actions',
+  MYTHIC_ACTION: 'Mythic Actions'
 }
 
 /** One entry, with its prose flattened out of markdown. */
 const entry = (e: { name?: string; desc?: string }) => ({
   name: (e.name ?? '').trim(),
-  text: flattenMarkdown(e.desc ?? ''),
+  text: flattenMarkdown(e.desc ?? '')
 })
 
-/** Assemble the block `mapTob3` consumes from one Open5e record. */
-export function toBlock(r: Open5eCreature): Tob3Block {
+/** Assemble the block `map2014StatBlock` consumes from one Open5e record. */
+export function toBlock(r: Open5eCreature): StatBlock2014 {
   const sections: Record<string, { name: string; text: string }[]> = {}
   // Open5e's own stat-block ordering, so Multiattack leads its section as it does in print.
   const actions = [...(r.actions ?? [])].sort(
-    (a, b) => (a.order_in_statblock ?? 0) - (b.order_in_statblock ?? 0),
+    (a, b) => (a.order_in_statblock ?? 0) - (b.order_in_statblock ?? 0)
   )
   for (const a of actions) {
     const key = SECTION[a.action_type ?? 'ACTION'] ?? 'Actions'
@@ -212,11 +200,191 @@ export function toBlock(r: Open5eCreature): Tob3Block {
     sourcePage: null,
     header: header(r),
     traits: (r.traits ?? []).map(entry),
-    sections,
-  } as Tob3Block
+    sections
+  } as StatBlock2014
+}
+
+/** Reject signs and fractions unsupported by unsigned 2014 integer fields. */
+function isUnsignedStatInteger(value: unknown): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 0
+}
+
+/** Reject missing source identity or malformed consumed fields before defaults can mask omissions. */
+function checkCreatureCodexRecord(record: Open5eRecord, index: number): void {
+  /** Identify the source record and field that needs corrected evidence. */
+  const fail = (field: string): never => {
+    throw new Error(
+      `Creature Codex record ${index + 1} (${record?.name ?? 'unnamed'}): invalid ${field}`
+    )
+  }
+  if (!record || typeof record !== 'object') fail('record')
+  if (record.document?.key !== 'ccdx') fail('document.key (expected ccdx)')
+  if (typeof record.name !== 'string' || !record.name.trim()) fail('name')
+  if (typeof record.key !== 'string' || !record.key.trim()) fail('key')
+  for (const field of ['size', 'type'] as const) {
+    if (typeof record[field]?.name !== 'string' || !record[field]!.name!.trim())
+      fail(`${field}.name`)
+  }
+  if (!/^(Tiny|Small|Medium(?: or Small)?|Large|Huge|Gargantuan)$/i.test(record.size!.name!))
+    fail('size.name (unsupported by the 2014 mapper)')
+  if (!isUnsignedStatInteger(record.armor_class)) fail('armor_class')
+  if (!isUnsignedStatInteger(record.hit_points)) fail('hit_points')
+  if (
+    !record.speed ||
+    typeof record.speed !== 'object' ||
+    Array.isArray(record.speed) ||
+    !Object.keys(record.speed).some((key) => key !== 'unit')
+  )
+    fail('speed')
+  for (const [mode, value] of Object.entries(record.speed!)) {
+    if (mode === 'unit') {
+      if (value !== 'feet') fail('speed.unit (expected feet)')
+    } else if (!isUnsignedStatInteger(value)) fail(`speed.${mode}`)
+  }
+  if (
+    record.challenge_rating != null &&
+    (!Number.isFinite(record.challenge_rating) || record.challenge_rating < 0)
+  )
+    fail('challenge_rating')
+  for (const field of ['experience_points', 'passive_perception', ...SENSE_RANGES] as const) {
+    if (record[field] != null && !isUnsignedStatInteger(record[field])) fail(field)
+  }
+  if (record.hit_dice != null && typeof record.hit_dice !== 'string') fail('hit_dice')
+  if (record.alignment != null && typeof record.alignment !== 'string') fail('alignment')
+  if (
+    record.languages != null &&
+    (typeof record.languages !== 'object' ||
+      Array.isArray(record.languages) ||
+      (record.languages.as_string != null && typeof record.languages.as_string !== 'string'))
+  )
+    fail('languages')
+  for (const field of ['saving_throws', 'skill_bonuses'] as const) {
+    const bonuses = record[field]
+    if (bonuses != null && (typeof bonuses !== 'object' || Array.isArray(bonuses))) fail(field)
+    for (const [key, value] of Object.entries(bonuses ?? {})) {
+      if (!Number.isInteger(value)) fail(`${field}.${key}`)
+    }
+  }
+  const defenses = record.resistances_and_immunities
+  if (
+    defenses != null &&
+    (typeof defenses !== 'object' ||
+      Array.isArray(defenses) ||
+      [
+        'damage_vulnerabilities_display',
+        'damage_resistances_display',
+        'damage_immunities_display',
+        'condition_immunities_display'
+      ].some((field) => defenses[field] != null && typeof defenses[field] !== 'string'))
+  )
+    fail('resistances_and_immunities')
+  for (const ability of ABILITY_ORDER) {
+    if (!isUnsignedStatInteger(record.ability_scores?.[ability])) fail(`ability_scores.${ability}`)
+  }
+  for (const field of ['traits', 'actions'] as const) {
+    const entries = record[field]
+    if (entries == null) continue
+    if (
+      !Array.isArray(entries) ||
+      entries.some(
+        (entry) => !entry || typeof entry.name !== 'string' || typeof entry.desc !== 'string'
+      )
+    )
+      fail(field)
+  }
+  for (const action of record.actions ?? []) {
+    if (action.order_in_statblock != null && !Number.isFinite(action.order_in_statblock))
+      fail('actions.order_in_statblock')
+    if (
+      action.action_type != null &&
+      (typeof action.action_type !== 'string' || !Object.hasOwn(SECTION, action.action_type))
+    )
+      fail('actions.action_type')
+  }
+}
+
+/** Reject numeric rendering loss before a mapped Creature Codex record reaches emission. */
+function checkCreatureCodexNumericMapping(record: Open5eRecord, creature: Creature): void {
+  /** Identify the source field that the unchanged mapper cannot preserve. */
+  const check = (field: string, original: unknown, mapped: unknown): void => {
+    if (original !== mapped)
+      throw new Error(
+        `Creature Codex record ${record.key} (${record.name}): ${field} cannot round-trip through the 2014 mapper`
+      )
+  }
+  check('armor_class', record.armor_class, creature.ac)
+  check('hit_points', record.hit_points, creature.maxHp)
+  for (const ability of ABILITY_ORDER) {
+    const key = SHORT[ability].toLowerCase() as keyof Creature['abilities']
+    check(`ability_scores.${ability}`, record.ability_scores![ability], creature.abilities[key])
+  }
+  for (const [mode, value] of Object.entries(record.speed!)) {
+    if (mode !== 'unit')
+      check(`speed.${mode}`, value, creature.speed[mode.toLowerCase() as keyof Creature['speed']])
+  }
+  if (record.challenge_rating != null)
+    check('challenge_rating', record.challenge_rating, creature.cr)
+  if (record.experience_points != null)
+    check('experience_points', record.experience_points, creature.xp)
+  if (record.passive_perception != null)
+    check('passive_perception', record.passive_perception, creature.senses.passivePerception)
+  for (const field of SENSE_RANGES) {
+    // Zero ranges retain the adapter's existing absent-sense convention.
+    if (record[field])
+      check(field, record[field], creature.senses[field.slice(0, -6) as keyof Creature['senses']])
+  }
+  for (const [ability, value] of Object.entries(record.saving_throws ?? {})) {
+    const key = (SHORT[ability] ?? ability).toLowerCase() as keyof NonNullable<Creature['saves']>
+    check(`saving_throws.${ability}`, value, creature.saves?.[key])
+  }
+  for (const [skill, value] of Object.entries(record.skill_bonuses ?? {})) {
+    const key = skillLabel(skill)
+      .toLowerCase()
+      .replace(/\s+(\w)/g, (_, letter: string) => letter.toUpperCase()) as keyof NonNullable<
+      Creature['skills']
+    >
+    check(`skill_bonuses.${skill}`, value, creature.skills?.[key])
+  }
+}
+
+/** Check the complete Creature Codex selection before excluding or mapping any record. */
+export function mapCreatureCodexRecords(records: Open5eRecord[]): Creature[] {
+  const keys = new Set<string>()
+  for (const [index, record] of records.entries()) {
+    checkCreatureCodexRecord(record, index)
+    if (keys.has(record.key))
+      throw new Error(
+        `Creature Codex record ${index + 1} (${record.name}): duplicate key ${record.key}`
+      )
+    keys.add(record.key)
+  }
+  for (const name of RESERVED_INDIVIDUALS) {
+    const count = records.filter(
+      (record) => record.name.trim().toLowerCase() === name.toLowerCase()
+    ).length
+    if (count !== 1)
+      throw new Error(
+        `Creature Codex exclusion drift: ${name}: expected 1, found ${count}; review the upstream snapshot before ingestion`
+      )
+  }
+  return records
+    .filter((record) => !isReservedIndividual(record.name))
+    .map((record) => {
+      let creature: Creature
+      try {
+        creature = mapOpen5eCcdx(record)
+      } catch (cause) {
+        throw new Error(`Creature Codex record ${record.key} (${record.name}): mapping failed`, {
+          cause
+        })
+      }
+      checkCreatureCodexNumericMapping(record, creature)
+      return creature
+    })
+    .sort((a, b) => a.name.localeCompare(b.name))
 }
 
 /** Map one Open5e Creature Codex record into our schema, through the shared 2014 mapper. */
 export function mapOpen5eCcdx(r: Open5eCreature, source = 'kobold-press-ccdx'): Creature {
-  return mapTob3(toBlock(r), source)
+  return map2014StatBlock(toBlock(r), source)
 }

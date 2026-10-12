@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
-import type { CandidateKey } from './open5ePreparation.ts'
+export const OPEN5E_CANDIDATES = {
+  'a5e-mm': { name: 'Monstrous Menagerie', source: 'en-publishing-a5e-mm' },
+  bfrd: { name: 'Black Flag SRD', source: 'kobold-press-bfrd' },
+  'tob-2023': { name: 'Tome of Beasts 1 (2023 Edition)', source: 'kobold-press-tob-2023' },
+} as const
+
+export type CandidateKey = keyof typeof OPEN5E_CANDIDATES
 
 // The 2023 sample reserves named individuals and all text related to archdevils,
 // demon lords, and fey rulers, including named minion entries.
@@ -50,15 +56,6 @@ export const OPEN5E_SOURCE_REVIEW = {
       'The authorized 2023 sample establishes the OGC/PI declaration but omits the OGL and Section 15. Obtain the edition’s complete verbatim attribution chain.',
       'Review remaining creature prose for reserved proper names, setting references, and text related to archdevils, demon lords, and fey rulers.',
       'Verify Soul Eater’s Constitution save; the Dwarven Ringmage and Valkyrie publisher errata are applied.',
-    ],
-  },
-  tdcs: {
-    license: 'OGL-1.0a',
-    noticeUrl: 'https://greenronin.com/blog/2017/06/01/critical-role-release-plan/',
-    blockers: [
-      'Obtain the 2017 edition’s OGC/PI declaration and full Section 15 chain from an authorized public source; do not substitute the Reborn edition.',
-      'Verify generic creature names are reusable and review the Stoneguard and Waverider saving throws.',
-      'The feed duplicates Flamecharm inside Firetamer’s Scimitar and merges spell-level headings. Preserve source prose until primary-source corrections are verified.',
     ],
   },
 } as const

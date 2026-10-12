@@ -8,7 +8,7 @@ The [parent context map](https://github.com/OpenFrayApp/openfray/blob/main/CONTE
 
 | Owner | Responsibility | Authoritative documentation |
 | --- | --- | --- |
-| Compendium ingest | Source extraction, original data authoring, mapping, validation, source reviews, and reviewed exports | [Commands](../README.md), [review index](./README.md) |
+| Compendium ingest | Source extraction, original data authoring, mapping, validation, source reviews, and reviewed exports | [Task guides](./README.md#task-guides), [review index](./README.md) |
 | Combat console | Creature and spell schema, selectable libraries, runtime casting behavior, shipped datasets, and public credits | [Domain glossary](https://github.com/OpenFrayApp/console/blob/main/CONTEXT.md), [agent guidance](https://github.com/OpenFrayApp/console/blob/main/AGENTS.md) |
 | Parent workspace | Cross-repository agreements, licensing checklist, and assembled deployment | [Context map](https://github.com/OpenFrayApp/openfray/blob/main/CONTEXT-MAP.md), [content licensing](https://github.com/OpenFrayApp/openfray/blob/main/docs/development/content-licensing.md) |
 | Marketing site | Published book presentation and rendering of console stat-block data | [Site guidance](https://github.com/OpenFrayApp/site/blob/main/AGENTS.md) |
@@ -16,7 +16,8 @@ The [parent context map](https://github.com/OpenFrayApp/openfray/blob/main/CONTE
 ## Console contract
 
 The console owns the [schema](https://github.com/OpenFrayApp/console/tree/main/src/schema).
-`src/schema/` is a vendored copy. Schema changes originate in the console and are synced here.
+`src/schema/` and its required dependencies are vendored from the immutable console revision in [the provenance manifest](../schema-provenance.json).
+Schema changes originate in the console and follow the [sync and drift-check workflow](./schema-sync.md).
 A mapper must preserve unsupported mechanics as prose or withhold the entry with a review finding.
 Conditional advantage remains prose.
 
@@ -49,7 +50,7 @@ Before distributing data:
 
 1. Follow the parent’s [licensing checklist](https://github.com/OpenFrayApp/openfray/blob/main/docs/development/content-licensing.md).
 2. Resolve or explicitly record source fidelity findings, exclusions, and publication limits in the source review.
-3. Run the applicable generator and validator documented in the [README](../README.md).
+3. Run the applicable generator and validator documented in the [task guides](./README.md#task-guides).
 4. Run the challenge-rating estimate for new or rebalanced original creatures.
 5. Export or copy only vetted datasets into the console’s `public/compendium/`.
 6. Update console library registration, runtime coverage where applicable, and [CREDITS.md](https://github.com/OpenFrayApp/console/blob/main/CREDITS.md).
@@ -60,10 +61,11 @@ The parent workspace records component revisions and owns assembled deployment.
 
 ## Documentation boundaries
 
-Keep domain definitions in [CONTEXT.md](../CONTEXT.md), runnable commands in the [README](../README.md), and source evidence in the [review documents](./README.md).
+Keep domain definitions in [CONTEXT.md](../CONTEXT.md), setup in the [README](../README.md), and runnable recipes in the [task guides](./README.md#task-guides).
+Keep source evidence in the [review documents](./README.md) and historical leads in the [investigation index](./investigations/README.md).
 Link shared licensing rules and console contracts to their owners.
 Source-specific copyright transcripts retain their exact legal wording.
 
-Typed original content lives in `src/compendium/`; generated JSON lives under ignored `output/`.
+Typed original content lives in `src/originals/`; generated JSON lives under ignored `output/`.
 Keep supplied PDFs, extracted pages, and private review caches outside Git under the parent’s
 [repository file policy](https://github.com/OpenFrayApp/openfray/blob/main/docs/development/repository-files.md).

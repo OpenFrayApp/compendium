@@ -8,11 +8,14 @@
  *
  * Open Game Content from Tome of Beasts 2 (Kobold Press), used under the OGL 1.0a —
  * see CREDITS.md for the full license text and Section 15 copyright chain. Shares the
- * 2014-format mapper with ToB 3 (mapTob3), differing only in the source id.
+ * 2014-format mapper with ToB 3 (map2014StatBlock), differing only in the source id.
  */
 
-import { readFileSync, writeFileSync } from 'node:fs'
-import { mapTob3, type Tob3Block } from '../src/compendium/tob3.ts'
+import { readFileSync } from 'node:fs'
+import { emitValidatedDataset } from '../src/compendium/datasetEmission.ts'
+import { validateDataset } from '../src/compendium/validate.ts'
+import { mapTomeBlocks, reportKoboldValidation } from '../src/compendium/koboldIngestion.ts'
+import type { StatBlock2014 } from '../src/formats/statBlock2014.ts'
 
 const [inPath, outPath = 'output/tob2-creatures.json'] = process.argv.slice(2)
 if (!inPath) {
@@ -20,9 +23,11 @@ if (!inPath) {
   process.exit(2)
 }
 
-const blocks: Tob3Block[] = JSON.parse(readFileSync(inPath, 'utf8'))
-const creatures = blocks
-  .map((b) => mapTob3(b, 'kobold-press-tob2'))
-  .sort((a, b) => a.name.localeCompare(b.name))
-writeFileSync(outPath, JSON.stringify(creatures, null, 0))
+const blocks: StatBlock2014[] = JSON.parse(readFileSync(inPath, 'utf8'))
+const creatures = mapTomeBlocks(blocks, 'kobold-press-tob2')
+const report = emitValidatedDataset(creatures, outPath, {
+  validate: validateDataset,
+  report: (report) => reportKoboldValidation('kobold-press-tob2', report)
+})
+if (report.errors) process.exit(1)
 console.log(`mapped ${creatures.length} ToB 2 creatures → ${outPath}`)

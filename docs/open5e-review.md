@@ -1,12 +1,13 @@
 # Open5e source review
 
 This records the additional creature-library review for compendium tooling.
-All datasets remain local candidates. No console registration or credits changes
-are included. The requested publishing scope is Tome of Beasts 2023.
+All datasets remain local candidates; none is selected for publication.
+Tome of Beasts 2023 is removed from the active batch and local console preview.
 A5E, Black Flag, and Tal’Dorei records below are historical review artifacts.
-Tal’Dorei is no longer accepted by the preparation CLI.
+Tal’Dorei is no longer accepted by the preparation CLI. The active `all` batch is empty.
+See [source status](./source-status.md) for current libraries and separate spell approvals.
 
-Replay the in-scope snapshot with `npm run prepare:open5e -- tob-2023 output/open5e-preparation/tob-2023/raw.json`.
+Replay the historical snapshot with `npm run prepare:open5e -- tob-2023 output/open5e-preparation/tob-2023/raw.json`.
 
 ## Evidence and licensing
 
@@ -210,9 +211,11 @@ Checked Open5e endpoints:
 - The [Open5e source tree](https://github.com/open5e/open5e-api/tree/staging/data/v2/kobold-press/toh)
   contains player options and spells but no creature dataset.
 
-Tome of Heroes is not a preparation candidate. An ingest needs an authorized
-creature source, confirmed reuse coverage, and the complete Section 15 chain.
-Spells remain outside this bestiary work.
+Tome of Heroes creatures are not a preparation candidate.
+A creature ingest needs authorized stat blocks and confirmed creature reuse coverage.
+The supplied full-book [Section 15 transcript](./tome-of-heroes-section-15.md) now preserves the chain;
+it does not establish a creature grant.
+The separate [90-card spell approval](./reference-spell-publication.md#tome-of-heroes) remains outside this bestiary review.
 
 ## Verification and publishing gates
 

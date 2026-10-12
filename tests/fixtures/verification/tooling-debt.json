@@ -1,0 +1,156 @@
+{
+  "sourceRevision": "5fc4624",
+  "formattingFiles": [
+    "scripts/estimate-cr.ts",
+    "scripts/export-reference-spells.ts",
+    "scripts/ingest-brood-and-bloom-spells.ts",
+    "scripts/ingest-brood-and-bloom.ts",
+    "scripts/ingest-creature-codex.ts",
+    "scripts/ingest-khyberia.ts",
+    "scripts/ingest-srd-2014.ts",
+    "scripts/ingest-srd52.ts",
+    "scripts/ingest-strong-waters-spells.ts",
+    "scripts/ingest-tob1.ts",
+    "scripts/ingest-waking-garden.ts",
+    "scripts/lib/prepare-gmbinder-spells.ts",
+    "scripts/prepare-deep-magic-2020-spells.ts",
+    "scripts/prepare-kibbles-v23-spells.ts",
+    "scripts/prepare-open5e-spells.ts",
+    "scripts/prepare-open5e.ts",
+    "scripts/prepare-so-many-spells.ts",
+    "scripts/prepare-spells-that-dont-suck.ts",
+    "scripts/prepare-tome-of-heroes-spells.ts",
+    "scripts/prepare-warlock-grimoire-spells.ts",
+    "scripts/review-warlock-grimoire.ts",
+    "scripts/validate-compendium.ts",
+    "src/compendium/crestimate.ts",
+    "src/compendium/deepMagic2020Classes.ts",
+    "src/compendium/deepMagic2020Licensing.ts",
+    "src/compendium/deepMagic2020Review.ts",
+    "src/compendium/directSpells.ts",
+    "src/compendium/dnd5eapi.ts",
+    "src/compendium/gmBinderSpells.ts",
+    "src/compendium/khyberia.ts",
+    "src/compendium/kibblesV23Spells.ts",
+    "src/compendium/open5e.ts",
+    "src/compendium/open5eCcdx.ts",
+    "src/compendium/open5eCorrections.ts",
+    "src/compendium/open5eExceptions.ts",
+    "src/compendium/open5ePreparation.ts",
+    "src/compendium/open5eProvisional.ts",
+    "src/compendium/open5eSources.ts",
+    "src/compendium/open5eSpellClasses.ts",
+    "src/compendium/open5eSpells.ts",
+    "src/compendium/soManySpells.ts",
+    "src/compendium/sourcePolicy.ts",
+    "src/compendium/spelllinker.ts",
+    "src/compendium/spellsThatDontSuck.ts",
+    "src/compendium/srd52.ts",
+    "src/compendium/srd52spells.ts",
+    "src/compendium/tob3.ts",
+    "src/compendium/tomeOfHeroesClasses.ts",
+    "src/compendium/tomeOfHeroesReview.ts",
+    "src/compendium/validate.ts",
+    "src/compendium/warlockContentBoundaries.ts",
+    "src/compendium/warlockGrimoireReview.ts",
+    "src/compendium/warlockGrimoireSpells.ts",
+    "tests/compendium/brood-and-bloom.test.ts",
+    "tests/compendium/crestimate.test.ts",
+    "tests/compendium/deepMagic2020Licensing.test.ts",
+    "tests/compendium/deepMagic2020Review.test.ts",
+    "tests/compendium/dnd5eapi.test.ts",
+    "tests/compendium/khyberia.test.ts",
+    "tests/compendium/kibblesV23Spells.test.ts",
+    "tests/compendium/open5e.test.ts",
+    "tests/compendium/open5eCcdx.test.ts",
+    "tests/compendium/open5eCorrections.test.ts",
+    "tests/compendium/open5eExceptions.test.ts",
+    "tests/compendium/open5ePreparation.test.ts",
+    "tests/compendium/open5eProvisional.test.ts",
+    "tests/compendium/open5eSpellClasses.test.ts",
+    "tests/compendium/open5eSpells.test.ts",
+    "tests/compendium/prepareOpen5eCli.test.ts",
+    "tests/compendium/prepareOpen5eSpellsCli.test.ts",
+    "tests/compendium/referenceSpellPublication.test.ts",
+    "tests/compendium/soManySpells.test.ts",
+    "tests/compendium/spelllinker.test.ts",
+    "tests/compendium/spellsThatDontSuck.test.ts",
+    "tests/compendium/srd52.test.ts",
+    "tests/compendium/srd52spells.test.ts",
+    "tests/compendium/tob3.test.ts",
+    "tests/compendium/tomeOfHeroesReview.test.ts",
+    "tests/compendium/validate.test.ts",
+    "tests/compendium/warlockContentBoundaries.test.ts",
+    "tests/compendium/warlockGrimoireReview.test.ts",
+    "tests/compendium/warlockGrimoireSpells.test.ts"
+  ],
+  "proseEmDashFindings": [
+    {
+      "file": "README.md",
+      "line": 9
+    },
+    {
+      "file": "README.md",
+      "line": 31
+    },
+    {
+      "file": "README.md",
+      "line": 32
+    },
+    {
+      "file": "README.md",
+      "line": 33
+    },
+    {
+      "file": "README.md",
+      "line": 38
+    },
+    {
+      "file": "README.md",
+      "line": 41
+    },
+    {
+      "file": "README.md",
+      "line": 49
+    },
+    {
+      "file": "README.md",
+      "line": 418
+    },
+    {
+      "file": "README.md",
+      "line": 437
+    },
+    {
+      "file": "README.md",
+      "line": 446
+    },
+    {
+      "file": "README.md",
+      "line": 452
+    },
+    {
+      "file": "README.md",
+      "line": 460
+    },
+    {
+      "file": "README.md",
+      "line": 474
+    },
+    {
+      "file": "README.md",
+      "line": 476
+    },
+    {
+      "file": "README.md",
+      "line": 484
+    },
+    {
+      "file": "README.md",
+      "line": 485
+    }
+  ],
+  "proseSoftCounts": {
+    "rhetorical contrast": 10
+  }
+}

@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 
-SCRIPT = Path(__file__).resolve().parents[2] / "scripts" / "extract-kibbles-v23-spells.py"
+SCRIPT = Path(__file__).resolve().parents[2] / "scripts" / "extract" / "kibbles-v23-spells.py"
 SPEC = importlib.util.spec_from_file_location("extract_kibbles_v23", SCRIPT)
 extractor = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(extractor)

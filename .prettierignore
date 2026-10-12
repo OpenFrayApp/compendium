@@ -1,0 +1,19 @@
+# Legal and published historical records stay verbatim.
+LICENSE
+CREDITS.md
+CODE_OF_CONDUCT.md
+CHANGELOG.md
+docs/**
+!docs/verification.md
+# Authored content, reviewed approval bytes, and console-owned schema are separate changes.
+src/schema/**
+src/compendium/libraries.ts
+src/originals/**
+src/compendium/referenceSpellPublication.ts
+# Source snapshots and expected outputs are evidence, not formatting targets.
+tests/fixtures/**
+!tests/fixtures/verification/
+!tests/fixtures/verification/*.json
+node_modules/
+output/
+.venv/

@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Nicola Mustone
 
+import type { Open5eSpellSnapshot } from "../src/compendium/open5eTypes.ts";
+
 import {
   existsSync,
   mkdirSync,
@@ -20,8 +22,7 @@ import {
   fetchSpellSnapshot,
   prepareOpen5eSpells,
   spellDocument,
-  thirdPartySpellDocuments,
-  type Open5eSpellSnapshot,
+  thirdPartySpellDocuments
 } from "../src/compendium/open5eSpells.ts";
 
 /** Fetch API JSON with a bounded timeout and explicit content negotiation. */
