@@ -10,8 +10,11 @@
  * Mechanics live in structured fields; the original prose is kept in `Action.text`.
  */
 
+import { slug } from '../formats/identity.ts'
+import { parseSpellcasting } from '../formats/innateSpellcasting.ts'
+
 import type { Action, ActionKind, DamageRoll, Range, Recharge, SaveOutcome, SaveRequirement } from '../schema/action.ts'
-import type { Creature, LegendaryActions, SpellGroup, SpellRef, Spellcasting, SpellUsage, Trait } from '../schema/creature.ts'
+import type { Creature, LegendaryActions, Trait } from '../schema/creature.ts'
 import type { Ability, AbilityScores, SaveBonuses, Senses, Size, Skill, SkillBonuses, Speeds } from '../schema/primitives.ts'
 
 /** One entry under a section (Trait / Action / …), name + prose. */
@@ -58,8 +61,6 @@ const ERRATA: Record<string, Partial<Creature>> = {
 
 /** Straighten typographic apostrophes so names match across sources (Will-o'-Wisp). */
 const straighten = (s: string): string => s.replace(/[‘’]/g, "'")
-/** Lowercase a name into a hyphenated id ("Adult Black Dragon" → "adult-black-dragon"). */
-export const slug = (s: string): string => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 /** Parse a number with commas and spaces stripped ("8,400" → 8400); undefined → 0. */
 const num = (s: string | undefined): number => Number((s ?? '').replace(/[,\s]/g, ''))
 
@@ -126,29 +127,6 @@ function parseSkills(line: string): SkillBonuses | undefined {
 
 /** Split on commas into trimmed, non-empty items. */
 const csv = (s: string): string[] => s.split(',').map((x) => x.trim()).filter(Boolean)
-
-/**
- * Split on top-level commas only, ignoring commas inside parentheses — so a spell
- * list keeps an entry whose clarification has commas intact, e.g. "Shapechange
- * (Beast or Humanoid form only, no Temporary Hit Points…)" stays one entry.
- */
-function splitTopLevel(s: string): string[] {
-  const out: string[] = []
-  let depth = 0
-  let cur = ''
-  for (const ch of s) {
-    if (ch === '(') depth++
-    else if (ch === ')') depth = Math.max(0, depth - 1)
-    if (ch === ',' && depth === 0) {
-      out.push(cur)
-      cur = ''
-    } else {
-      cur += ch
-    }
-  }
-  out.push(cur)
-  return out.map((x) => x.trim()).filter(Boolean)
-}
 
 /** The labels that open a stat-block header line — anything else is a continuation. */
 const HEADER_LABEL =
@@ -271,47 +249,6 @@ function toAction(entry: Srd52Entry): Action {
   const dmg = parseDamage(text)
   if (dmg) action.damage = dmg
   return action
-}
-
-// ── spellcasting (innate, 2024 "At Will / N/Day" form) ────────────────────────
-
-const TIER_MARKER = /(At Will|\d+\s*\/\s*Day)(?:\s+Each)?\s*:/gi
-
-/** SpellRef for a listed spell name, dropping "(…)" tags; 5.1 refs also drop apostrophes. */
-function spellRef(raw: string, spellSource: string): SpellRef {
-  const name = raw.replace(/\([^)]*\)/g, '').trim() // drop "(level 2 version)"
-  // SRD 5.1 (dnd5eapi) ids strip apostrophes ("hunters-mark"); our 5.2 ids keep our slug.
-  const refName = spellSource === 'srd-5.1' ? name.replace(/['’]/g, '') : name
-  return { name, ref: `${spellSource}:${slug(refName)}` }
-}
-
-// `spellSource` is the library the cast spells resolve against — `srd-5.2` for 2024
-// content, `srd-5.1` for the 2014 books (ToB 2/3), whose creatures cast 2014 spells.
-export function parseSpellcasting(entry: Srd52Entry, spellSource = 'srd-5.2'): Spellcasting | null {
-  const blob = `${entry.name}. ${entry.text}`
-  const ability = /using (\w+) as the spellcasting ability/i.exec(blob)?.[1]?.slice(0, 3).toLowerCase() as Ability | undefined
-  const saveDc = Number(/spell save DC (\d+)/i.exec(blob)?.[1]) || undefined
-  const toHit = Number(/([+-]?\d+) to hit with spell/i.exec(blob)?.[1]) || undefined
-
-  const groups: SpellGroup[] = []
-  const markers = [...blob.matchAll(TIER_MARKER)]
-  for (let i = 0; i < markers.length; i++) {
-    const header = markers[i][1].toLowerCase()
-    const start = markers[i].index! + markers[i][0].length
-    const end = i + 1 < markers.length ? markers[i + 1].index! : blob.length
-    const spells = splitTopLevel(blob.slice(start, end)).map((s) => spellRef(s, spellSource))
-    if (!spells.length) continue
-    const usage: SpellUsage = /at will/.test(header)
-      ? { type: 'atWill' }
-      : { type: 'perDay', per: Number(/(\d+)/.exec(header)?.[1]) || 1 }
-    groups.push({ usage, spells })
-  }
-  if (!groups.length && !ability) return null
-  const sc: Spellcasting = { groups }
-  if (ability) sc.ability = ability
-  if (saveDc != null) sc.saveDc = saveDc
-  if (toHit != null) sc.toHit = toHit
-  return sc
 }
 
 // ── assembly ──────────────────────────────────────────────────────────────────

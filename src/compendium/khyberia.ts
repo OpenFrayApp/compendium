@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Nicola Mustone
 
 import type { Creature } from '../schema/creature.ts'
-import { mapTob3, type Tob3Block } from './tob3.ts'
+import { map2014StatBlock, type StatBlock2014 } from '../formats/statBlock2014.ts'
 
 export const KHYBERIA_SOURCE = 'khyberia-srd'
 export const KHYBERIA_PDF_SHA256 = '738c28c69c459e2bf1b91e416aa8a7dd2d286ee1da32a2de48c3cb98acbfb0be'
@@ -26,12 +26,12 @@ export interface KhyberiaSnapshot {
   sha256: string
   pages: number
   legal: string
-  blocks: Tob3Block[]
+  blocks: StatBlock2014[]
 }
 
 /** Convert a conventional 2014 stat block without treating optional damage as additive. */
-export function mapKhyberia(block: Tob3Block): Creature {
-  const creature = mapTob3(block, KHYBERIA_SOURCE)
+export function mapKhyberia(block: StatBlock2014): Creature {
+  const creature = map2014StatBlock(block, KHYBERIA_SOURCE)
   if (block.name === 'Water Guardian') {
     // This qualifier applies to all three physical types, not just slashing.
     creature.resistances = ['acid', 'fire', 'bludgeoning, piercing, and slashing from nonmagical attacks']

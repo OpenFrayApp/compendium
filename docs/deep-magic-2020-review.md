@@ -193,7 +193,7 @@ Preparation now retains the printed area qualifiers in the range field as well a
 
 ### Additional range and duration checks
 
-`DEEP_MAGIC_2020_HEADER_CORRECTIONS` in `src/compendium/deepMagic2020Review.ts`
+`DEEP_MAGIC_2020_HEADER_CORRECTIONS` in `src/compendium/deepMagic2020Corrections.ts`
 pins 30 visually checked field corrections by identity, original field value, and
 physical source page: 25 ranges (Bloodshot plus 24 omitted area qualifiers), four
 durations, and Encrypt / Decrypt’s school. The range checks include Caustic Torrent

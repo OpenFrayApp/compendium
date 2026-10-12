@@ -11,8 +11,11 @@
  * Sourced from WotC's official SRD 5.2.1 PDF under CC-BY-4.0.
  */
 
-import { readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { mapSrd52Spell, type Srd52SpellBlock } from '../src/compendium/srd52spells.ts'
+import { emitValidatedDataset } from '../src/compendium/datasetEmission.ts'
+import { validateSpellDataset } from '../src/compendium/validate.ts'
+import { reportSrdValidation } from './lib/srdValidation.ts'
 
 const [inPath, outPath = 'output/srd-spells.json'] = process.argv.slice(2)
 if (!inPath) {
@@ -22,5 +25,9 @@ if (!inPath) {
 
 const blocks: Srd52SpellBlock[] = JSON.parse(readFileSync(inPath, 'utf8'))
 const spells = blocks.map(mapSrd52Spell).sort((a, b) => a.name.localeCompare(b.name))
-writeFileSync(outPath, JSON.stringify(spells, null, 0))
+const report = emitValidatedDataset(spells, outPath, {
+  validate: validateSpellDataset,
+  report: (report) => reportSrdValidation('spells', report)
+})
+if (report.errors) process.exit(1)
 console.log(`mapped ${spells.length} spells → ${outPath}`)

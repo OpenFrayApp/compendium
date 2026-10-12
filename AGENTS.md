@@ -3,8 +3,16 @@ cross-repo agreements (code style, writing style, committing, content licensing)
 live in the
 [openfray repo's AGENTS.md](https://github.com/OpenFrayApp/openfray/blob/main/AGENTS.md).
 **Read it before working here.** The authored text follows this repo's
-[STYLE.md](./STYLE.md) (the data voice). The [README](./README.md) documents every
-pipeline and command; this file carries the rules.
+[STYLE.md](./STYLE.md) (the data voice). The [README](./README.md) covers setup;
+[task guides](./docs/README.md#task-guides) document pipelines and commands.
+This file carries the rules.
+
+## Domain documentation
+
+Read [CONTEXT.md](./CONTEXT.md) before changing domain terms or content identity.
+Read [Domain ownership and contracts](./docs/domain.md) when changing schema mappings,
+publication gates, or console integration. Use the [review index](./docs/README.md)
+to locate source-specific evidence. Shared contracts stay linked to their owning repositories.
 
 ## What this repo is
 
@@ -13,10 +21,13 @@ Build-time ingest tooling: it parses SRD and third-party sources into OpenFray's
 [console](https://github.com/OpenFrayApp/console) ships in its `public/compendium/`.
 The app never runs this code; it only consumes the JSON.
 
+Follow the [verification guide](./docs/verification.md#install) for supported runtimes
+and pinned Python dependencies, then run:
+
 ```bash
-npm install
-npm test           # mapper/harness unit tests
-npm run typecheck
+npm ci
+npm run verify
+npm run verify:offline
 ```
 
 ## Branching
@@ -28,19 +39,23 @@ Retain `develop` after each promotion.
 
 ## The rules
 
-- **Consistent tooling.** The PDF extractors use **pymupdf (`import fitz`)**, one
-  extractor per book, because each book's fonts differ and a filter tuned to one
-  breaks the others. Ingesting a new Kobold book starts as a faithful copy of
-  `tob3.py`. Never swap PDF libraries or reimplement extraction inline.
+- **Consistent tooling.** Book-specific PDF extractors use **PyMuPDF (`import fitz`)**,
+  because each book’s fonts need independent filters. The existing SRD 5.2.1
+  extractors use **pdfplumber**, an explicit exception documented in the
+  [ingest guide](./docs/guides/ingest.md#srd-521-from-the-official-pdf).
+  Ingesting a new Kobold book starts as a faithful copy of `tob3.py`.
+  Never swap PDF libraries or reimplement extraction inline.
 - **Edit the `.ts`, never the JSON.** Original content (the Waking Garden,
   Brood & Bloom, Strong Waters) is authored as typed `Creature[]`/`Spell[]` sources
-  in `src/compendium/`; the JSON in `output/` is a build artifact.
+  in `src/originals/`; the JSON in `output/` is a build artifact.
 - **Stat-block text is mechanics only.** Trait and action text carries rules;
   lore lives in the creature's `description`, and GM advice nowhere.
 - **Never bake conditional advantage into data.** A trait that grants advantage
   under a condition stays prose; the GM applies it at the table.
-- **Schema is vendored.** `src/schema/` is a copy of the console's types; the
-  source of truth is the console repo. Sync it, never fork it.
+- **Schema is vendored.** `src/schema/` and its recorded dependencies are complete
+  console-owned files pinned in `schema-provenance.json`. Sync them, never fork them.
+  Follow [schema synchronization](./docs/schema-sync.md); run `npm run schema:check`
+  to detect drift offline.
 - **Licensing gates every source**: CC-BY > ORC > OGL, OGC-only under OGL, and
   never SRD-excluded WotC IP. The checklist is in the parent's
   [Content licensing](https://github.com/OpenFrayApp/openfray/blob/main/docs/development/content-licensing.md);
